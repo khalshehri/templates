@@ -34,10 +34,26 @@ export function ContentEditorPanel() {
     [section]
   );
 
-  const fields = useMemo(
+  const allFields = useMemo(
     () => (block ? introspectSchema(block.configSchema) : []),
     [block]
   );
+
+  const currentTemplate = useMemo(
+    () =>
+      block && section
+        ? block.templates.find((t) => t.id === section.templateId)
+        : null,
+    [block, section]
+  );
+
+  // Filter fields to only show those relevant to the selected template.
+  // A field is relevant if its key has a defined value in the template's defaultConfig.
+  const fields = useMemo(() => {
+    if (!currentTemplate) return allFields;
+    const defaults = currentTemplate.defaultConfig;
+    return allFields.filter((field) => defaults[field.key] !== undefined);
+  }, [allFields, currentTemplate]);
 
   if (!section || !block) {
     return (
@@ -48,9 +64,6 @@ export function ContentEditorPanel() {
   }
 
   const Icon = iconMap[block.icon] || LayoutGrid;
-  const currentTemplate = block.templates.find(
-    (t) => t.id === section.templateId
-  );
 
   const handleFieldChange = (key: string, value: unknown) => {
     updateSectionConfig(section.id, [key], value);
