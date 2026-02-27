@@ -29,6 +29,7 @@ registerBlock({
       component: AboutTemplate01,
       defaultConfig: {
         ...aboutConfigSchema.parse({}),
+        image: "",
         stats: [
           { value: "10+", label: "Years Experience", labelAr: "سنوات خبرة" },
           { value: "500+", label: "Projects Done", labelAr: "مشروع منجز" },
@@ -119,6 +120,7 @@ registerBlock({
       component: AboutTemplate05,
       defaultConfig: {
         ...aboutConfigSchema.parse({}),
+        image: "",
         stats: [
           { value: "10+", label: "Years Experience", labelAr: "سنوات خبرة" },
           { value: "500+", label: "Projects Done", labelAr: "مشروع منجز" },
@@ -250,6 +252,7 @@ registerBlock({
       component: AboutTemplate11,
       defaultConfig: {
         ...aboutConfigSchema.parse({}),
+        image: "",
         stats: [
           { value: "10+", label: "Years Experience", labelAr: "سنوات خبرة" },
           { value: "500+", label: "Projects Done", labelAr: "مشروع منجز" },

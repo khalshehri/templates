@@ -35,7 +35,7 @@ registerBlock({
       nameAr: "تخطيط منقسم",
       description: "Text on one side, image on the other",
       component: CtaTemplate02,
-      defaultConfig: ctaConfigSchema.parse({}),
+      defaultConfig: { ...ctaConfigSchema.parse({}), image: "" },
     },
     {
       id: "cta-template-03",
@@ -51,7 +51,7 @@ registerBlock({
       nameAr: "صورة منقسمة",
       description: "Two halves with text and image, decorative gradient fallback",
       component: CtaTemplate04,
-      defaultConfig: ctaConfigSchema.parse({}),
+      defaultConfig: { ...ctaConfigSchema.parse({}), image: "" },
     },
     {
       id: "cta-template-05",

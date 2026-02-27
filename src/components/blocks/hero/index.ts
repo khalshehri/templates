@@ -118,6 +118,7 @@ registerBlock({
           url: "#menu",
         },
         badge: { text: "Since 2010", textAr: "منذ 2010" },
+        backgroundImage: "",
         overlayOpacity: 60,
         stats: [
           { value: "15+", label: "Years", labelAr: "سنة" },
@@ -172,6 +173,7 @@ registerBlock({
         subheadingAr:
           "استكشف آلاف العقارات في جميع أنحاء المملكة. اشترِ، استأجر، أو استثمر بثقة.",
         badge: { text: "#1 Property Platform", textAr: "المنصة العقارية الأولى" },
+        backgroundImage: "",
         searchPlaceholder: "Search by city, neighborhood, or property type...",
         searchPlaceholderAr: "ابحث بالمدينة، الحي، أو نوع العقار...",
         searchCategories: [
@@ -212,6 +214,7 @@ registerBlock({
           textAr: "تحميل السيرة",
           url: "#cv",
         },
+        personalPhoto: "",
         typedTexts: ["Full-Stack Developer", "UI/UX Designer", "Creative Thinker"],
         typedTextsAr: ["مطور ويب متكامل", "مصمم واجهات", "مفكر إبداعي"],
         socials: [

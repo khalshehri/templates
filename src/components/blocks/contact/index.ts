@@ -35,7 +35,7 @@ registerBlock({
       nameAr: "نموذج + خريطة",
       description: "Contact cards, form, and map location",
       component: ContactTemplate02,
-      defaultConfig: contactConfigSchema.parse({}),
+      defaultConfig: { ...contactConfigSchema.parse({}), mapEmbed: "" },
     },
     {
       id: "contact-template-03",
@@ -75,7 +75,7 @@ registerBlock({
       nameAr: "تركيز الخريطة",
       description: "Map embed at top with info strip and form below",
       component: ContactTemplate07,
-      defaultConfig: contactConfigSchema.parse({}),
+      defaultConfig: { ...contactConfigSchema.parse({}), mapEmbed: "" },
     },
     {
       id: "contact-template-08",
