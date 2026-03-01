@@ -54,6 +54,7 @@ registerBlock({
       component: HeroTemplate02,
       defaultConfig: heroConfigSchema.parse({
         badge: { text: "#1 Platform", textAr: "المنصة رقم 1" },
+        backgroundImage: "",
         ctaSecondary: {
           text: "Watch Demo",
           textAr: "شاهد العرض",
@@ -271,6 +272,7 @@ registerBlock({
         subheadingAr:
           "نحوّل الأفكار إلى تجارب بصرية مذهلة. كل بكسل يروي قصة.",
         badge: { text: "Studio", textAr: "استوديو" },
+        backgroundImage: "",
         ctaSecondary: {
           text: "Watch Reel",
           textAr: "شاهد العرض",
