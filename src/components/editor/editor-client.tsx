@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import "@/config/block-registry";
 import { BlockRenderer } from "@/components/blocks/renderer";
 import { themeToCSS } from "@/types/theme";
@@ -23,12 +23,16 @@ import {
   ArrowLeft,
   Loader2,
   Check,
+  Globe,
+  ExternalLink,
 } from "lucide-react";
 import Link from "next/link";
 
 interface EditorClientProps {
   siteId: string;
   siteName: string;
+  siteSlug: string;
+  initialStatus: "draft" | "published";
   initialTheme: SiteTheme;
   initialSections: SectionData[];
 }
@@ -36,6 +40,8 @@ interface EditorClientProps {
 export function EditorClient({
   siteId,
   siteName,
+  siteSlug,
+  initialStatus,
   initialTheme,
   initialSections,
 }: EditorClientProps) {
@@ -57,6 +63,9 @@ export function EditorClient({
     initializeStore,
     setSaving,
   } = useEditorStore();
+
+  const [siteStatus, setSiteStatus] = useState(initialStatus);
+  const [isPublishing, setIsPublishing] = useState(false);
 
   // Initialize store with server data
   useEffect(() => {
@@ -87,6 +96,32 @@ export function EditorClient({
       setSaving(false);
     }
   }, [siteId, theme, sections, setSaving]);
+
+  const handlePublish = useCallback(async () => {
+    const newStatus = siteStatus === "published" ? "draft" : "published";
+
+    if (newStatus === "draft") {
+      if (!confirm("Unpublish this site? It will no longer be publicly accessible."))
+        return;
+    }
+
+    setIsPublishing(true);
+    try {
+      // Auto-save first if there are unsaved changes
+      if (isDirty) await handleSave();
+
+      await fetch(`/api/sites/${siteId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      setSiteStatus(newStatus);
+    } catch (err) {
+      console.error("Publish failed:", err);
+    } finally {
+      setIsPublishing(false);
+    }
+  }, [siteId, siteStatus, isDirty, handleSave]);
 
   const deviceWidths = {
     desktop: "100%",
@@ -161,6 +196,46 @@ export function EditorClient({
             )}
             {isSaving ? "Saving..." : isDirty ? "Save" : "Saved"}
           </button>
+
+          {/* Publish / Unpublish */}
+          {siteStatus === "published" ? (
+            <div className="flex items-center gap-1">
+              <a
+                href={`/sites/${siteSlug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-green-50 text-green-700 hover:bg-green-100 transition-colors"
+              >
+                <Globe size={14} />
+                Live
+                <ExternalLink size={12} />
+              </a>
+              <button
+                onClick={handlePublish}
+                disabled={isPublishing}
+                className="px-2 py-1.5 text-xs font-medium rounded-lg border border-gray-200 text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors"
+              >
+                {isPublishing ? (
+                  <Loader2 size={14} className="animate-spin" />
+                ) : (
+                  "Unpublish"
+                )}
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={handlePublish}
+              disabled={isPublishing}
+              className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors"
+            >
+              {isPublishing ? (
+                <Loader2 size={14} className="animate-spin" />
+              ) : (
+                <Globe size={14} />
+              )}
+              {isPublishing ? "Publishing..." : "Publish"}
+            </button>
+          )}
 
           <button
             onClick={() => setLanguage(language === "en" ? "ar" : "en")}

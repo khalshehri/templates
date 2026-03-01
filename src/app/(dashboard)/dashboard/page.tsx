@@ -11,6 +11,8 @@ import {
   Globe,
   Loader2,
   LayoutDashboard,
+  Eye,
+  ExternalLink,
 } from "lucide-react";
 
 interface Site {
@@ -134,6 +136,29 @@ export default function DashboardPage() {
                     Edit
                   </Button>
                 </Link>
+                {site.status === "published" ? (
+                  <a
+                    href={`/sites/${site.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button variant="outline" size="sm" className="gap-1">
+                      <ExternalLink size={14} />
+                      View
+                    </Button>
+                  </a>
+                ) : (
+                  <a
+                    href={`/sites/${site.slug}?preview=true`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button variant="outline" size="sm" className="gap-1">
+                      <Eye size={14} />
+                      Preview
+                    </Button>
+                  </a>
+                )}
                 <Button
                   variant="outline"
                   size="sm"
