@@ -14,6 +14,8 @@ export function NavbarTemplate06({ config, language }: BlockProps) {
   const c = config as NavbarConfig;
   const isAr = language === "ar";
   const [mobileOpen, setMobileOpen] = useState(false);
+  const logoText = isAr ? c.logoAr : c.logo;
+  const isLogoImage = logoText.startsWith("/") || logoText.startsWith("http");
 
   return (
     <nav
@@ -33,7 +35,11 @@ export function NavbarTemplate06({ config, language }: BlockProps) {
             className="text-xl font-bold tracking-tight"
             style={{ color: "var(--theme-primary)" }}
           >
-            {isAr ? c.logoAr : c.logo}
+            {isLogoImage ? (
+              <img src={logoText} alt="" className="h-8 object-contain" />
+            ) : (
+              logoText
+            )}
           </a>
 
           <div className="flex items-center gap-3">

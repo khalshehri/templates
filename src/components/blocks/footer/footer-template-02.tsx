@@ -6,6 +6,8 @@ import type { FooterConfig } from "./types";
 export function FooterTemplate02({ config, language }: BlockProps) {
   const c = config as FooterConfig;
   const isAr = language === "ar";
+  const logoText = isAr ? c.logoAr : c.logo;
+  const isLogoImage = logoText.startsWith("/") || logoText.startsWith("http");
 
   return (
     <footer className="bg-white border-t border-gray-100">
@@ -37,12 +39,16 @@ export function FooterTemplate02({ config, language }: BlockProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <span
-              className="text-lg font-bold"
-              style={{ color: "var(--theme-primary)" }}
-            >
-              {isAr ? c.logoAr : c.logo}
-            </span>
+            {isLogoImage ? (
+              <img src={logoText} alt="" className="h-8 object-contain" />
+            ) : (
+              <span
+                className="text-lg font-bold"
+                style={{ color: "var(--theme-primary)" }}
+              >
+                {logoText}
+              </span>
+            )}
             <span className="text-gray-300">|</span>
             <span className="text-sm text-gray-500">
               {isAr ? c.descriptionAr : c.description}

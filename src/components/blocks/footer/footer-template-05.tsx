@@ -16,6 +16,8 @@ const platformColors: Record<string, string> = {
 export function FooterTemplate05({ config, language }: BlockProps) {
   const c = config as FooterConfig;
   const isAr = language === "ar";
+  const logoText = isAr ? c.logoAr : c.logo;
+  const isLogoImage = logoText.startsWith("/") || logoText.startsWith("http");
 
   return (
     <footer
@@ -32,7 +34,11 @@ export function FooterTemplate05({ config, language }: BlockProps) {
           {/* Brand */}
           <div className="md:col-span-2 lg:col-span-1">
             <a href="#" className="text-2xl font-bold text-white">
-              {isAr ? c.logoAr : c.logo}
+              {isLogoImage ? (
+                <img src={logoText} alt="" className="h-8 object-contain" />
+              ) : (
+                logoText
+              )}
             </a>
             <p className="mt-4 text-sm text-gray-400 leading-relaxed max-w-sm">
               {isAr ? c.descriptionAr : c.description}

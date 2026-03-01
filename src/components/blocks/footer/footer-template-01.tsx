@@ -6,6 +6,8 @@ import type { FooterConfig } from "./types";
 export function FooterTemplate01({ config, language }: BlockProps) {
   const c = config as FooterConfig;
   const isAr = language === "ar";
+  const logoText = isAr ? c.logoAr : c.logo;
+  const isLogoImage = logoText.startsWith("/") || logoText.startsWith("http");
 
   return (
     <footer className="bg-gray-950 text-gray-300">
@@ -17,7 +19,11 @@ export function FooterTemplate01({ config, language }: BlockProps) {
               href="#"
               className="text-xl font-bold text-white"
             >
-              {isAr ? c.logoAr : c.logo}
+              {isLogoImage ? (
+                <img src={logoText} alt="" className="h-8 object-contain" />
+              ) : (
+                logoText
+              )}
             </a>
             <p className="mt-4 text-sm text-gray-400 max-w-xs leading-relaxed">
               {isAr ? c.descriptionAr : c.description}

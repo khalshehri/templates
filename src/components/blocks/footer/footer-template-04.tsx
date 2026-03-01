@@ -31,6 +31,8 @@ function SocialIcon({ platform }: { platform: string }) {
 export function FooterTemplate04({ config, language }: BlockProps) {
   const c = config as FooterConfig;
   const isAr = language === "ar";
+  const logoText = isAr ? c.logoAr : c.logo;
+  const isLogoImage = logoText.startsWith("/") || logoText.startsWith("http");
 
   const allLinks = c.columns.flatMap((col) => col.links);
 
@@ -47,7 +49,11 @@ export function FooterTemplate04({ config, language }: BlockProps) {
             className="shrink-0 text-lg font-bold"
             style={{ color: "var(--theme-primary)" }}
           >
-            {isAr ? c.logoAr : c.logo}
+            {isLogoImage ? (
+              <img src={logoText} alt="" className="h-8 object-contain" />
+            ) : (
+              logoText
+            )}
           </a>
 
           {/* Flattened Links */}

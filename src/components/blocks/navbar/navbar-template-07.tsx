@@ -14,6 +14,8 @@ export function NavbarTemplate07({ config, language }: BlockProps) {
   const c = config as NavbarConfig;
   const isAr = language === "ar";
   const [mobileOpen, setMobileOpen] = useState(false);
+  const logoText = isAr ? c.logoAr : c.logo;
+  const isLogoImage = logoText.startsWith("/") || logoText.startsWith("http");
 
   return (
     <nav
@@ -34,7 +36,11 @@ export function NavbarTemplate07({ config, language }: BlockProps) {
             className="text-lg font-bold tracking-tight shrink-0"
             style={{ color: "var(--theme-primary)" }}
           >
-            {isAr ? c.logoAr : c.logo}
+            {isLogoImage ? (
+              <img src={logoText} alt="" className="h-8 object-contain" />
+            ) : (
+              logoText
+            )}
           </a>
 
           {/* Desktop Links */}

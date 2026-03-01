@@ -14,6 +14,8 @@ export function NavbarTemplate09({ config, language }: BlockProps) {
   const c = config as NavbarConfig;
   const isAr = language === "ar";
   const [mobileOpen, setMobileOpen] = useState(false);
+  const logoText = isAr ? c.logoAr : c.logo;
+  const isLogoImage = logoText.startsWith("/") || logoText.startsWith("http");
 
   const halfIdx = Math.ceil(c.links.length / 2);
   const leftLinks = c.links.slice(0, halfIdx);
@@ -54,7 +56,11 @@ export function NavbarTemplate09({ config, language }: BlockProps) {
             className="text-2xl sm:text-3xl font-extrabold tracking-tight shrink-0 px-8"
             style={{ color: "var(--theme-primary)" }}
           >
-            {isAr ? c.logoAr : c.logo}
+            {isLogoImage ? (
+              <img src={logoText} alt="" className="h-10 object-contain" />
+            ) : (
+              logoText
+            )}
           </a>
 
           {/* Right Links — desktop */}

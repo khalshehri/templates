@@ -9,6 +9,8 @@ export function NavbarTemplate02({ config, language }: BlockProps) {
   const c = config as NavbarConfig;
   const isAr = language === "ar";
   const [mobileOpen, setMobileOpen] = useState(false);
+  const logoText = isAr ? c.logoAr : c.logo;
+  const isLogoImage = logoText.startsWith("/") || logoText.startsWith("http");
 
   return (
     <div
@@ -42,9 +44,13 @@ export function NavbarTemplate02({ config, language }: BlockProps) {
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             <a href="#" className="text-xl font-bold tracking-tight">
-              <span style={{ color: "var(--theme-primary)" }}>
-                {isAr ? c.logoAr : c.logo}
-              </span>
+              {isLogoImage ? (
+                <img src={logoText} alt="" className="h-8 object-contain" />
+              ) : (
+                <span style={{ color: "var(--theme-primary)" }}>
+                  {logoText}
+                </span>
+              )}
             </a>
 
             {/* Desktop Links */}

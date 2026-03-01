@@ -31,6 +31,8 @@ function SocialIcon({ platform }: { platform: string }) {
 export function FooterTemplate12({ config, language }: BlockProps) {
   const c = config as FooterConfig;
   const isAr = language === "ar";
+  const logoText = isAr ? c.logoAr : c.logo;
+  const isLogoImage = logoText.startsWith("/") || logoText.startsWith("http");
 
   return (
     <footer className="bg-white border-t-2 border-gray-900">
@@ -44,7 +46,11 @@ export function FooterTemplate12({ config, language }: BlockProps) {
               href="#"
               className="text-xl font-bold text-gray-900"
             >
-              {isAr ? c.logoAr : c.logo}
+              {isLogoImage ? (
+                <img src={logoText} alt="" className="h-8 object-contain" />
+              ) : (
+                logoText
+              )}
             </a>
             <p className="mt-2 text-sm text-gray-500 max-w-sm">
               {isAr ? c.descriptionAr : c.description}

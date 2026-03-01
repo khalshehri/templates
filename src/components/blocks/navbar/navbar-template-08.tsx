@@ -14,6 +14,8 @@ export function NavbarTemplate08({ config, language }: BlockProps) {
   const c = config as NavbarConfig;
   const isAr = language === "ar";
   const [mobileOpen, setMobileOpen] = useState(false);
+  const logoText = isAr ? c.logoAr : c.logo;
+  const isLogoImage = logoText.startsWith("/") || logoText.startsWith("http");
 
   return (
     <nav
@@ -28,7 +30,11 @@ export function NavbarTemplate08({ config, language }: BlockProps) {
             href="#"
             className="text-xl font-extrabold tracking-tight text-gray-900"
           >
-            {isAr ? c.logoAr : c.logo}
+            {isLogoImage ? (
+              <img src={logoText} alt="" className="h-8 object-contain" />
+            ) : (
+              logoText
+            )}
           </a>
 
           {/* Desktop Links — dark/gray */}
