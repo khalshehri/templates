@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { getAllBlocks } from "@/config/block-registry";
 import Link from "next/link";
 
@@ -404,11 +405,13 @@ export default function TestIndexPage() {
   const totalRegistry = blocks.reduce((sum, b) => sum + b.templates.length, 0);
   const totalExperimental = heroCategories.reduce((s, c) => s + c.templates.length, 0) + creativeOriginals.length + standaloneExperiments.length;
 
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <div className="min-h-screen bg-gray-950 text-white">
       {/* Header */}
       <div className="border-b border-gray-800 px-6 py-6">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl font-bold">Component Test Lab</h1>
           <p className="text-gray-500 text-sm mt-1">
             Preview and test all block templates in isolation.
@@ -418,7 +421,7 @@ export default function TestIndexPage() {
             </code>{" "}
             before launch.
           </p>
-          <div className="flex gap-4 mt-3 text-xs text-gray-600">
+          <div className="flex items-center gap-4 mt-3 text-xs text-gray-600">
             <span>{blocks.length} registered blocks</span>
             <span>·</span>
             <span>{totalRegistry} registry templates</span>
@@ -428,83 +431,98 @@ export default function TestIndexPage() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-6 py-8">
         {/* ═══ SECTION 1: Experimental Hero Templates ═══ */}
         <div className="mb-14">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-1 h-6 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-full" />
-            <div>
-              <h2 className="text-xl font-bold">Experimental Hero Templates</h2>
-              <p className="text-xs text-gray-500">New designs organized by category — not yet in the registry</p>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-1 h-6 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-full" />
+              <div>
+                <h2 className="text-xl font-bold">Experimental Hero Templates</h2>
+                <p className="text-xs text-gray-500">{heroCategories.length} categories · {heroCategories.reduce((s, c) => s + c.templates.length, 0)} templates</p>
+              </div>
             </div>
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="text-sm bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg transition-colors font-medium"
+            >
+              {expanded ? "Collapse All" : "Show All Templates"}
+            </button>
           </div>
 
-          <div className="grid gap-4">
+          {/* Category Grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {heroCategories.map((cat) => (
               <div
                 key={cat.id}
-                className={`bg-gray-900/50 border rounded-xl p-5 transition-colors ${borderColor[cat.color]}`}
+                className={`bg-gray-900/50 border rounded-xl transition-colors ${borderColor[cat.color]} ${expanded ? "sm:col-span-2 lg:col-span-3" : ""}`}
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className={`w-2 h-2 rounded-full ${dotColor[cat.color]}`} />
-                  <Link
-                    href={`/test/home/${cat.id}`}
-                    className="font-semibold hover:underline"
-                  >
-                    {cat.name}
-                  </Link>
-                  <span className="text-xs text-gray-600">
-                    {cat.description}
-                  </span>
-                  <Link
-                    href={`/test/home/${cat.id}`}
-                    className="ml-auto text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors"
-                  >
-                    View Category →
-                  </Link>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {cat.templates.map((t) => (
-                    <Link
-                      key={t.id}
-                      href={`/test/home/${cat.id}/${t.id}`}
-                      className={`text-sm bg-gray-800 ${linkColor[cat.color]} px-3 py-1.5 rounded-md transition-colors flex items-center gap-2`}
-                    >
-                      <span className="text-gray-400">{t.id}</span>
-                      <span className="text-gray-600">—</span>
-                      <span>{t.name}</span>
-                    </Link>
-                  ))}
-                </div>
+                {/* Category header — always visible */}
+                <Link
+                  href={`/test/home/${cat.id}`}
+                  className="flex items-center gap-3 p-4 hover:bg-white/[0.02] rounded-t-xl transition-colors"
+                >
+                  <div className={`w-3 h-3 rounded-full ${dotColor[cat.color]}`} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold">{cat.name}</h3>
+                      <span className="text-xs text-gray-600 bg-gray-800 px-2 py-0.5 rounded-full">{cat.templates.length}</span>
+                    </div>
+                    <p className="text-xs text-gray-500 truncate">{cat.description}</p>
+                  </div>
+                  <span className="text-gray-600 text-xs shrink-0">View →</span>
+                </Link>
+
+                {/* Templates — shown when expanded */}
+                {expanded && (
+                  <div className="px-4 pb-4 pt-1 border-t border-gray-800/50">
+                    <div className="flex flex-wrap gap-2">
+                      {cat.templates.map((t) => (
+                        <Link
+                          key={t.id}
+                          href={`/test/home/${cat.id}/${t.id}`}
+                          className={`text-sm bg-gray-800 ${linkColor[cat.color]} px-3 py-1.5 rounded-md transition-colors`}
+                        >
+                          {t.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
 
             {/* Creative Originals */}
-            <div className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/40 rounded-xl p-5 transition-colors">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-2 h-2 rounded-full bg-purple-500" />
-                <span className="font-semibold">Creative & Unique Originals</span>
-                <span className="text-xs text-gray-600">Novel visual concepts — unique designs</span>
-                <Link
-                  href="/test/home"
-                  className="ml-auto text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors"
-                >
-                  View All →
-                </Link>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {creativeOriginals.map((t) => (
-                  <Link
-                    key={t.id}
-                    href={`/test/home/${t.id}`}
-                    className="text-sm bg-gray-800 hover:bg-purple-600 px-3 py-1.5 rounded-md transition-colors flex items-center gap-2"
-                  >
-                    <span className="text-gray-400">{t.id}</span>
-                    <span className="text-gray-600">—</span>
-                    <span>{t.name}</span>
-                  </Link>
-                ))}
-              </div>
+            <div className={`bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/40 rounded-xl transition-colors ${expanded ? "sm:col-span-2 lg:col-span-3" : ""}`}>
+              <Link
+                href="/test/home"
+                className="flex items-center gap-3 p-4 hover:bg-white/[0.02] rounded-t-xl transition-colors"
+              >
+                <div className="w-3 h-3 rounded-full bg-purple-500" />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold">Creative & Unique Originals</h3>
+                    <span className="text-xs text-gray-600 bg-gray-800 px-2 py-0.5 rounded-full">{creativeOriginals.length}</span>
+                  </div>
+                  <p className="text-xs text-gray-500 truncate">Novel visual concepts — unique designs</p>
+                </div>
+                <span className="text-gray-600 text-xs shrink-0">View →</span>
+              </Link>
+              {expanded && (
+                <div className="px-4 pb-4 pt-1 border-t border-gray-800/50">
+                  <div className="flex flex-wrap gap-2">
+                    {creativeOriginals.map((t) => (
+                      <Link
+                        key={t.id}
+                        href={`/test/home/${t.id}`}
+                        className="text-sm bg-gray-800 hover:bg-purple-600 px-3 py-1.5 rounded-md transition-colors"
+                      >
+                        {t.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Standalone */}
@@ -512,13 +530,13 @@ export default function TestIndexPage() {
               <Link
                 key={t.id}
                 href={`/test/home/${t.id}`}
-                className="bg-gray-900/50 border border-gray-800 hover:border-gray-600 rounded-xl p-4 transition-colors flex items-center justify-between"
+                className="bg-gray-900/50 border border-gray-800 hover:border-gray-600 rounded-xl p-4 transition-colors"
               >
-                <div>
-                  <span className="font-semibold text-sm">{t.name}</span>
-                  <span className="text-xs text-gray-600 ml-3">{t.description}</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-gray-500" />
+                  <h3 className="font-semibold text-sm">{t.name}</h3>
                 </div>
-                <span className="text-xs text-gray-600">Standalone →</span>
+                <p className="text-xs text-gray-500 mt-1">{t.description}</p>
               </Link>
             ))}
           </div>
@@ -534,47 +552,33 @@ export default function TestIndexPage() {
             </div>
           </div>
 
-          <div className="grid gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {blocks.map((block) => (
-              <div
+              <Link
                 key={block.type}
-                className="bg-gray-900/50 border border-gray-800 hover:border-gray-700 rounded-xl p-5 transition-colors"
+                href={`/test/${block.type}`}
+                className="bg-gray-900/50 border border-gray-800 hover:border-emerald-500/40 rounded-xl p-4 transition-colors"
               >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-xs font-bold uppercase">
-                      {block.type.slice(0, 2)}
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">{block.label}</h3>
-                      <p className="text-xs text-gray-600">
-                        {block.type} · {block.category} ·{" "}
-                        {block.templates.length} templates
-                      </p>
-                    </div>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-xs font-bold uppercase">
+                    {block.type.slice(0, 2)}
                   </div>
-                  <Link
-                    href={`/test/${block.type}`}
-                    className="text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors"
-                  >
-                    View All Stacked →
-                  </Link>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-sm">{block.label}</h3>
+                    <p className="text-xs text-gray-600">
+                      {block.type} · {block.templates.length} templates
+                    </p>
+                  </div>
                 </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {block.templates.map((t) => (
-                    <Link
-                      key={t.id}
-                      href={`/test/${block.type}/${t.id}`}
-                      className="text-sm bg-gray-800 hover:bg-emerald-600 px-3 py-1.5 rounded-md transition-colors flex items-center gap-2"
-                    >
-                      <span className="text-gray-400">{t.id}</span>
-                      <span className="text-gray-600">—</span>
-                      <span>{t.name}</span>
-                    </Link>
+                <div className="flex flex-wrap gap-1.5">
+                  {block.templates.slice(0, 4).map((t) => (
+                    <span key={t.id} className="text-xs bg-gray-800 px-2 py-0.5 rounded text-gray-400">{t.name}</span>
                   ))}
+                  {block.templates.length > 4 && (
+                    <span className="text-xs bg-gray-800 px-2 py-0.5 rounded text-gray-500">+{block.templates.length - 4}</span>
+                  )}
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
