@@ -399,13 +399,45 @@ const linkColor: Record<string, string> = {
   amber: "hover:bg-amber-600", cyan: "hover:bg-cyan-600",
 };
 
+/* ── Component type icons ─────────────────────────────────────── */
+const componentIcons: Record<string, string> = {
+  navbar: "Na", hero: "He", about: "Ab", services: "Sv",
+  features: "Fe", testimonials: "Te", clients: "Cl", stats: "St",
+  team: "Tm", pricing: "Pr", cta: "Ct", faq: "Fq",
+  contact: "Co", footer: "Fo",
+};
+
+const componentColors: Record<string, { bg: string; text: string; border: string }> = {
+  navbar:       { bg: "bg-blue-500/10",    text: "text-blue-400",    border: "border-blue-500/30 hover:border-blue-500/60" },
+  hero:         { bg: "bg-purple-500/10",  text: "text-purple-400",  border: "border-purple-500/30 hover:border-purple-500/60" },
+  about:        { bg: "bg-cyan-500/10",    text: "text-cyan-400",    border: "border-cyan-500/30 hover:border-cyan-500/60" },
+  services:     { bg: "bg-orange-500/10",  text: "text-orange-400",  border: "border-orange-500/30 hover:border-orange-500/60" },
+  features:     { bg: "bg-emerald-500/10", text: "text-emerald-400", border: "border-emerald-500/30 hover:border-emerald-500/60" },
+  testimonials: { bg: "bg-pink-500/10",    text: "text-pink-400",    border: "border-pink-500/30 hover:border-pink-500/60" },
+  clients:      { bg: "bg-amber-500/10",   text: "text-amber-400",   border: "border-amber-500/30 hover:border-amber-500/60" },
+  stats:        { bg: "bg-violet-500/10",  text: "text-violet-400",  border: "border-violet-500/30 hover:border-violet-500/60" },
+  team:         { bg: "bg-teal-500/10",    text: "text-teal-400",    border: "border-teal-500/30 hover:border-teal-500/60" },
+  pricing:      { bg: "bg-green-500/10",   text: "text-green-400",   border: "border-green-500/30 hover:border-green-500/60" },
+  cta:          { bg: "bg-red-500/10",     text: "text-red-400",     border: "border-red-500/30 hover:border-red-500/60" },
+  faq:          { bg: "bg-sky-500/10",     text: "text-sky-400",     border: "border-sky-500/30 hover:border-sky-500/60" },
+  contact:      { bg: "bg-indigo-500/10",  text: "text-indigo-400",  border: "border-indigo-500/30 hover:border-indigo-500/60" },
+  footer:       { bg: "bg-gray-500/10",    text: "text-gray-400",    border: "border-gray-500/30 hover:border-gray-500/60" },
+};
+
 /* ── Page ─────────────────────────────────────────────────────── */
 export default function TestIndexPage() {
   const blocks = getAllBlocks();
   const totalRegistry = blocks.reduce((sum, b) => sum + b.templates.length, 0);
   const totalExperimental = heroCategories.reduce((s, c) => s + c.templates.length, 0) + creativeOriginals.length + standaloneExperiments.length;
 
-  const [expanded, setExpanded] = useState(false);
+  const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
+  const [expandedHero, setExpandedHero] = useState(false);
+
+  // Find the selected block
+  const selectedBlock = selectedComponent ? blocks.find(b => b.type === selectedComponent) : null;
+
+  // Check if hero experimental is selected
+  const isHeroExperimental = selectedComponent === "hero-experimental";
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
@@ -415,73 +447,193 @@ export default function TestIndexPage() {
           <h1 className="text-3xl font-bold">Component Test Lab</h1>
           <p className="text-gray-500 text-sm mt-1">
             Preview and test all block templates in isolation.
-            Delete{" "}
-            <code className="bg-gray-800 px-1.5 py-0.5 rounded text-xs">
-              src/app/(test)
-            </code>{" "}
-            before launch.
           </p>
           <div className="flex items-center gap-4 mt-3 text-xs text-gray-600">
-            <span>{blocks.length} registered blocks</span>
+            <span>{blocks.length} component types</span>
             <span>·</span>
             <span>{totalRegistry} registry templates</span>
             <span>·</span>
-            <span>{totalExperimental} experimental templates</span>
+            <span>{totalExperimental} experimental hero templates</span>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* ═══ SECTION 1: Experimental Hero Templates ═══ */}
-        <div className="mb-14">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="w-1 h-6 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-full" />
-              <div>
-                <h2 className="text-xl font-bold">Experimental Hero Templates</h2>
-                <p className="text-xs text-gray-500">{heroCategories.length} categories · {heroCategories.reduce((s, c) => s + c.templates.length, 0)} templates</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setExpanded(!expanded)}
-              className="text-sm bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg transition-colors font-medium"
-            >
-              {expanded ? "Collapse All" : "Show All Templates"}
-            </button>
-          </div>
-
-          {/* Category Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {heroCategories.map((cat) => (
-              <div
-                key={cat.id}
-                className={`bg-gray-900/50 border rounded-xl transition-colors ${borderColor[cat.color]} ${expanded ? "sm:col-span-2 lg:col-span-3" : ""}`}
+        {/* ═══ Component Type Selector ═══ */}
+        <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-8 gap-2 mb-8">
+          {blocks.map((block) => {
+            const colors = componentColors[block.type] || componentColors.footer;
+            const isActive = selectedComponent === block.type;
+            return (
+              <button
+                key={block.type}
+                onClick={() => setSelectedComponent(isActive ? null : block.type)}
+                className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all ${
+                  isActive
+                    ? `${colors.border.split(" ")[0]} bg-white/5 ring-1 ring-white/10`
+                    : "border-gray-800 hover:border-gray-700 hover:bg-white/[0.02]"
+                }`}
               >
-                {/* Category header — always visible */}
+                <div className={`w-10 h-10 rounded-lg ${colors.bg} flex items-center justify-center ${colors.text} text-sm font-bold`}>
+                  {componentIcons[block.type] || block.type.slice(0, 2).toUpperCase()}
+                </div>
+                <span className="text-xs font-medium capitalize">{block.label}</span>
+                <span className="text-[10px] text-gray-600">{block.templates.length} tmpl</span>
+              </button>
+            );
+          })}
+
+          {/* Hero Experimental button */}
+          <button
+            onClick={() => {
+              setSelectedComponent(isHeroExperimental ? null : "hero-experimental");
+              if (!isHeroExperimental) setExpandedHero(true);
+            }}
+            className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all ${
+              isHeroExperimental
+                ? "border-indigo-500/50 bg-white/5 ring-1 ring-indigo-500/20"
+                : "border-gray-800 hover:border-gray-700 hover:bg-white/[0.02]"
+            }`}
+          >
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center text-indigo-400 text-sm font-bold">
+              Ex
+            </div>
+            <span className="text-xs font-medium">Experimental</span>
+            <span className="text-[10px] text-gray-600">{heroCategories.length} cats</span>
+          </button>
+        </div>
+
+        {/* ═══ Content Area — shows based on selection ═══ */}
+
+        {/* No selection — show overview */}
+        {!selectedComponent && (
+          <div className="text-center py-20 text-gray-600">
+            <p className="text-lg">Select a component type above to view its templates</p>
+            <p className="text-sm mt-2">{blocks.length} components · {totalRegistry + totalExperimental} total templates</p>
+          </div>
+        )}
+
+        {/* Registry block selected — show its templates */}
+        {selectedBlock && (
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-lg ${(componentColors[selectedBlock.type] || componentColors.footer).bg} flex items-center justify-center ${(componentColors[selectedBlock.type] || componentColors.footer).text} text-sm font-bold`}>
+                  {componentIcons[selectedBlock.type] || selectedBlock.type.slice(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold">{selectedBlock.label}</h2>
+                  <p className="text-xs text-gray-500">{selectedBlock.type} · {selectedBlock.category} · {selectedBlock.templates.length} templates</p>
+                </div>
+              </div>
+              <Link
+                href={`/test/${selectedBlock.type}`}
+                className="text-sm bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
+              >
+                View All Stacked →
+              </Link>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {selectedBlock.templates.map((t) => (
                 <Link
-                  href={`/test/home/${cat.id}`}
+                  key={t.id}
+                  href={`/test/${selectedBlock.type}/${t.id}`}
+                  className={`bg-gray-900/50 border ${(componentColors[selectedBlock.type] || componentColors.footer).border} rounded-xl p-4 transition-colors`}
+                >
+                  <h3 className="font-semibold text-sm">{t.name}</h3>
+                  <p className="text-xs text-gray-600 mt-1">{t.id}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Hero Experimental selected — show categories */}
+        {isHeroExperimental && (
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center text-indigo-400 text-sm font-bold">
+                  Ex
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold">Experimental Hero Templates</h2>
+                  <p className="text-xs text-gray-500">{heroCategories.length} categories · {heroCategories.reduce((s, c) => s + c.templates.length, 0)} templates</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setExpandedHero(!expandedHero)}
+                className="text-sm bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg transition-colors font-medium"
+              >
+                {expandedHero ? "Grid View" : "Show All Templates"}
+              </button>
+            </div>
+
+            {/* Category Grid */}
+            <div className={`grid gap-3 ${expandedHero ? "" : "sm:grid-cols-2 lg:grid-cols-3"}`}>
+              {heroCategories.map((cat) => (
+                <div
+                  key={cat.id}
+                  className={`bg-gray-900/50 border rounded-xl transition-colors ${borderColor[cat.color]}`}
+                >
+                  <Link
+                    href={`/test/home/${cat.id}`}
+                    className="flex items-center gap-3 p-4 hover:bg-white/[0.02] rounded-t-xl transition-colors"
+                  >
+                    <div className={`w-3 h-3 rounded-full ${dotColor[cat.color]}`} />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold">{cat.name}</h3>
+                        <span className="text-xs text-gray-600 bg-gray-800 px-2 py-0.5 rounded-full">{cat.templates.length}</span>
+                      </div>
+                      <p className="text-xs text-gray-500 truncate">{cat.description}</p>
+                    </div>
+                    <span className="text-gray-600 text-xs shrink-0">View →</span>
+                  </Link>
+
+                  {expandedHero && (
+                    <div className="px-4 pb-4 pt-1 border-t border-gray-800/50">
+                      <div className="flex flex-wrap gap-2">
+                        {cat.templates.map((t) => (
+                          <Link
+                            key={t.id}
+                            href={`/test/home/${cat.id}/${t.id}`}
+                            className={`text-sm bg-gray-800 ${linkColor[cat.color]} px-3 py-1.5 rounded-md transition-colors`}
+                          >
+                            {t.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {/* Creative Originals */}
+              <div className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/40 rounded-xl transition-colors">
+                <Link
+                  href="/test/home"
                   className="flex items-center gap-3 p-4 hover:bg-white/[0.02] rounded-t-xl transition-colors"
                 >
-                  <div className={`w-3 h-3 rounded-full ${dotColor[cat.color]}`} />
+                  <div className="w-3 h-3 rounded-full bg-purple-500" />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-semibold">{cat.name}</h3>
-                      <span className="text-xs text-gray-600 bg-gray-800 px-2 py-0.5 rounded-full">{cat.templates.length}</span>
+                      <h3 className="font-semibold">Creative Originals</h3>
+                      <span className="text-xs text-gray-600 bg-gray-800 px-2 py-0.5 rounded-full">{creativeOriginals.length}</span>
                     </div>
-                    <p className="text-xs text-gray-500 truncate">{cat.description}</p>
+                    <p className="text-xs text-gray-500 truncate">Novel visual concepts</p>
                   </div>
                   <span className="text-gray-600 text-xs shrink-0">View →</span>
                 </Link>
-
-                {/* Templates — shown when expanded */}
-                {expanded && (
+                {expandedHero && (
                   <div className="px-4 pb-4 pt-1 border-t border-gray-800/50">
                     <div className="flex flex-wrap gap-2">
-                      {cat.templates.map((t) => (
+                      {creativeOriginals.map((t) => (
                         <Link
                           key={t.id}
-                          href={`/test/home/${cat.id}/${t.id}`}
-                          className={`text-sm bg-gray-800 ${linkColor[cat.color]} px-3 py-1.5 rounded-md transition-colors`}
+                          href={`/test/home/${t.id}`}
+                          className="text-sm bg-gray-800 hover:bg-purple-600 px-3 py-1.5 rounded-md transition-colors"
                         >
                           {t.name}
                         </Link>
@@ -490,104 +642,28 @@ export default function TestIndexPage() {
                   </div>
                 )}
               </div>
-            ))}
 
-            {/* Creative Originals */}
-            <div className={`bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/40 rounded-xl transition-colors ${expanded ? "sm:col-span-2 lg:col-span-3" : ""}`}>
-              <Link
-                href="/test/home"
-                className="flex items-center gap-3 p-4 hover:bg-white/[0.02] rounded-t-xl transition-colors"
-              >
-                <div className="w-3 h-3 rounded-full bg-purple-500" />
-                <div className="flex-1 min-w-0">
+              {/* Standalone */}
+              {standaloneExperiments.map((t) => (
+                <Link
+                  key={t.id}
+                  href={`/test/home/${t.id}`}
+                  className="bg-gray-900/50 border border-gray-800 hover:border-gray-600 rounded-xl p-4 transition-colors"
+                >
                   <div className="flex items-center gap-2">
-                    <h3 className="font-semibold">Creative & Unique Originals</h3>
-                    <span className="text-xs text-gray-600 bg-gray-800 px-2 py-0.5 rounded-full">{creativeOriginals.length}</span>
+                    <div className="w-3 h-3 rounded-full bg-gray-500" />
+                    <h3 className="font-semibold text-sm">{t.name}</h3>
                   </div>
-                  <p className="text-xs text-gray-500 truncate">Novel visual concepts — unique designs</p>
-                </div>
-                <span className="text-gray-600 text-xs shrink-0">View →</span>
-              </Link>
-              {expanded && (
-                <div className="px-4 pb-4 pt-1 border-t border-gray-800/50">
-                  <div className="flex flex-wrap gap-2">
-                    {creativeOriginals.map((t) => (
-                      <Link
-                        key={t.id}
-                        href={`/test/home/${t.id}`}
-                        className="text-sm bg-gray-800 hover:bg-purple-600 px-3 py-1.5 rounded-md transition-colors"
-                      >
-                        {t.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Standalone */}
-            {standaloneExperiments.map((t) => (
-              <Link
-                key={t.id}
-                href={`/test/home/${t.id}`}
-                className="bg-gray-900/50 border border-gray-800 hover:border-gray-600 rounded-xl p-4 transition-colors"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-gray-500" />
-                  <h3 className="font-semibold text-sm">{t.name}</h3>
-                </div>
-                <p className="text-xs text-gray-500 mt-1">{t.description}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* ═══ SECTION 2: Registered Block Components ═══ */}
-        <div>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-1 h-6 bg-gradient-to-b from-emerald-500 to-teal-500 rounded-full" />
-            <div>
-              <h2 className="text-xl font-bold">Registered Block Components</h2>
-              <p className="text-xs text-gray-500">{blocks.length} block types from the main registry — these render live sites</p>
+                  <p className="text-xs text-gray-500 mt-1">{t.description}</p>
+                </Link>
+              ))}
             </div>
           </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {blocks.map((block) => (
-              <Link
-                key={block.type}
-                href={`/test/${block.type}`}
-                className="bg-gray-900/50 border border-gray-800 hover:border-emerald-500/40 rounded-xl p-4 transition-colors"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-xs font-bold uppercase">
-                    {block.type.slice(0, 2)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-sm">{block.label}</h3>
-                    <p className="text-xs text-gray-600">
-                      {block.type} · {block.templates.length} templates
-                    </p>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {block.templates.slice(0, 4).map((t) => (
-                    <span key={t.id} className="text-xs bg-gray-800 px-2 py-0.5 rounded text-gray-400">{t.name}</span>
-                  ))}
-                  {block.templates.length > 4 && (
-                    <span className="text-xs bg-gray-800 px-2 py-0.5 rounded text-gray-500">+{block.templates.length - 4}</span>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
+        )}
 
         {/* Footer */}
         <div className="mt-12 pt-6 border-t border-gray-800 text-center text-gray-600 text-xs">
-          Total: {blocks.length} blocks · {totalRegistry} registry templates ·{" "}
-          {totalExperimental} experimental templates ·{" "}
-          {totalRegistry + totalExperimental} total
+          {blocks.length} components · {totalRegistry} registry templates · {totalExperimental} experimental · {totalRegistry + totalExperimental} total
         </div>
       </div>
     </div>
