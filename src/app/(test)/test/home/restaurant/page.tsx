@@ -3,6 +3,10 @@ import Link from "next/link";
 
 const templates = [
   { id: "kitchen-flame", name: "Kitchen Flame", description: "Cooking fire + steam with warm appetizing tones" },
+  { id: "restaurant-menu", name: "Restaurant Menu", description: "Elegant menu card with handwritten-style typography" },
+  { id: "restaurant-plate", name: "Restaurant Plate", description: "Minimalist plate presentation with garnish details" },
+  { id: "restaurant-spice", name: "Restaurant Spice", description: "Scattered spices and herbs with aromatic visual feel" },
+  { id: "restaurant-table", name: "Restaurant Table", description: "Overhead table setting with plates, cutlery, and ambiance" },
 ];
 
 export default function RestaurantCategory() {

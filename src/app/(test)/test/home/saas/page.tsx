@@ -6,6 +6,7 @@ const templates = [
   { id: "saas-terminal", name: "Developer Terminal", description: "Fake terminal window with deploy animation. Integration logo pills below." },
   { id: "saas-orbit", name: "Product Orbit", description: "Centered icon with orbiting feature planets. Gradient highlight heading." },
   { id: "neural-network", name: "Neural Network", description: "Animated neural network with data pulses flowing through connected nodes." },
+  { id: "saas-dashboard", name: "Dashboard", description: "Product dashboard mockup with animated charts and data widgets." },
 ];
 
 export default function SaasIndex() {

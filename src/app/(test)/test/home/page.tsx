@@ -25,10 +25,10 @@ const categories = [
     id: "saas",
     name: "SaaS & Product",
     color: "violet",
-    count: 3,
+    count: 4,
     description:
       "Modern, technical, product-forward. For software products, AI tools, dev tools, APIs.",
-    templates: ["saas-terminal", "saas-orbit", "neural-network"],
+    templates: ["saas-terminal", "saas-orbit", "neural-network", "saas-dashboard"],
   },
   {
     id: "service",
@@ -43,19 +43,19 @@ const categories = [
     id: "ecommerce",
     name: "E-commerce & Conversion",
     color: "emerald",
-    count: 3,
+    count: 4,
     description:
       "High-conversion, product-focused. For online stores, product launches, fashion brands.",
-    templates: ["ecommerce-showcase", "ecommerce-promo", "unboxing"],
+    templates: ["ecommerce-showcase", "ecommerce-promo", "unboxing", "ecom-cart"],
   },
   {
     id: "event",
     name: "Event & Launch",
     color: "red",
-    count: 3,
+    count: 4,
     description:
       "Excitement, urgency, time-bound. For conferences, webinars, product launches, concerts.",
-    templates: ["event-countdown", "event-speakers", "fireworks"],
+    templates: ["event-countdown", "event-speakers", "fireworks", "event-stage"],
   },
   {
     id: "luxury",
@@ -79,10 +79,10 @@ const categories = [
     id: "restaurant",
     name: "Restaurant & Food",
     color: "orange",
-    count: 1,
+    count: 5,
     description:
       "Appetizing, warm, sensory. For restaurants, cafés, food brands, catering.",
-    templates: ["kitchen-flame"],
+    templates: ["kitchen-flame", "restaurant-menu", "restaurant-plate", "restaurant-spice", "restaurant-table"],
   },
   {
     id: "education",
@@ -92,6 +92,87 @@ const categories = [
     description:
       "Inspiring, structured, knowledge-driven. For schools, courses, e-learning, tutoring.",
     templates: ["chalkboard"],
+  },
+  {
+    id: "company",
+    name: "Company",
+    color: "blue",
+    count: 6,
+    description:
+      "Professional, trustworthy, corporate. For companies and enterprises.",
+    templates: ["company-skyline", "company-tower", "company-globe", "company-metrics", "company-timeline", "company-network"],
+  },
+  {
+    id: "agency",
+    name: "Creative Agency",
+    color: "pink",
+    count: 3,
+    description:
+      "Bold, artistic, expressive. For design agencies, branding studios.",
+    templates: ["agency-palette", "agency-canvas", "agency-collage"],
+  },
+  {
+    id: "freelancer",
+    name: "Freelancer",
+    color: "cyan",
+    count: 5,
+    description:
+      "Personal, authentic, skill-focused. For freelancers, consultants.",
+    templates: ["freelancer-desk", "freelancer-coffee", "freelancer-notebook", "freelancer-badge", "freelancer-tools"],
+  },
+  {
+    id: "resume",
+    name: "Resume / CV",
+    color: "violet",
+    count: 2,
+    description:
+      "Professional, personal, creative. For job seekers, freelancers.",
+    templates: ["resume-paper", "resume-timeline"],
+  },
+  {
+    id: "clinic",
+    name: "Medical Clinic",
+    color: "emerald",
+    count: 6,
+    description:
+      "Clean, trustworthy, caring. For clinics, hospitals, health services.",
+    templates: ["clinic-pulse", "clinic-dna", "clinic-shield", "clinic-molecule", "clinic-cross", "clinic-wave"],
+  },
+  {
+    id: "real-estate",
+    name: "Real Estate",
+    color: "amber",
+    count: 5,
+    description:
+      "Premium, aspirational, location-focused. For real estate agencies, developers.",
+    templates: ["realestate-skyline", "realestate-key", "realestate-floor", "realestate-door", "realestate-compass"],
+  },
+  {
+    id: "photography",
+    name: "Photography",
+    color: "pink",
+    count: 2,
+    description:
+      "Visual, artistic, portfolio-driven. For photographers, studios.",
+    templates: ["photo-shutter", "photo-polaroid"],
+  },
+  {
+    id: "law-firm",
+    name: "Law Firm",
+    color: "amber",
+    count: 4,
+    description:
+      "Authoritative, trustworthy, prestigious. For law firms, attorneys.",
+    templates: ["law-gavel", "law-library", "law-column", "law-document"],
+  },
+  {
+    id: "gym",
+    name: "Gym / Fitness",
+    color: "red",
+    count: 3,
+    description:
+      "Energetic, powerful, motivating. For gyms, fitness studios, trainers.",
+    templates: ["gym-pulse", "gym-weights", "gym-energy"],
   },
 ];
 
@@ -260,7 +341,7 @@ export default function HomeTestIndex() {
             main block registry.
           </p>
           <p className="text-gray-600 text-xs mt-1">
-            10 categories · 26 templates · 18 creative originals · 1 standalone
+            21 categories · 18 creative originals · 1 standalone
           </p>
         </div>
 

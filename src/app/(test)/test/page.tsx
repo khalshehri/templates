@@ -36,6 +36,7 @@ const heroCategories = [
       { id: "saas-terminal", name: "Developer Terminal" },
       { id: "saas-orbit", name: "Product Orbit" },
       { id: "neural-network", name: "Neural Network" },
+      { id: "saas-dashboard", name: "Dashboard" },
     ],
   },
   {
@@ -58,6 +59,7 @@ const heroCategories = [
       { id: "ecommerce-showcase", name: "Product Spotlight" },
       { id: "ecommerce-promo", name: "Sale Banner" },
       { id: "unboxing", name: "Unboxing" },
+      { id: "ecom-cart", name: "Shopping Cart" },
     ],
   },
   {
@@ -67,6 +69,7 @@ const heroCategories = [
     description: "Excitement, urgency, time-bound",
     templates: [
       { id: "event-countdown", name: "The Big Day" },
+      { id: "event-stage", name: "Event Stage" },
       { id: "event-speakers", name: "Speaker Spotlight" },
       { id: "fireworks", name: "Fireworks" },
     ],
@@ -100,6 +103,10 @@ const heroCategories = [
     description: "Appetizing, warm, sensory",
     templates: [
       { id: "kitchen-flame", name: "Kitchen Flame" },
+      { id: "restaurant-menu", name: "Restaurant Menu" },
+      { id: "restaurant-plate", name: "Restaurant Plate" },
+      { id: "restaurant-spice", name: "Restaurant Spice" },
+      { id: "restaurant-table", name: "Restaurant Table" },
     ],
   },
   {
@@ -109,6 +116,114 @@ const heroCategories = [
     description: "Inspiring, structured, knowledge-driven",
     templates: [
       { id: "chalkboard", name: "Chalkboard" },
+    ],
+  },
+  {
+    id: "company",
+    name: "Company",
+    color: "blue",
+    description: "Professional, trustworthy, corporate",
+    templates: [
+      { id: "company-skyline", name: "City Skyline" },
+      { id: "company-tower", name: "Glass Tower" },
+      { id: "company-globe", name: "Global Network" },
+      { id: "company-metrics", name: "Business Metrics" },
+      { id: "company-timeline", name: "Milestone Timeline" },
+      { id: "company-network", name: "Office Network" },
+    ],
+  },
+  {
+    id: "agency",
+    name: "Creative Agency",
+    color: "pink",
+    description: "Bold, artistic, expressive",
+    templates: [
+      { id: "agency-palette", name: "Paint Palette" },
+      { id: "agency-canvas", name: "Living Canvas" },
+      { id: "agency-collage", name: "Mixed Media Collage" },
+    ],
+  },
+  {
+    id: "freelancer",
+    name: "Freelancer",
+    color: "cyan",
+    description: "Personal, authentic, skill-focused",
+    templates: [
+      { id: "freelancer-desk", name: "Freelancer Desk" },
+      { id: "freelancer-coffee", name: "Freelancer Coffee" },
+      { id: "freelancer-notebook", name: "Freelancer Notebook" },
+      { id: "freelancer-badge", name: "Freelancer Badge" },
+      { id: "freelancer-tools", name: "Freelancer Tools" },
+    ],
+  },
+  {
+    id: "resume",
+    name: "Resume / CV",
+    color: "violet",
+    description: "Professional, personal, creative",
+    templates: [
+      { id: "resume-paper", name: "Floating Paper" },
+      { id: "resume-timeline", name: "Career Timeline" },
+    ],
+  },
+  {
+    id: "clinic",
+    name: "Medical Clinic",
+    color: "emerald",
+    description: "Clean, trustworthy, caring",
+    templates: [
+      { id: "clinic-pulse", name: "Clinic Pulse" },
+      { id: "clinic-dna", name: "Clinic DNA" },
+      { id: "clinic-shield", name: "Clinic Shield" },
+      { id: "clinic-molecule", name: "Clinic Molecule" },
+      { id: "clinic-cross", name: "Clinic Cross" },
+      { id: "clinic-wave", name: "Clinic Wave" },
+    ],
+  },
+  {
+    id: "real-estate",
+    name: "Real Estate",
+    color: "amber",
+    description: "Premium, aspirational, location-focused",
+    templates: [
+      { id: "realestate-skyline", name: "Skyline" },
+      { id: "realestate-key", name: "Key" },
+      { id: "realestate-floor", name: "Floor Plan" },
+      { id: "realestate-door", name: "Door" },
+      { id: "realestate-compass", name: "Compass" },
+    ],
+  },
+  {
+    id: "photography",
+    name: "Photography",
+    color: "pink",
+    description: "Visual, artistic, portfolio-driven",
+    templates: [
+      { id: "photo-shutter", name: "Photo Shutter" },
+      { id: "photo-polaroid", name: "Photo Polaroid" },
+    ],
+  },
+  {
+    id: "law-firm",
+    name: "Law Firm",
+    color: "amber",
+    description: "Authoritative, trustworthy, prestigious",
+    templates: [
+      { id: "law-gavel", name: "Law Gavel" },
+      { id: "law-library", name: "Law Library" },
+      { id: "law-column", name: "Law Column" },
+      { id: "law-document", name: "Law Document" },
+    ],
+  },
+  {
+    id: "gym",
+    name: "Gym / Fitness",
+    color: "red",
+    description: "Energetic, powerful, motivating",
+    templates: [
+      { id: "gym-pulse", name: "Gym Pulse" },
+      { id: "gym-weights", name: "Gym Weights" },
+      { id: "gym-energy", name: "Gym Energy" },
     ],
   },
 ];

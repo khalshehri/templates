@@ -6,6 +6,7 @@ const templates = [
   { id: "event-countdown", name: "The Big Day", description: "Dark cinematic bg with flip-clock countdown, confetti dots, ticket CTAs." },
   { id: "event-speakers", name: "Speaker Spotlight", description: "Centered heading with speaker avatar row and date/location strip." },
   { id: "fireworks", name: "Fireworks", description: "Night sky fireworks with radial spark bursts and celebration energy." },
+  { id: "event-stage", name: "Event Stage", description: "Concert/conference stage with spotlight beams and curtain reveal." },
 ];
 
 export default function EventIndex() {
