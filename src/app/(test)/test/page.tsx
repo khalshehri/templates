@@ -3,66 +3,276 @@
 import { getAllBlocks } from "@/config/block-registry";
 import Link from "next/link";
 
+/* ── Experimental hero categories (test lab) ────────────────── */
+const heroCategories = [
+  {
+    id: "corporate",
+    name: "Corporate & Trust",
+    color: "blue",
+    description: "Professional, stable, trustworthy",
+    templates: [
+      { id: "corporate-tower", name: "Vertical Authority" },
+      { id: "corporate-metrics", name: "Data-Driven Trust" },
+    ],
+  },
+  {
+    id: "creative",
+    name: "Creative & Bold",
+    color: "pink",
+    description: "Expressive, experimental, rule-breaking",
+    templates: [
+      { id: "creative-clash", name: "Color Collision" },
+      { id: "creative-showcase", name: "Portfolio Ribbon" },
+    ],
+  },
+  {
+    id: "saas",
+    name: "SaaS & Product",
+    color: "violet",
+    description: "Modern, technical, product-forward",
+    templates: [
+      { id: "saas-terminal", name: "Developer Terminal" },
+      { id: "saas-orbit", name: "Product Orbit" },
+    ],
+  },
+  {
+    id: "service",
+    name: "Service & Local",
+    color: "orange",
+    description: "Warm, approachable, action-oriented",
+    templates: [
+      { id: "service-card", name: "Booking Card" },
+      { id: "service-location", name: "Map Pinpoint" },
+    ],
+  },
+  {
+    id: "ecommerce",
+    name: "E-commerce & Conversion",
+    color: "emerald",
+    description: "High-conversion, product-focused",
+    templates: [
+      { id: "ecommerce-showcase", name: "Product Spotlight" },
+      { id: "ecommerce-promo", name: "Sale Banner" },
+    ],
+  },
+  {
+    id: "event",
+    name: "Event & Launch",
+    color: "red",
+    description: "Excitement, urgency, time-bound",
+    templates: [
+      { id: "event-countdown", name: "The Big Day" },
+      { id: "event-speakers", name: "Speaker Spotlight" },
+    ],
+  },
+  {
+    id: "luxury",
+    name: "Luxury & Premium",
+    color: "amber",
+    description: "Elegant, minimal, exclusive",
+    templates: [
+      { id: "luxury-reveal", name: "Curtain Reveal" },
+      { id: "luxury-editorial", name: "Magazine Cover" },
+    ],
+  },
+  {
+    id: "personal",
+    name: "Personal & Freelancer",
+    color: "cyan",
+    description: "Human, authentic, personality-driven",
+    templates: [
+      { id: "personal-intro", name: "Hey, I'm..." },
+      { id: "personal-stack", name: "Skill Stack" },
+    ],
+  },
+];
+
+const standaloneExperiments = [
+  { id: "bento-hero", name: "Bento Grid Hero", description: "Asymmetric bento layout with gradient text" },
+];
+
+/* ── Color maps ──────────────────────────────────────────────── */
+const borderColor: Record<string, string> = {
+  blue: "border-blue-500/20 hover:border-blue-500/50",
+  pink: "border-pink-500/20 hover:border-pink-500/50",
+  violet: "border-violet-500/20 hover:border-violet-500/50",
+  orange: "border-orange-500/20 hover:border-orange-500/50",
+  emerald: "border-emerald-500/20 hover:border-emerald-500/50",
+  red: "border-red-500/20 hover:border-red-500/50",
+  amber: "border-amber-500/20 hover:border-amber-500/50",
+  cyan: "border-cyan-500/20 hover:border-cyan-500/50",
+};
+
+const dotColor: Record<string, string> = {
+  blue: "bg-blue-500", pink: "bg-pink-500", violet: "bg-violet-500",
+  orange: "bg-orange-500", emerald: "bg-emerald-500", red: "bg-red-500",
+  amber: "bg-amber-500", cyan: "bg-cyan-500",
+};
+
+const linkColor: Record<string, string> = {
+  blue: "hover:bg-blue-600", pink: "hover:bg-pink-600", violet: "hover:bg-violet-600",
+  orange: "hover:bg-orange-600", emerald: "hover:bg-emerald-600", red: "hover:bg-red-600",
+  amber: "hover:bg-amber-600", cyan: "hover:bg-cyan-600",
+};
+
+/* ── Page ─────────────────────────────────────────────────────── */
 export default function TestIndexPage() {
   const blocks = getAllBlocks();
+  const totalRegistry = blocks.reduce((sum, b) => sum + b.templates.length, 0);
+  const totalExperimental = heroCategories.reduce((s, c) => s + c.templates.length, 0) + standaloneExperiments.length;
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-8">
-      <div className="max-w-5xl mx-auto">
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold mb-2">Component Test Lab</h1>
-          <p className="text-gray-400">
-            Preview all block templates in isolation. This page is for
-            development only — delete the{" "}
-            <code className="bg-gray-800 px-2 py-0.5 rounded text-sm">
+    <div className="min-h-screen bg-gray-950 text-white">
+      {/* Header */}
+      <div className="border-b border-gray-800 px-6 py-6">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-3xl font-bold">Component Test Lab</h1>
+          <p className="text-gray-500 text-sm mt-1">
+            Preview and test all block templates in isolation.
+            Delete{" "}
+            <code className="bg-gray-800 px-1.5 py-0.5 rounded text-xs">
               src/app/(test)
             </code>{" "}
-            folder before launch.
+            before launch.
           </p>
+          <div className="flex gap-4 mt-3 text-xs text-gray-600">
+            <span>{blocks.length} registered blocks</span>
+            <span>·</span>
+            <span>{totalRegistry} registry templates</span>
+            <span>·</span>
+            <span>{totalExperimental} experimental templates</span>
+          </div>
         </div>
+      </div>
 
-        <div className="grid gap-6">
-          {blocks.map((block) => (
-            <div
-              key={block.type}
-              className="bg-gray-900 border border-gray-800 rounded-xl p-6"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h2 className="text-xl font-semibold capitalize">
-                    {block.label}
-                  </h2>
-                  <p className="text-sm text-gray-500">
-                    {block.type} · {block.category} ·{" "}
-                    {block.templates.length} templates
-                  </p>
-                </div>
-                <Link
-                  href={`/test/${block.type}`}
-                  className="text-sm bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
-                >
-                  View All →
-                </Link>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {block.templates.map((t) => (
-                  <Link
-                    key={t.id}
-                    href={`/test/${block.type}/${t.id}`}
-                    className="text-sm bg-gray-800 hover:bg-blue-600 px-3 py-1.5 rounded-md transition-colors"
-                  >
-                    {t.id}
-                  </Link>
-                ))}
-              </div>
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        {/* ═══ SECTION 1: Experimental Hero Templates ═══ */}
+        <div className="mb-14">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-1 h-6 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-full" />
+            <div>
+              <h2 className="text-xl font-bold">Experimental Hero Templates</h2>
+              <p className="text-xs text-gray-500">New designs organized by category — not yet in the registry</p>
             </div>
-          ))}
+          </div>
+
+          <div className="grid gap-4">
+            {heroCategories.map((cat) => (
+              <div
+                key={cat.id}
+                className={`bg-gray-900/50 border rounded-xl p-5 transition-colors ${borderColor[cat.color]}`}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className={`w-2 h-2 rounded-full ${dotColor[cat.color]}`} />
+                  <Link
+                    href={`/test/home/${cat.id}`}
+                    className="font-semibold hover:underline"
+                  >
+                    {cat.name}
+                  </Link>
+                  <span className="text-xs text-gray-600">
+                    {cat.description}
+                  </span>
+                  <Link
+                    href={`/test/home/${cat.id}`}
+                    className="ml-auto text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors"
+                  >
+                    View Category →
+                  </Link>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {cat.templates.map((t) => (
+                    <Link
+                      key={t.id}
+                      href={`/test/home/${cat.id}/${t.id}`}
+                      className={`text-sm bg-gray-800 ${linkColor[cat.color]} px-3 py-1.5 rounded-md transition-colors flex items-center gap-2`}
+                    >
+                      <span className="text-gray-400">{t.id}</span>
+                      <span className="text-gray-600">—</span>
+                      <span>{t.name}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            {/* Standalone */}
+            {standaloneExperiments.map((t) => (
+              <Link
+                key={t.id}
+                href={`/test/home/${t.id}`}
+                className="bg-gray-900/50 border border-gray-800 hover:border-gray-600 rounded-xl p-4 transition-colors flex items-center justify-between"
+              >
+                <div>
+                  <span className="font-semibold text-sm">{t.name}</span>
+                  <span className="text-xs text-gray-600 ml-3">{t.description}</span>
+                </div>
+                <span className="text-xs text-gray-600">Standalone →</span>
+              </Link>
+            ))}
+          </div>
         </div>
 
-        <div className="mt-10 text-center text-gray-600 text-sm">
-          Total: {blocks.length} blocks ·{" "}
-          {blocks.reduce((sum, b) => sum + b.templates.length, 0)} templates
+        {/* ═══ SECTION 2: Registered Block Components ═══ */}
+        <div>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-1 h-6 bg-gradient-to-b from-emerald-500 to-teal-500 rounded-full" />
+            <div>
+              <h2 className="text-xl font-bold">Registered Block Components</h2>
+              <p className="text-xs text-gray-500">{blocks.length} block types from the main registry — these render live sites</p>
+            </div>
+          </div>
+
+          <div className="grid gap-4">
+            {blocks.map((block) => (
+              <div
+                key={block.type}
+                className="bg-gray-900/50 border border-gray-800 hover:border-gray-700 rounded-xl p-5 transition-colors"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-xs font-bold uppercase">
+                      {block.type.slice(0, 2)}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">{block.label}</h3>
+                      <p className="text-xs text-gray-600">
+                        {block.type} · {block.category} ·{" "}
+                        {block.templates.length} templates
+                      </p>
+                    </div>
+                  </div>
+                  <Link
+                    href={`/test/${block.type}`}
+                    className="text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors"
+                  >
+                    View All Stacked →
+                  </Link>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {block.templates.map((t) => (
+                    <Link
+                      key={t.id}
+                      href={`/test/${block.type}/${t.id}`}
+                      className="text-sm bg-gray-800 hover:bg-emerald-600 px-3 py-1.5 rounded-md transition-colors flex items-center gap-2"
+                    >
+                      <span className="text-gray-400">{t.id}</span>
+                      <span className="text-gray-600">—</span>
+                      <span>{t.name}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-12 pt-6 border-t border-gray-800 text-center text-gray-600 text-xs">
+          Total: {blocks.length} blocks · {totalRegistry} registry templates ·{" "}
+          {totalExperimental} experimental templates ·{" "}
+          {totalRegistry + totalExperimental} total
         </div>
       </div>
     </div>
