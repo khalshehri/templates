@@ -77,6 +77,57 @@ const categories = [
   },
 ];
 
+const creativeUnique = [
+  {
+    id: "liquid-morphism",
+    name: "Liquid Morphism",
+    color: "fuchsia",
+    description: "Organic morphing blobs with glassmorphism cards — vivid purples, magentas & teals",
+  },
+  {
+    id: "isometric-world",
+    name: "Isometric World",
+    color: "purple",
+    description: "CSS-only isometric city with rising buildings, twinkling stars & window blinks",
+  },
+  {
+    id: "neon-noir",
+    name: "Neon Noir",
+    color: "pink",
+    description: "Cyberpunk rain + flickering neon sign — hot pink & electric blue on dark",
+  },
+  {
+    id: "paper-layers",
+    name: "Paper Layers",
+    color: "orange",
+    description: "SVG mountain waves creating paper-cut depth layers with sunset gradient",
+  },
+  {
+    id: "geometric-chaos",
+    name: "Geometric Chaos",
+    color: "lime",
+    description: "Brutalist scattered shapes with oversized typography — electric lime on black",
+  },
+  {
+    id: "aurora-mesh",
+    name: "Aurora Mesh",
+    color: "violet",
+    description: "Vivid animated gradient mesh shifting like northern lights — frosted glass content",
+  },
+  {
+    id: "split-personality",
+    name: "Split Personality",
+    color: "violet",
+    description: "Diagonal split — white/black halves with gradient portal at intersection",
+  },
+  {
+    id: "retro-crt",
+    name: "Retro CRT",
+    color: "emerald",
+    description: "Old CRT monitor aesthetic — scanlines, phosphor glow, terminal boot sequence",
+  },
+];
+
 const standalone = [
   {
     id: "bento-hero",
@@ -95,6 +146,9 @@ const colorMap: Record<string, string> = {
   red: "border-red-500/30 hover:border-red-500/60",
   amber: "border-amber-500/30 hover:border-amber-500/60",
   cyan: "border-cyan-500/30 hover:border-cyan-500/60",
+  fuchsia: "border-fuchsia-500/30 hover:border-fuchsia-500/60",
+  lime: "border-lime-500/30 hover:border-lime-500/60",
+  purple: "border-purple-500/30 hover:border-purple-500/60",
 };
 
 const dotColorMap: Record<string, string> = {
@@ -106,6 +160,9 @@ const dotColorMap: Record<string, string> = {
   red: "bg-red-500",
   amber: "bg-amber-500",
   cyan: "bg-cyan-500",
+  fuchsia: "bg-fuchsia-500",
+  lime: "bg-lime-500",
+  purple: "bg-purple-500",
 };
 
 export default function HomeTestIndex() {
@@ -125,7 +182,7 @@ export default function HomeTestIndex() {
             main block registry.
           </p>
           <p className="text-gray-600 text-xs mt-1">
-            8 categories · 16 templates + 1 standalone
+            8 categories · 16 templates · 8 creative originals · 1 standalone
           </p>
         </div>
 
@@ -159,6 +216,28 @@ export default function HomeTestIndex() {
               </div>
             </Link>
           ))}
+        </div>
+
+        {/* Creative & Unique */}
+        <div className="mb-10">
+          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+            Creative & Unique Originals
+          </h3>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {creativeUnique.map((t) => (
+              <Link
+                key={t.id}
+                href={`/test/home/${t.id}`}
+                className={`block bg-gray-900 border rounded-xl p-4 transition-colors ${colorMap[t.color] || "border-gray-700 hover:border-gray-500"}`}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <div className={`w-2 h-2 rounded-full ${dotColorMap[t.color] || "bg-gray-500"}`} />
+                  <h2 className="font-semibold text-sm">{t.name}</h2>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">{t.description}</p>
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* Standalone experiments */}

@@ -87,6 +87,17 @@ const heroCategories = [
   },
 ];
 
+const creativeOriginals = [
+  { id: "liquid-morphism", name: "Liquid Morphism", description: "Organic morphing blobs with glassmorphism cards" },
+  { id: "isometric-world", name: "Isometric World", description: "CSS isometric city with rising buildings" },
+  { id: "neon-noir", name: "Neon Noir", description: "Cyberpunk rain + flickering neon sign" },
+  { id: "paper-layers", name: "Paper Layers", description: "SVG mountain paper-cut depth layers" },
+  { id: "geometric-chaos", name: "Geometric Chaos", description: "Brutalist scattered shapes + bold type" },
+  { id: "aurora-mesh", name: "Aurora Mesh", description: "Animated gradient mesh like northern lights" },
+  { id: "split-personality", name: "Split Personality", description: "Diagonal split — light/dark halves" },
+  { id: "retro-crt", name: "Retro CRT", description: "CRT monitor scanlines + terminal boot" },
+];
+
 const standaloneExperiments = [
   { id: "bento-hero", name: "Bento Grid Hero", description: "Asymmetric bento layout with gradient text" },
 ];
@@ -119,7 +130,7 @@ const linkColor: Record<string, string> = {
 export default function TestIndexPage() {
   const blocks = getAllBlocks();
   const totalRegistry = blocks.reduce((sum, b) => sum + b.templates.length, 0);
-  const totalExperimental = heroCategories.reduce((s, c) => s + c.templates.length, 0) + standaloneExperiments.length;
+  const totalExperimental = heroCategories.reduce((s, c) => s + c.templates.length, 0) + creativeOriginals.length + standaloneExperiments.length;
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
@@ -195,6 +206,34 @@ export default function TestIndexPage() {
                 </div>
               </div>
             ))}
+
+            {/* Creative Originals */}
+            <div className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/40 rounded-xl p-5 transition-colors">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-2 h-2 rounded-full bg-purple-500" />
+                <span className="font-semibold">Creative & Unique Originals</span>
+                <span className="text-xs text-gray-600">Novel visual concepts — unique designs</span>
+                <Link
+                  href="/test/home"
+                  className="ml-auto text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors"
+                >
+                  View All →
+                </Link>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {creativeOriginals.map((t) => (
+                  <Link
+                    key={t.id}
+                    href={`/test/home/${t.id}`}
+                    className="text-sm bg-gray-800 hover:bg-purple-600 px-3 py-1.5 rounded-md transition-colors flex items-center gap-2"
+                  >
+                    <span className="text-gray-400">{t.id}</span>
+                    <span className="text-gray-600">—</span>
+                    <span>{t.name}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
 
             {/* Standalone */}
             {standaloneExperiments.map((t) => (
