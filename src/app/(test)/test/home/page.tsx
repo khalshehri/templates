@@ -126,6 +126,66 @@ const creativeUnique = [
     color: "emerald",
     description: "Old CRT monitor aesthetic — scanlines, phosphor glow, terminal boot sequence",
   },
+  {
+    id: "typewriter",
+    name: "Typewriter",
+    color: "amber",
+    description: "Vintage typewriter with character-by-character typing — sepia/cream/ink tones",
+  },
+  {
+    id: "constellation",
+    name: "Constellation",
+    color: "blue",
+    description: "Deep space star map with twinkling stars, nebula glow & shooting stars",
+  },
+  {
+    id: "glitch-matrix",
+    name: "Glitch Matrix",
+    color: "emerald",
+    description: "Matrix falling characters with RGB chromatic aberration & glitch bars",
+  },
+  {
+    id: "vinyl-record",
+    name: "Vinyl Record",
+    color: "amber",
+    description: "Spinning CSS vinyl with grooves, tonearm & equalizer bars — warm retro",
+  },
+  {
+    id: "origami",
+    name: "Origami",
+    color: "pink",
+    description: "Japanese paper-fold aesthetic with floating CSS cranes — zen minimal",
+  },
+  {
+    id: "lava-lamp",
+    name: "Lava Lamp",
+    color: "fuchsia",
+    description: "70s psychedelic rising/falling morphing blobs in a glass tube",
+  },
+  {
+    id: "blueprint",
+    name: "Blueprint",
+    color: "blue",
+    description: "Architecture blueprint grid with dimension lines & technical annotations",
+  },
+  {
+    id: "kaleidoscope",
+    name: "Kaleidoscope",
+    color: "purple",
+    description: "Rotating symmetric jewel-tone rings — ruby, sapphire, emerald, amethyst",
+  },
+  {
+    id: "smoke-reveal",
+    name: "Smoke Reveal",
+    color: "red",
+    description: "Cinematic smoke/fog that clears to reveal content — dark & mysterious",
+  },
+  {
+    id: "pixel-rain",
+    name: "Pixel Rain",
+    color: "cyan",
+    description: "8-bit retro falling pixel blocks with arcade score display — NES colors",
+  },
 ];
 
 const standalone = [
@@ -182,7 +242,7 @@ export default function HomeTestIndex() {
             main block registry.
           </p>
           <p className="text-gray-600 text-xs mt-1">
-            8 categories · 16 templates · 8 creative originals · 1 standalone
+            8 categories · 16 templates · 18 creative originals · 1 standalone
           </p>
         </div>
 

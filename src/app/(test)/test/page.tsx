@@ -96,6 +96,16 @@ const creativeOriginals = [
   { id: "aurora-mesh", name: "Aurora Mesh", description: "Animated gradient mesh like northern lights" },
   { id: "split-personality", name: "Split Personality", description: "Diagonal split — light/dark halves" },
   { id: "retro-crt", name: "Retro CRT", description: "CRT monitor scanlines + terminal boot" },
+  { id: "typewriter", name: "Typewriter", description: "Vintage typewriter with character-by-character typing" },
+  { id: "constellation", name: "Constellation", description: "Deep space star map with twinkling nebula" },
+  { id: "glitch-matrix", name: "Glitch Matrix", description: "Matrix falling characters + RGB aberration" },
+  { id: "vinyl-record", name: "Vinyl Record", description: "Spinning CSS vinyl with grooves + equalizer" },
+  { id: "origami", name: "Origami", description: "Japanese paper-fold cranes — zen minimal" },
+  { id: "lava-lamp", name: "Lava Lamp", description: "70s psychedelic morphing blobs in glass tube" },
+  { id: "blueprint", name: "Blueprint", description: "Architecture blueprint grid + technical drawings" },
+  { id: "kaleidoscope", name: "Kaleidoscope", description: "Rotating symmetric jewel-tone rings" },
+  { id: "smoke-reveal", name: "Smoke Reveal", description: "Cinematic smoke clears to reveal content" },
+  { id: "pixel-rain", name: "Pixel Rain", description: "8-bit retro falling pixel blocks + arcade UI" },
 ];
 
 const standaloneExperiments = [
