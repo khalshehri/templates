@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { getAllBlocks } from "@/config/block-registry";
 import Link from "next/link";
 
@@ -402,188 +403,153 @@ const linkColor: Record<string, string> = {
 export default function TestIndexPage() {
   const blocks = getAllBlocks();
   const totalRegistry = blocks.reduce((sum, b) => sum + b.templates.length, 0);
-  const totalExperimental = heroCategories.reduce((s, c) => s + c.templates.length, 0) + creativeOriginals.length + standaloneExperiments.length;
+  const totalHeroExp = heroCategories.reduce((s, c) => s + c.templates.length, 0) + creativeOriginals.length + standaloneExperiments.length;
+
+  const [active, setActive] = useState<string | null>(null);
+
+  const toggle = (id: string) => setActive(active === id ? null : id);
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
       {/* Header */}
       <div className="border-b border-gray-800 px-6 py-6">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl font-bold">Component Test Lab</h1>
           <p className="text-gray-500 text-sm mt-1">
-            Preview and test all block templates in isolation.
-            Delete{" "}
-            <code className="bg-gray-800 px-1.5 py-0.5 rounded text-xs">
-              src/app/(test)
-            </code>{" "}
-            before launch.
+            Click a component to view its categories and templates.
           </p>
-          <div className="flex gap-4 mt-3 text-xs text-gray-600">
-            <span>{blocks.length} registered blocks</span>
-            <span>·</span>
-            <span>{totalRegistry} registry templates</span>
-            <span>·</span>
-            <span>{totalExperimental} experimental templates</span>
-          </div>
+          <p className="text-xs text-gray-600 mt-2">
+            {blocks.length + 1} sections · {totalRegistry + totalHeroExp} total templates
+          </p>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-8">
-        {/* ═══ SECTION 1: Experimental Hero Templates ═══ */}
-        <div className="mb-14">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-1 h-6 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-full" />
-            <div>
-              <h2 className="text-xl font-bold">Experimental Hero Templates</h2>
-              <p className="text-xs text-gray-500">New designs organized by category — not yet in the registry</p>
+      <div className="max-w-7xl mx-auto px-6 py-8 space-y-3">
+        {/* ═══ Experimental Hero ═══ */}
+        <div className="rounded-xl border border-indigo-500/20 overflow-hidden">
+          <button
+            onClick={() => toggle("hero-exp")}
+            className={`w-full flex items-center gap-4 p-5 text-left transition-colors ${active === "hero-exp" ? "bg-indigo-500/10" : "bg-gray-900/50 hover:bg-gray-900"}`}
+          >
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center text-indigo-400 font-bold text-lg shrink-0">
+              H
             </div>
-          </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="font-bold text-lg">Experimental Hero</h2>
+              <p className="text-xs text-gray-500">{heroCategories.length} categories · {heroCategories.reduce((s, c) => s + c.templates.length, 0)} templates · {creativeOriginals.length} creative originals</p>
+            </div>
+            <span className={`text-gray-500 text-xl transition-transform ${active === "hero-exp" ? "rotate-180" : ""}`}>▾</span>
+          </button>
 
-          <div className="grid gap-4">
-            {heroCategories.map((cat) => (
-              <div
-                key={cat.id}
-                className={`bg-gray-900/50 border rounded-xl p-5 transition-colors ${borderColor[cat.color]}`}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className={`w-2 h-2 rounded-full ${dotColor[cat.color]}`} />
-                  <Link
-                    href={`/test/home/${cat.id}`}
-                    className="font-semibold hover:underline"
-                  >
-                    {cat.name}
-                  </Link>
-                  <span className="text-xs text-gray-600">
-                    {cat.description}
-                  </span>
-                  <Link
-                    href={`/test/home/${cat.id}`}
-                    className="ml-auto text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors"
-                  >
-                    View Category →
-                  </Link>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {cat.templates.map((t) => (
+          {active === "hero-exp" && (
+            <div className="border-t border-indigo-500/10 bg-gray-950/50 p-5 space-y-4">
+              {/* Category cards */}
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {heroCategories.map((cat) => (
+                  <div key={cat.id} className={`border rounded-xl overflow-hidden ${borderColor[cat.color]}`}>
                     <Link
-                      key={t.id}
-                      href={`/test/home/${cat.id}/${t.id}`}
-                      className={`text-sm bg-gray-800 ${linkColor[cat.color]} px-3 py-1.5 rounded-md transition-colors flex items-center gap-2`}
+                      href={`/test/home/${cat.id}`}
+                      className="flex items-center gap-3 p-3 hover:bg-white/[0.02] transition-colors"
                     >
-                      <span className="text-gray-400">{t.id}</span>
-                      <span className="text-gray-600">—</span>
-                      <span>{t.name}</span>
+                      <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${dotColor[cat.color]}`} />
+                      <div className="flex-1 min-w-0">
+                        <span className="font-semibold text-sm">{cat.name}</span>
+                        <span className="text-xs text-gray-600 ml-2">{cat.templates.length}</span>
+                      </div>
                     </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
+                    <div className="px-3 pb-3 flex flex-wrap gap-1.5">
+                      {cat.templates.map((t) => (
+                        <Link
+                          key={t.id}
+                          href={`/test/home/${cat.id}/${t.id}`}
+                          className={`text-xs bg-gray-800 ${linkColor[cat.color]} px-2.5 py-1 rounded transition-colors`}
+                        >
+                          {t.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
 
-            {/* Creative Originals */}
-            <div className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/40 rounded-xl p-5 transition-colors">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-2 h-2 rounded-full bg-purple-500" />
-                <span className="font-semibold">Creative & Unique Originals</span>
-                <span className="text-xs text-gray-600">Novel visual concepts — unique designs</span>
-                <Link
-                  href="/test/home"
-                  className="ml-auto text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors"
-                >
-                  View All →
-                </Link>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {creativeOriginals.map((t) => (
-                  <Link
-                    key={t.id}
-                    href={`/test/home/${t.id}`}
-                    className="text-sm bg-gray-800 hover:bg-purple-600 px-3 py-1.5 rounded-md transition-colors flex items-center gap-2"
-                  >
-                    <span className="text-gray-400">{t.id}</span>
-                    <span className="text-gray-600">—</span>
-                    <span>{t.name}</span>
+                {/* Creative Originals */}
+                <div className="border border-purple-500/20 rounded-xl overflow-hidden">
+                  <Link href="/test/home" className="flex items-center gap-3 p-3 hover:bg-white/[0.02] transition-colors">
+                    <div className="w-2.5 h-2.5 rounded-full bg-purple-500 shrink-0" />
+                    <span className="font-semibold text-sm">Creative Originals</span>
+                    <span className="text-xs text-gray-600">{creativeOriginals.length}</span>
+                  </Link>
+                  <div className="px-3 pb-3 flex flex-wrap gap-1.5">
+                    {creativeOriginals.map((t) => (
+                      <Link key={t.id} href={`/test/home/${t.id}`} className="text-xs bg-gray-800 hover:bg-purple-600 px-2.5 py-1 rounded transition-colors">
+                        {t.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Standalone */}
+                {standaloneExperiments.map((t) => (
+                  <Link key={t.id} href={`/test/home/${t.id}`} className="border border-gray-800 hover:border-gray-600 rounded-xl p-3 transition-colors">
+                    <span className="font-semibold text-sm">{t.name}</span>
+                    <p className="text-xs text-gray-500 mt-0.5">{t.description}</p>
                   </Link>
                 ))}
               </div>
             </div>
-
-            {/* Standalone */}
-            {standaloneExperiments.map((t) => (
-              <Link
-                key={t.id}
-                href={`/test/home/${t.id}`}
-                className="bg-gray-900/50 border border-gray-800 hover:border-gray-600 rounded-xl p-4 transition-colors flex items-center justify-between"
-              >
-                <div>
-                  <span className="font-semibold text-sm">{t.name}</span>
-                  <span className="text-xs text-gray-600 ml-3">{t.description}</span>
-                </div>
-                <span className="text-xs text-gray-600">Standalone →</span>
-              </Link>
-            ))}
-          </div>
+          )}
         </div>
 
-        {/* ═══ SECTION 2: Registered Block Components ═══ */}
-        <div>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-1 h-6 bg-gradient-to-b from-emerald-500 to-teal-500 rounded-full" />
-            <div>
-              <h2 className="text-xl font-bold">Registered Block Components</h2>
-              <p className="text-xs text-gray-500">{blocks.length} block types from the main registry — these render live sites</p>
-            </div>
-          </div>
-
-          <div className="grid gap-4">
-            {blocks.map((block) => (
-              <div
-                key={block.type}
-                className="bg-gray-900/50 border border-gray-800 hover:border-gray-700 rounded-xl p-5 transition-colors"
+        {/* ═══ Registry Blocks ═══ */}
+        {blocks.map((block) => (
+          <div key={block.type} className="rounded-xl border border-gray-800 overflow-hidden">
+            <button
+              onClick={() => toggle(block.type)}
+              className={`w-full flex items-center gap-4 p-5 text-left transition-colors ${active === block.type ? "bg-gray-800/50" : "bg-gray-900/50 hover:bg-gray-900"}`}
+            >
+              <div className="w-11 h-11 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 font-bold text-sm uppercase shrink-0">
+                {block.type.slice(0, 2)}
+              </div>
+              <div className="flex-1 min-w-0">
+                <h2 className="font-bold text-lg">{block.label}</h2>
+                <p className="text-xs text-gray-500">{block.templates.length} templates · {block.category}</p>
+              </div>
+              <Link
+                href={`/test/${block.type}`}
+                onClick={(e) => e.stopPropagation()}
+                className="text-xs bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg transition-colors shrink-0 mr-3"
               >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-xs font-bold uppercase">
-                      {block.type.slice(0, 2)}
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">{block.label}</h3>
-                      <p className="text-xs text-gray-600">
-                        {block.type} · {block.category} ·{" "}
-                        {block.templates.length} templates
-                      </p>
-                    </div>
-                  </div>
-                  <Link
-                    href={`/test/${block.type}`}
-                    className="text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors"
-                  >
-                    View All Stacked →
-                  </Link>
-                </div>
+                Stacked View
+              </Link>
+              <span className={`text-gray-500 text-xl transition-transform ${active === block.type ? "rotate-180" : ""}`}>▾</span>
+            </button>
 
-                <div className="flex flex-wrap gap-2">
+            {active === block.type && (
+              <div className="border-t border-gray-800 bg-gray-950/50 p-5">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
                   {block.templates.map((t) => (
                     <Link
                       key={t.id}
                       href={`/test/${block.type}/${t.id}`}
-                      className="text-sm bg-gray-800 hover:bg-emerald-600 px-3 py-1.5 rounded-md transition-colors flex items-center gap-2"
+                      className="flex items-center gap-3 bg-gray-900 border border-gray-800 hover:border-emerald-500/40 rounded-lg px-4 py-3 transition-colors"
                     >
-                      <span className="text-gray-400">{t.id}</span>
-                      <span className="text-gray-600">—</span>
-                      <span>{t.name}</span>
+                      <div className="w-7 h-7 rounded bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-[10px] font-bold shrink-0">
+                        {t.id.split("-").pop()?.slice(0, 2).toUpperCase()}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-medium text-sm">{t.name}</p>
+                        <p className="text-xs text-gray-600 truncate">{t.id}</p>
+                      </div>
                     </Link>
                   ))}
                 </div>
               </div>
-            ))}
+            )}
           </div>
-        </div>
+        ))}
 
         {/* Footer */}
-        <div className="mt-12 pt-6 border-t border-gray-800 text-center text-gray-600 text-xs">
-          Total: {blocks.length} blocks · {totalRegistry} registry templates ·{" "}
-          {totalExperimental} experimental templates ·{" "}
-          {totalRegistry + totalExperimental} total
+        <div className="pt-6 border-t border-gray-800 text-center text-gray-600 text-xs">
+          {blocks.length + 1} sections · {totalRegistry + totalHeroExp} total templates
         </div>
       </div>
     </div>
