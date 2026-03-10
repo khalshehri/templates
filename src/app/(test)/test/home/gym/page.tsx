@@ -5,6 +5,13 @@ const templates = [
   { id: "gym-pulse", name: "Gym Pulse", description: "Heart rate monitor ECG line pulsing across dark background" },
   { id: "gym-weights", name: "Gym Weights", description: "Animated barbell/dumbbell with loading plates" },
   { id: "gym-energy", name: "Gym Energy", description: "Energy burst explosion with radial particles" },
+  { id: "gym-timer", name: "Workout Timer", description: "Large countdown timer with circular ring progress bar" },
+  { id: "gym-track", name: "Running Track", description: "Running track lanes in perspective with speed lines" },
+  { id: "gym-flame", name: "Calorie Flame", description: "Calorie burning flame meter filling up from bottom" },
+  { id: "gym-rings", name: "Olympic Rings", description: "Olympic rings with spotlight beams and competition feel" },
+  { id: "gym-stats", name: "Fitness Stats", description: "Fitness dashboard with animated progress circles for metrics" },
+  { id: "gym-power", name: "Power Meter", description: "Speedometer-style power gauge with needle swinging to max" },
+  { id: "gym-champion", name: "Champion Podium", description: "Trophy pedestal center stage with medal ceremony feel" },
 ];
 
 export default function GymCategory() {

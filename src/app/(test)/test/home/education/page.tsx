@@ -3,6 +3,15 @@ import Link from "next/link";
 
 const templates = [
   { id: "chalkboard", name: "Chalkboard", description: "Classic chalkboard with chalk writing, formulas & doodles" },
+  { id: "education-library", name: "Library", description: "Bookshelf rows perspective with content on an open book" },
+  { id: "education-globe", name: "Globe", description: "Spinning globe with connection dots, global learning theme" },
+  { id: "education-lab", name: "Science Lab", description: "CSS beakers & flasks with bubbling animations, STEM aesthetic" },
+  { id: "education-notebook", name: "Notebook", description: "Spiral notebook with ruled lines and handwritten font feel" },
+  { id: "education-tree", name: "Knowledge Tree", description: "Growing tree with topic badges on branches, organic growth" },
+  { id: "education-podium", name: "Podium", description: "Lecture stage with podium, curtains & audience silhouettes" },
+  { id: "education-puzzle", name: "Puzzle", description: "Interlocking puzzle pieces, each representing a skill or course" },
+  { id: "education-lighthouse", name: "Lighthouse", description: "Beacon sweeping with ocean waves, guiding light metaphor" },
+  { id: "education-steps", name: "Steps", description: "Ascending stairs with milestones representing learning progression" },
 ];
 
 export default function EducationCategory() {

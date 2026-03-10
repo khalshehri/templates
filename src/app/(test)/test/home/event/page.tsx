@@ -7,6 +7,12 @@ const templates = [
   { id: "event-speakers", name: "Speaker Spotlight", description: "Centered heading with speaker avatar row and date/location strip." },
   { id: "fireworks", name: "Fireworks", description: "Night sky fireworks with radial spark bursts and celebration energy." },
   { id: "event-stage", name: "Event Stage", description: "Concert/conference stage with spotlight beams and curtain reveal." },
+  { id: "event-badge", name: "Event Badge", description: "Lanyard badge with attendee info, barcode, and event branding." },
+  { id: "event-banner", name: "Event Banner", description: "Wide cinematic banner with event title, date overlay, and gradient." },
+  { id: "event-confetti", name: "Confetti Burst", description: "Celebration confetti explosion with colorful particles and streamers." },
+  { id: "event-ticket", name: "Event Ticket", description: "Tear-off ticket stub with perforated edge and event details." },
+  { id: "event-mic", name: "Open Mic", description: "Spotlight on microphone stand with audio wave visualization." },
+  { id: "event-schedule", name: "Event Schedule", description: "Timeline schedule with session blocks, speakers, and time slots." },
 ];
 
 export default function EventIndex() {

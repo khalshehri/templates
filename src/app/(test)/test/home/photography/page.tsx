@@ -4,6 +4,14 @@ import Link from "next/link";
 const templates = [
   { id: "photo-shutter", name: "Photo Shutter", description: "Camera shutter blades opening to reveal content" },
   { id: "photo-polaroid", name: "Photo Polaroid", description: "Polaroid photo developing from white to visible" },
+  { id: "photo-gallery", name: "Gallery Wall", description: "Floating frames at angles with spotlights, museum atmosphere" },
+  { id: "photo-film", name: "Film Strip", description: "Horizontal scrolling 35mm film strip with sprocket holes" },
+  { id: "photo-aperture", name: "Aperture", description: "Camera iris aperture blades opening to reveal content" },
+  { id: "photo-darkroom", name: "Darkroom", description: "Red safe light darkroom with developing photo and chemical trays" },
+  { id: "photo-viewfinder", name: "Viewfinder", description: "Camera viewfinder overlay with rule-of-thirds grid and focus points" },
+  { id: "photo-lightbox", name: "Lightbox", description: "Before/after comparison editor with adjustment sliders and histogram" },
+  { id: "photo-contact", name: "Contact Sheet", description: "Film contact sheet grid with numbered frames and wax pencil marks" },
+  { id: "photo-exposure", name: "Long Exposure", description: "Light trails and bokeh particles, night photography abstract feel" },
 ];
 
 export default function PhotographyCategory() {

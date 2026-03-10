@@ -6,6 +6,12 @@ const templates = [
   { id: "law-library", name: "Law Library", description: "Library bookshelf rows with books in perspective depth" },
   { id: "law-column", name: "Law Column", description: "Classical Greek/Roman column with justice symbolism" },
   { id: "law-document", name: "Law Document", description: "Legal document with wax seal stamp animation" },
+  { id: "law-scales", name: "Law Scales", description: "Scales of justice with gentle sway animation" },
+  { id: "law-shield", name: "Law Shield", description: "Protection shield with laurel wreath emblem" },
+  { id: "law-ink", name: "Law Ink", description: "Fountain pen signing with ink flowing across page" },
+  { id: "law-curtain", name: "Law Curtain", description: "Courtroom velvet curtain theatrical reveal" },
+  { id: "law-emblem", name: "Law Emblem", description: "Firm crest with heraldic lions, shield, and banner" },
+  { id: "law-brief", name: "Law Brief", description: "Stacked legal briefs with tabs and paper layering" },
 ];
 
 export default function LawFirmCategory() {

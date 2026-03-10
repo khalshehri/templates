@@ -7,6 +7,11 @@ const templates = [
   { id: "freelancer-notebook", name: "Freelancer Notebook", description: "Hand-drawn notebook with sketchy borders and doodles" },
   { id: "freelancer-badge", name: "Freelancer Badge", description: "Oversized business card / ID badge floating with 3D tilt" },
   { id: "freelancer-tools", name: "Freelancer Tools", description: "Floating tool/skill icons orbiting around a central avatar" },
+  { id: "freelancer-calendar", name: "Availability Calendar", description: "Booking calendar with highlighted slots and 'Book My Time' CTA" },
+  { id: "freelancer-quotes", name: "Client Quotes", description: "Floating testimonial cards with star ratings, social proof layout" },
+  { id: "freelancer-workspace", name: "Cozy Workspace", description: "Panoramic workspace view with content overlaid on environment" },
+  { id: "freelancer-code", name: "Code Editor", description: "IDE split view with syntax-highlighted code, developer freelancer" },
+  { id: "freelancer-connect", name: "Network Connect", description: "Connection lines linking to client platforms, relationship web" },
 ];
 
 export default function FreelancerCategory() {

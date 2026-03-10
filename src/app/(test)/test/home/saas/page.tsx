@@ -7,6 +7,12 @@ const templates = [
   { id: "saas-orbit", name: "Product Orbit", description: "Centered icon with orbiting feature planets. Gradient highlight heading." },
   { id: "neural-network", name: "Neural Network", description: "Animated neural network with data pulses flowing through connected nodes." },
   { id: "saas-dashboard", name: "Dashboard", description: "Product dashboard mockup with animated charts and data widgets." },
+  { id: "saas-pipeline", name: "CI/CD Pipeline", description: "Animated deployment pipeline with stages flowing left to right." },
+  { id: "saas-api", name: "API Explorer", description: "Interactive API endpoint explorer with request/response code blocks." },
+  { id: "saas-cloud", name: "Cloud Infrastructure", description: "Cloud architecture diagram with connected services and data flow." },
+  { id: "saas-metrics", name: "SaaS Metrics", description: "Key SaaS metrics dashboard with MRR, churn, and growth indicators." },
+  { id: "saas-integration", name: "Integrations Hub", description: "Connected integration logos with data sync animation between services." },
+  { id: "saas-pricing", name: "Pricing Table", description: "Interactive pricing tier comparison with feature highlights and toggle." },
 ];
 
 export default function SaasIndex() {

@@ -6,6 +6,13 @@ const templates = [
   { id: "service-card", name: "Booking Card", description: "Warm heading with a floating appointment booking card UI on the right." },
   { id: "service-location", name: "Map Pinpoint", description: "Split layout with heading and an abstract CSS city-grid map with pulsing pin." },
   { id: "warm-welcome", name: "Warm Welcome", description: "Door panels sliding open to reveal a warm golden interior with inviting glow." },
+  { id: "service-clock", name: "Open Hours Clock", description: "Large analog clock face in center showing 'Open Now', hours of operation highlighted." },
+  { id: "service-checklist", name: "Service Checklist", description: "Interactive checklist layout with services as checkable items, progress bar, and vertical list." },
+  { id: "service-map-pin", name: "Giant Map Pin", description: "Large pulsing map pin dominating center with content radiating outward. Location-focused." },
+  { id: "service-testimonial", name: "Testimonial First", description: "Full-screen testimonial card as main hero with business info overlaid. Quote-first layout." },
+  { id: "service-phone", name: "Phone Mockup", description: "Phone device mockup showing booking UI on one side, content on the other." },
+  { id: "service-counter", name: "Service Counter", description: "Service counter/desk at bottom with menu board above. Dark hospitality feel." },
+  { id: "service-ribbon", name: "Color Ribbons", description: "Horizontal service category ribbons stacked, each a different color with service name." },
 ];
 
 export default function ServiceIndex() {

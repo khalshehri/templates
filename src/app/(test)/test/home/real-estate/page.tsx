@@ -5,8 +5,13 @@ const templates = [
   { id: "realestate-skyline", name: "Skyline", description: "Luxury city skyline panorama with golden hour gradient" },
   { id: "realestate-key", name: "Key", description: "Oversized golden key with turning/unlocking animation" },
   { id: "realestate-floor", name: "Floor Plan", description: "Animated floor plan line drawing that draws itself" },
-  { id: "realestate-door", name: "Door", description: "Front door slowly opening to reveal bright interior" },
   { id: "realestate-compass", name: "Compass", description: "Spinning compass indicating location/direction" },
+  { id: "realestate-door", name: "Door", description: "Front door slowly opening to reveal bright interior" },
+  { id: "realestate-window", name: "Window View", description: "Window frame with scenic view and light streaming through." },
+  { id: "realestate-blueprint", name: "Blueprint", description: "Architectural blueprint with measurements and room labels." },
+  { id: "realestate-garden", name: "Garden", description: "Lush garden landscape with pathway leading to property." },
+  { id: "realestate-building", name: "Building", description: "Modern building facade with glass reflections and architectural detail." },
+  { id: "realestate-interior", name: "Interior", description: "Stylish interior staging with furniture layout and warm lighting." },
 ];
 
 export default function RealEstateCategory() {

@@ -5,6 +5,13 @@ const templates = [
   { id: "agency-palette", name: "Paint Palette", description: "Paint palette with color splashes bursting outward" },
   { id: "agency-canvas", name: "Living Canvas", description: "Blank canvas that paints itself with brush strokes" },
   { id: "agency-collage", name: "Mixed Media Collage", description: "Mixed media collage with overlapping torn paper pieces" },
+  { id: "agency-spray", name: "Spray Paint", description: "Street art spray paint stencil effect with urban graffiti aesthetic" },
+  { id: "agency-film", name: "Film Strip", description: "Film strip with animated frames sliding through, cinema production aesthetic" },
+  { id: "agency-drip", name: "Paint Drip", description: "Paint dripping from top with vivid color streams, abstract expressionist" },
+  { id: "agency-scissors", name: "Cut & Paste", description: "Magazine ransom note style typography with mixed fonts and collage layout" },
+  { id: "agency-studio", name: "Creative Studio", description: "Bird's eye view of creative workspace with desk, tools, and screens" },
+  { id: "agency-neon", name: "Neon Sign", description: "Neon tube art sign flickering on dark brick wall texture" },
+  { id: "agency-mosaic", name: "Pixel Mosaic", description: "Pixel/tile mosaic that assembles to reveal content with colorful tiles" },
 ];
 
 export default function AgencyCategory() {

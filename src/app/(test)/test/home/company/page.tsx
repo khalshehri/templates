@@ -8,6 +8,10 @@ const templates = [
   { id: "company-metrics", name: "Business Metrics", description: "Animated counter stats with professional data visualization" },
   { id: "company-timeline", name: "Milestone Timeline", description: "Horizontal scrolling company milestone timeline" },
   { id: "company-network", name: "Office Network", description: "Connected nodes showing global office network" },
+  { id: "company-shield", name: "Trust Shield", description: "Trust shield emblem with orbiting certification badges" },
+  { id: "company-growth", name: "Growth Chart", description: "Animated ascending bar chart with growth trajectory data" },
+  { id: "company-handshake", name: "Partnership Handshake", description: "Abstract handshake with two-sided symmetrical layout" },
+  { id: "company-headquarters", name: "HQ Building", description: "Night-time HQ building with illuminated windows" },
 ];
 
 export default function CompanyIndex() {

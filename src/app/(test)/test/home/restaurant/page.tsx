@@ -3,10 +3,15 @@ import Link from "next/link";
 
 const templates = [
   { id: "kitchen-flame", name: "Kitchen Flame", description: "Cooking fire + steam with warm appetizing tones" },
+  { id: "restaurant-chef", name: "Restaurant Chef", description: "Chef silhouette with kitchen backdrop and culinary tools." },
   { id: "restaurant-menu", name: "Restaurant Menu", description: "Elegant menu card with handwritten-style typography" },
+  { id: "restaurant-oven", name: "Restaurant Oven", description: "Brick oven with warm glow and baking ambiance." },
   { id: "restaurant-plate", name: "Restaurant Plate", description: "Minimalist plate presentation with garnish details" },
   { id: "restaurant-spice", name: "Restaurant Spice", description: "Scattered spices and herbs with aromatic visual feel" },
   { id: "restaurant-table", name: "Restaurant Table", description: "Overhead table setting with plates, cutlery, and ambiance" },
+  { id: "restaurant-wine", name: "Restaurant Wine", description: "Wine glass with swirling liquid and vineyard atmosphere." },
+  { id: "restaurant-sushi", name: "Restaurant Sushi", description: "Japanese sushi platter with chopsticks and bamboo mat." },
+  { id: "restaurant-garden", name: "Restaurant Garden", description: "Outdoor garden dining with string lights and greenery." },
 ];
 
 export default function RestaurantCategory() {

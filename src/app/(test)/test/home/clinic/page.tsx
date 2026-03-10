@@ -8,6 +8,10 @@ const templates = [
   { id: "clinic-molecule", name: "Clinic Molecule", description: "Floating molecular structure with connected atoms" },
   { id: "clinic-cross", name: "Clinic Cross", description: "Large glowing medical cross symbol with radial light" },
   { id: "clinic-wave", name: "Clinic Wave", description: "Calm healing waves (sine curves) in soothing blues/teals" },
+  { id: "clinic-stethoscope", name: "Clinic Stethoscope", description: "Large stethoscope illustration with sound waves from earpiece" },
+  { id: "clinic-cells", name: "Clinic Cells", description: "Microscopic cells and platelets floating with scientific feel" },
+  { id: "clinic-clean", name: "Clinic Clean", description: "Ultra-clean white space with sterile minimalist dot grid" },
+  { id: "clinic-care", name: "Clinic Care", description: "Gentle hands cradling heart shape, warmth and care theme" },
 ];
 
 export default function ClinicCategory() {

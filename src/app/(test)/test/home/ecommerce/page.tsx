@@ -7,6 +7,12 @@ const templates = [
   { id: "ecommerce-promo", name: "Sale Banner", description: "Animated diagonal stripes, oversized discount text, countdown timer, urgent CTA." },
   { id: "unboxing", name: "Unboxing", description: "Premium box lid opening with sparkle burst revealing the product inside." },
   { id: "ecom-cart", name: "Shopping Cart", description: "Animated shopping cart with product items and checkout flow." },
+  { id: "ecom-bag", name: "Shopping Bag", description: "Premium shopping bag with tissue paper and brand label presentation." },
+  { id: "ecom-carousel", name: "Product Carousel", description: "3D rotating product carousel with spotlight and detail cards." },
+  { id: "ecom-flash", name: "Flash Sale", description: "Urgent flash sale with lightning bolt animation and countdown timer." },
+  { id: "ecom-rack", name: "Product Rack", description: "Store display rack with products arranged on shelves, retail feel." },
+  { id: "ecom-search", name: "Product Search", description: "Search-first layout with instant results and filter suggestions." },
+  { id: "ecom-tag", name: "Price Tag", description: "Oversized price tag with discount slash and promotional messaging." },
 ];
 
 export default function EcommerceIndex() {

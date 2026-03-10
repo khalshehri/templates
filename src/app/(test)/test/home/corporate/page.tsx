@@ -6,6 +6,13 @@ const templates = [
   { id: "corporate-tower", name: "Vertical Authority", description: "Full-height split with bold heading and CSS skyscraper illustration. Trust logos row." },
   { id: "corporate-metrics", name: "Data-Driven Trust", description: "Centered heading with animated counter stats and glass value-proposition cards." },
   { id: "hologram-board", name: "Hologram Board", description: "Holographic data panels floating over a conference table with scan-line effects." },
+  { id: "corporate-pillars", name: "Corporate Pillars", description: "Three tall CSS column pillars with content between them. Heading floats above, stats at base. Vertical emphasis." },
+  { id: "corporate-wave", name: "Corporate Wave", description: "Flowing sine wave SVG separating top content from bottom stats. Left-aligned content above, trust badges below." },
+  { id: "corporate-grid", name: "Corporate Grid", description: "Bento-style 2x3 grid with mixed content cells: stats, icons, testimonial quote, CTA. Non-traditional layout." },
+  { id: "corporate-horizon", name: "Corporate Horizon", description: "Minimal architectural feel with horizontal line animation at center. Heading splits above/below. Light theme, thin serif." },
+  { id: "corporate-shield", name: "Corporate Shield", description: "Large shield emblem center with certification badges orbiting it. Heading and CTA flanking on sides." },
+  { id: "corporate-stairs", name: "Corporate Stairs", description: "Stepped staircase layout revealing content progressively from top-left to bottom-right diagonal." },
+  { id: "corporate-lens", name: "Corporate Lens", description: "Circular aperture in center with abstract gradient. Content items arranged in arc around it. Radial layout." },
 ];
 
 export default function CorporateIndex() {

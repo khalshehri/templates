@@ -6,6 +6,13 @@ const templates = [
   { id: "personal-intro", name: "Hey, I'm...", description: "Large circular photo with gradient border, friendly intro tone, social icons." },
   { id: "personal-stack", name: "Skill Stack", description: "Centered photo, name/title, horizontal scrolling skill badges, social links." },
   { id: "polaroid-wall", name: "Polaroid Wall", description: "Scattered polaroid photos on a cork board with handwritten labels." },
+  { id: "personal-handwave", name: "Hand Wave", description: "Large waving hand CSS illustration, casual 'Hey there!' intro, asymmetric layout." },
+  { id: "personal-timeline", name: "Career Timeline", description: "Vertical timeline of career milestones, heading at top, scrolls through events." },
+  { id: "personal-card-flip", name: "Business Card Flip", description: "3D floating business card with hover-to-flip. Front shows name, back shows details." },
+  { id: "personal-social", name: "Social Profile", description: "Social media-inspired layout with profile header, bio, stats, and link grid." },
+  { id: "personal-desk", name: "Workspace Desk", description: "Bird's eye desk with CSS laptop, coffee, notebook. Content below the desk." },
+  { id: "personal-spotlight", name: "Stage Spotlight", description: "Theater spotlight on name, rest in shadow. Speaker/performer feel." },
+  { id: "personal-pixel", name: "Pixel Art", description: "8-bit pixel art avatar, retro gaming UI, CRT scanlines. Fun and geeky." },
 ];
 
 export default function PersonalIndex() {

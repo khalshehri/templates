@@ -7,172 +7,172 @@ const categories = [
     id: "corporate",
     name: "Corporate & Trust",
     color: "blue",
-    count: 3,
+    count: 10,
     description:
       "Professional, stable, trustworthy. For companies, enterprises, consulting firms, banks.",
-    templates: ["corporate-tower", "corporate-metrics", "hologram-board"],
+    templates: ["corporate-tower", "corporate-metrics", "hologram-board", "corporate-pillars", "corporate-wave", "corporate-grid", "corporate-horizon", "corporate-shield", "corporate-stairs", "corporate-lens"],
   },
   {
     id: "creative",
     name: "Creative & Bold",
     color: "pink",
-    count: 3,
+    count: 10,
     description:
       "Expressive, experimental, rule-breaking. For design agencies, branding studios, artists.",
-    templates: ["creative-clash", "creative-showcase", "ink-flow"],
+    templates: ["creative-clash", "creative-showcase", "ink-flow", "creative-torn", "creative-stack", "creative-drip", "creative-grid-break", "creative-neon", "creative-collage", "creative-wave"],
   },
   {
     id: "saas",
     name: "SaaS & Product",
     color: "violet",
-    count: 4,
+    count: 10,
     description:
       "Modern, technical, product-forward. For software products, AI tools, dev tools, APIs.",
-    templates: ["saas-terminal", "saas-orbit", "neural-network", "saas-dashboard"],
+    templates: ["saas-terminal", "saas-orbit", "neural-network", "saas-dashboard", "saas-pipeline", "saas-api", "saas-cloud", "saas-metrics", "saas-integration", "saas-pricing"],
   },
   {
     id: "service",
     name: "Service & Local",
     color: "orange",
-    count: 3,
+    count: 10,
     description:
       "Warm, approachable, action-oriented. For clinics, salons, restaurants, local services.",
-    templates: ["service-card", "service-location", "warm-welcome"],
+    templates: ["service-card", "service-location", "warm-welcome", "service-clock", "service-checklist", "service-map-pin", "service-testimonial", "service-phone", "service-counter", "service-ribbon"],
   },
   {
     id: "ecommerce",
     name: "E-commerce & Conversion",
     color: "emerald",
-    count: 4,
+    count: 10,
     description:
       "High-conversion, product-focused. For online stores, product launches, fashion brands.",
-    templates: ["ecommerce-showcase", "ecommerce-promo", "unboxing", "ecom-cart"],
+    templates: ["ecommerce-showcase", "ecommerce-promo", "unboxing", "ecom-cart", "ecom-bag", "ecom-carousel", "ecom-flash", "ecom-rack", "ecom-search", "ecom-tag"],
   },
   {
     id: "event",
     name: "Event & Launch",
     color: "red",
-    count: 4,
+    count: 10,
     description:
       "Excitement, urgency, time-bound. For conferences, webinars, product launches, concerts.",
-    templates: ["event-countdown", "event-speakers", "fireworks", "event-stage"],
+    templates: ["event-countdown", "event-speakers", "fireworks", "event-stage", "event-badge", "event-banner", "event-confetti", "event-ticket", "event-mic", "event-schedule"],
   },
   {
     id: "luxury",
     name: "Luxury & Premium",
     color: "amber",
-    count: 3,
+    count: 10,
     description:
       "Elegant, minimal, exclusive. For high-end brands, jewelry, hotels, fashion houses.",
-    templates: ["luxury-reveal", "luxury-editorial", "marble-gold"],
+    templates: ["luxury-reveal", "luxury-editorial", "marble-gold", "luxury-veil", "luxury-frame", "luxury-monogram", "luxury-silk", "luxury-diamond", "luxury-noir", "luxury-columns"],
   },
   {
     id: "personal",
     name: "Personal & Freelancer",
     color: "cyan",
-    count: 3,
+    count: 10,
     description:
       "Human, authentic, personality-driven. For freelancers, consultants, coaches, influencers.",
-    templates: ["personal-intro", "personal-stack", "polaroid-wall"],
+    templates: ["personal-intro", "personal-stack", "polaroid-wall", "personal-handwave", "personal-timeline", "personal-card-flip", "personal-social", "personal-desk", "personal-spotlight", "personal-pixel"],
   },
   {
     id: "restaurant",
     name: "Restaurant & Food",
     color: "orange",
-    count: 5,
+    count: 10,
     description:
       "Appetizing, warm, sensory. For restaurants, cafés, food brands, catering.",
-    templates: ["kitchen-flame", "restaurant-menu", "restaurant-plate", "restaurant-spice", "restaurant-table"],
+    templates: ["kitchen-flame", "restaurant-chef", "restaurant-menu", "restaurant-oven", "restaurant-plate", "restaurant-spice", "restaurant-table", "restaurant-wine", "restaurant-sushi", "restaurant-garden"],
   },
   {
     id: "education",
     name: "Education & Academy",
     color: "emerald",
-    count: 1,
+    count: 10,
     description:
       "Inspiring, structured, knowledge-driven. For schools, courses, e-learning, tutoring.",
-    templates: ["chalkboard"],
+    templates: ["chalkboard", "education-library", "education-globe", "education-lab", "education-notebook", "education-tree", "education-podium", "education-puzzle", "education-lighthouse", "education-steps"],
   },
   {
     id: "company",
     name: "Company",
     color: "blue",
-    count: 6,
+    count: 10,
     description:
       "Professional, trustworthy, corporate. For companies and enterprises.",
-    templates: ["company-skyline", "company-tower", "company-globe", "company-metrics", "company-timeline", "company-network"],
+    templates: ["company-skyline", "company-tower", "company-globe", "company-metrics", "company-timeline", "company-network", "company-shield", "company-growth", "company-handshake", "company-headquarters"],
   },
   {
     id: "agency",
     name: "Creative Agency",
     color: "pink",
-    count: 3,
+    count: 10,
     description:
       "Bold, artistic, expressive. For design agencies, branding studios.",
-    templates: ["agency-palette", "agency-canvas", "agency-collage"],
+    templates: ["agency-palette", "agency-canvas", "agency-collage", "agency-spray", "agency-film", "agency-drip", "agency-scissors", "agency-studio", "agency-neon", "agency-mosaic"],
   },
   {
     id: "freelancer",
     name: "Freelancer",
     color: "cyan",
-    count: 5,
+    count: 10,
     description:
       "Personal, authentic, skill-focused. For freelancers, consultants.",
-    templates: ["freelancer-desk", "freelancer-coffee", "freelancer-notebook", "freelancer-badge", "freelancer-tools"],
+    templates: ["freelancer-desk", "freelancer-coffee", "freelancer-notebook", "freelancer-badge", "freelancer-tools", "freelancer-calendar", "freelancer-quotes", "freelancer-workspace", "freelancer-code", "freelancer-connect"],
   },
   {
     id: "resume",
     name: "Resume / CV",
     color: "violet",
-    count: 2,
+    count: 10,
     description:
       "Professional, personal, creative. For job seekers, freelancers.",
-    templates: ["resume-paper", "resume-timeline"],
+    templates: ["resume-paper", "resume-timeline", "resume-terminal", "resume-card", "resume-dashboard", "resume-book", "resume-blueprint", "resume-spotlight", "resume-mosaic", "resume-scroll"],
   },
   {
     id: "clinic",
     name: "Medical Clinic",
     color: "emerald",
-    count: 6,
+    count: 10,
     description:
       "Clean, trustworthy, caring. For clinics, hospitals, health services.",
-    templates: ["clinic-pulse", "clinic-dna", "clinic-shield", "clinic-molecule", "clinic-cross", "clinic-wave"],
+    templates: ["clinic-pulse", "clinic-dna", "clinic-shield", "clinic-molecule", "clinic-cross", "clinic-wave", "clinic-stethoscope", "clinic-cells", "clinic-clean", "clinic-care"],
   },
   {
     id: "real-estate",
     name: "Real Estate",
     color: "amber",
-    count: 5,
+    count: 10,
     description:
       "Premium, aspirational, location-focused. For real estate agencies, developers.",
-    templates: ["realestate-skyline", "realestate-key", "realestate-floor", "realestate-door", "realestate-compass"],
+    templates: ["realestate-skyline", "realestate-key", "realestate-floor", "realestate-compass", "realestate-door", "realestate-window", "realestate-blueprint", "realestate-garden", "realestate-building", "realestate-interior"],
   },
   {
     id: "photography",
     name: "Photography",
     color: "pink",
-    count: 2,
+    count: 10,
     description:
       "Visual, artistic, portfolio-driven. For photographers, studios.",
-    templates: ["photo-shutter", "photo-polaroid"],
+    templates: ["photo-shutter", "photo-polaroid", "photo-gallery", "photo-film", "photo-aperture", "photo-darkroom", "photo-viewfinder", "photo-lightbox", "photo-contact", "photo-exposure"],
   },
   {
     id: "law-firm",
     name: "Law Firm",
     color: "amber",
-    count: 4,
+    count: 10,
     description:
       "Authoritative, trustworthy, prestigious. For law firms, attorneys.",
-    templates: ["law-gavel", "law-library", "law-column", "law-document"],
+    templates: ["law-gavel", "law-library", "law-column", "law-document", "law-scales", "law-shield", "law-ink", "law-curtain", "law-emblem", "law-brief"],
   },
   {
     id: "gym",
     name: "Gym / Fitness",
     color: "red",
-    count: 3,
+    count: 10,
     description:
       "Energetic, powerful, motivating. For gyms, fitness studios, trainers.",
-    templates: ["gym-pulse", "gym-weights", "gym-energy"],
+    templates: ["gym-pulse", "gym-weights", "gym-energy", "gym-timer", "gym-track", "gym-flame", "gym-rings", "gym-stats", "gym-power", "gym-champion"],
   },
 ];
 
@@ -341,7 +341,7 @@ export default function HomeTestIndex() {
             main block registry.
           </p>
           <p className="text-gray-600 text-xs mt-1">
-            21 categories · 18 creative originals · 1 standalone
+            19 categories · 18 creative originals · 1 standalone
           </p>
         </div>
 
