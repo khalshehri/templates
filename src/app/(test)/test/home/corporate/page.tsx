@@ -5,6 +5,7 @@ import Link from "next/link";
 const templates = [
   { id: "corporate-tower", name: "Vertical Authority", description: "Full-height split with bold heading and CSS skyscraper illustration. Trust logos row." },
   { id: "corporate-metrics", name: "Data-Driven Trust", description: "Centered heading with animated counter stats and glass value-proposition cards." },
+  { id: "hologram-board", name: "Hologram Board", description: "Holographic data panels floating over a conference table with scan-line effects." },
 ];
 
 export default function CorporateIndex() {

@@ -5,6 +5,7 @@ import Link from "next/link";
 const templates = [
   { id: "creative-clash", name: "Color Collision", description: "Two color blocks crash diagonally. Heading at the collision point in white." },
   { id: "creative-showcase", name: "Portfolio Ribbon", description: "Auto-scrolling portfolio ribbons behind a frosted glass center panel." },
+  { id: "ink-flow", name: "Ink Flow", description: "Japanese sumi ink flowing on white paper with organic brush-stroke animations." },
 ];
 
 export default function CreativeIndex() {

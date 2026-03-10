@@ -5,6 +5,7 @@ import Link from "next/link";
 const templates = [
   { id: "luxury-reveal", name: "Curtain Reveal", description: "Ultra-minimal dark bg. Letter-by-letter heading, expanding gold line, pure whitespace." },
   { id: "luxury-editorial", name: "Magazine Cover", description: "Full-screen image bg with magazine-style serif typography overlay." },
+  { id: "marble-gold", name: "Marble & Gold", description: "Marble texture with gold veining, elegant typography and premium feel." },
 ];
 
 export default function LuxuryIndex() {

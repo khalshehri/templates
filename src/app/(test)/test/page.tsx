@@ -13,6 +13,7 @@ const heroCategories = [
     templates: [
       { id: "corporate-tower", name: "Vertical Authority" },
       { id: "corporate-metrics", name: "Data-Driven Trust" },
+      { id: "hologram-board", name: "Hologram Board" },
     ],
   },
   {
@@ -23,6 +24,7 @@ const heroCategories = [
     templates: [
       { id: "creative-clash", name: "Color Collision" },
       { id: "creative-showcase", name: "Portfolio Ribbon" },
+      { id: "ink-flow", name: "Ink Flow" },
     ],
   },
   {
@@ -33,6 +35,7 @@ const heroCategories = [
     templates: [
       { id: "saas-terminal", name: "Developer Terminal" },
       { id: "saas-orbit", name: "Product Orbit" },
+      { id: "neural-network", name: "Neural Network" },
     ],
   },
   {
@@ -43,6 +46,7 @@ const heroCategories = [
     templates: [
       { id: "service-card", name: "Booking Card" },
       { id: "service-location", name: "Map Pinpoint" },
+      { id: "warm-welcome", name: "Warm Welcome" },
     ],
   },
   {
@@ -53,6 +57,7 @@ const heroCategories = [
     templates: [
       { id: "ecommerce-showcase", name: "Product Spotlight" },
       { id: "ecommerce-promo", name: "Sale Banner" },
+      { id: "unboxing", name: "Unboxing" },
     ],
   },
   {
@@ -63,6 +68,7 @@ const heroCategories = [
     templates: [
       { id: "event-countdown", name: "The Big Day" },
       { id: "event-speakers", name: "Speaker Spotlight" },
+      { id: "fireworks", name: "Fireworks" },
     ],
   },
   {
@@ -73,6 +79,7 @@ const heroCategories = [
     templates: [
       { id: "luxury-reveal", name: "Curtain Reveal" },
       { id: "luxury-editorial", name: "Magazine Cover" },
+      { id: "marble-gold", name: "Marble & Gold" },
     ],
   },
   {
@@ -83,6 +90,25 @@ const heroCategories = [
     templates: [
       { id: "personal-intro", name: "Hey, I'm..." },
       { id: "personal-stack", name: "Skill Stack" },
+      { id: "polaroid-wall", name: "Polaroid Wall" },
+    ],
+  },
+  {
+    id: "restaurant",
+    name: "Restaurant & Food",
+    color: "orange",
+    description: "Appetizing, warm, sensory",
+    templates: [
+      { id: "kitchen-flame", name: "Kitchen Flame" },
+    ],
+  },
+  {
+    id: "education",
+    name: "Education & Academy",
+    color: "emerald",
+    description: "Inspiring, structured, knowledge-driven",
+    templates: [
+      { id: "chalkboard", name: "Chalkboard" },
     ],
   },
 ];

@@ -5,6 +5,7 @@ import Link from "next/link";
 const templates = [
   { id: "service-card", name: "Booking Card", description: "Warm heading with a floating appointment booking card UI on the right." },
   { id: "service-location", name: "Map Pinpoint", description: "Split layout with heading and an abstract CSS city-grid map with pulsing pin." },
+  { id: "warm-welcome", name: "Warm Welcome", description: "Door panels sliding open to reveal a warm golden interior with inviting glow." },
 ];
 
 export default function ServiceIndex() {

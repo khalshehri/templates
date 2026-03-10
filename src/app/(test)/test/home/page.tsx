@@ -7,73 +7,91 @@ const categories = [
     id: "corporate",
     name: "Corporate & Trust",
     color: "blue",
-    count: 2,
+    count: 3,
     description:
       "Professional, stable, trustworthy. For companies, enterprises, consulting firms, banks.",
-    templates: ["corporate-tower", "corporate-metrics"],
+    templates: ["corporate-tower", "corporate-metrics", "hologram-board"],
   },
   {
     id: "creative",
     name: "Creative & Bold",
     color: "pink",
-    count: 2,
+    count: 3,
     description:
       "Expressive, experimental, rule-breaking. For design agencies, branding studios, artists.",
-    templates: ["creative-clash", "creative-showcase"],
+    templates: ["creative-clash", "creative-showcase", "ink-flow"],
   },
   {
     id: "saas",
     name: "SaaS & Product",
     color: "violet",
-    count: 2,
+    count: 3,
     description:
       "Modern, technical, product-forward. For software products, AI tools, dev tools, APIs.",
-    templates: ["saas-terminal", "saas-orbit"],
+    templates: ["saas-terminal", "saas-orbit", "neural-network"],
   },
   {
     id: "service",
     name: "Service & Local",
     color: "orange",
-    count: 2,
+    count: 3,
     description:
       "Warm, approachable, action-oriented. For clinics, salons, restaurants, local services.",
-    templates: ["service-card", "service-location"],
+    templates: ["service-card", "service-location", "warm-welcome"],
   },
   {
     id: "ecommerce",
     name: "E-commerce & Conversion",
     color: "emerald",
-    count: 2,
+    count: 3,
     description:
       "High-conversion, product-focused. For online stores, product launches, fashion brands.",
-    templates: ["ecommerce-showcase", "ecommerce-promo"],
+    templates: ["ecommerce-showcase", "ecommerce-promo", "unboxing"],
   },
   {
     id: "event",
     name: "Event & Launch",
     color: "red",
-    count: 2,
+    count: 3,
     description:
       "Excitement, urgency, time-bound. For conferences, webinars, product launches, concerts.",
-    templates: ["event-countdown", "event-speakers"],
+    templates: ["event-countdown", "event-speakers", "fireworks"],
   },
   {
     id: "luxury",
     name: "Luxury & Premium",
     color: "amber",
-    count: 2,
+    count: 3,
     description:
       "Elegant, minimal, exclusive. For high-end brands, jewelry, hotels, fashion houses.",
-    templates: ["luxury-reveal", "luxury-editorial"],
+    templates: ["luxury-reveal", "luxury-editorial", "marble-gold"],
   },
   {
     id: "personal",
     name: "Personal & Freelancer",
     color: "cyan",
-    count: 2,
+    count: 3,
     description:
       "Human, authentic, personality-driven. For freelancers, consultants, coaches, influencers.",
-    templates: ["personal-intro", "personal-stack"],
+    templates: ["personal-intro", "personal-stack", "polaroid-wall"],
+  },
+  {
+    id: "restaurant",
+    name: "Restaurant & Food",
+    color: "orange",
+    count: 1,
+    description:
+      "Appetizing, warm, sensory. For restaurants, cafés, food brands, catering.",
+    templates: ["kitchen-flame"],
+  },
+  {
+    id: "education",
+    name: "Education & Academy",
+    color: "emerald",
+    count: 1,
+    description:
+      "Inspiring, structured, knowledge-driven. For schools, courses, e-learning, tutoring.",
+    templates: ["chalkboard"],
   },
 ];
 
@@ -242,7 +260,7 @@ export default function HomeTestIndex() {
             main block registry.
           </p>
           <p className="text-gray-600 text-xs mt-1">
-            8 categories · 16 templates · 18 creative originals · 1 standalone
+            10 categories · 26 templates · 18 creative originals · 1 standalone
           </p>
         </div>
 

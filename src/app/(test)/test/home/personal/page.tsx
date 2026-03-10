@@ -5,6 +5,7 @@ import Link from "next/link";
 const templates = [
   { id: "personal-intro", name: "Hey, I'm...", description: "Large circular photo with gradient border, friendly intro tone, social icons." },
   { id: "personal-stack", name: "Skill Stack", description: "Centered photo, name/title, horizontal scrolling skill badges, social links." },
+  { id: "polaroid-wall", name: "Polaroid Wall", description: "Scattered polaroid photos on a cork board with handwritten labels." },
 ];
 
 export default function PersonalIndex() {

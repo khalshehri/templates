@@ -5,6 +5,7 @@ import Link from "next/link";
 const templates = [
   { id: "ecommerce-showcase", name: "Product Spotlight", description: "Large product area with floating price badge, star rating, and Add to Cart button." },
   { id: "ecommerce-promo", name: "Sale Banner", description: "Animated diagonal stripes, oversized discount text, countdown timer, urgent CTA." },
+  { id: "unboxing", name: "Unboxing", description: "Premium box lid opening with sparkle burst revealing the product inside." },
 ];
 
 export default function EcommerceIndex() {
