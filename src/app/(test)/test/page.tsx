@@ -350,6 +350,314 @@ const heroCategories = [
   },
 ];
 
+/* ── Experimental nav categories (test lab) ────────────────── */
+const navCategories = [
+  {
+    id: "corporate", name: "Corporate & Trust", color: "blue",
+    description: "Professional, stable, trustworthy",
+    templates: [
+      { id: "nav-corp-classic", name: "Classic Bar" },
+      { id: "nav-corp-glass", name: "Glass Effect" },
+      { id: "nav-corp-dark", name: "Dark Navy" },
+      { id: "nav-corp-split", name: "Split Layout" },
+      { id: "nav-corp-minimal", name: "Ultra Minimal" },
+      { id: "nav-corp-mega", name: "Mega Menu" },
+      { id: "nav-corp-topbar", name: "Top Bar" },
+      { id: "nav-corp-sidebar", name: "Sidebar" },
+      { id: "nav-corp-centered", name: "Centered Logo" },
+      { id: "nav-corp-ribbon", name: "Ribbon Bar" },
+    ],
+  },
+  {
+    id: "creative", name: "Creative & Bold", color: "pink",
+    description: "Expressive, experimental, rule-breaking",
+    templates: [
+      { id: "nav-creative-paint", name: "Paint Splash" },
+      { id: "nav-creative-neon", name: "Neon Glow" },
+      { id: "nav-creative-torn", name: "Torn Paper" },
+      { id: "nav-creative-gradient", name: "Gradient Shift" },
+      { id: "nav-creative-sticker", name: "Sticker Labels" },
+      { id: "nav-creative-brush", name: "Brush Stroke" },
+      { id: "nav-creative-collage", name: "Collage Mix" },
+      { id: "nav-creative-retro", name: "Retro Style" },
+      { id: "nav-creative-bold", name: "Bold Type" },
+      { id: "nav-creative-wave", name: "Wavy Border" },
+    ],
+  },
+  {
+    id: "saas", name: "SaaS & Product", color: "violet",
+    description: "Modern, technical, product-forward",
+    templates: [
+      { id: "nav-saas-modern", name: "Modern Pill" },
+      { id: "nav-saas-terminal", name: "Terminal Style" },
+      { id: "nav-saas-dark", name: "Dark Grid" },
+      { id: "nav-saas-glass", name: "Floating Glass" },
+      { id: "nav-saas-gradient", name: "Gradient Accent" },
+      { id: "nav-saas-command", name: "Command Palette" },
+      { id: "nav-saas-product", name: "Product Nav" },
+      { id: "nav-saas-api", name: "API Docs" },
+      { id: "nav-saas-dashboard", name: "Dashboard Bar" },
+      { id: "nav-saas-minimal", name: "Super Minimal" },
+    ],
+  },
+  {
+    id: "service", name: "Service & Local", color: "orange",
+    description: "Warm, approachable, action-oriented",
+    templates: [
+      { id: "nav-service-warm", name: "Warm Colors" },
+      { id: "nav-service-booking", name: "Booking CTA" },
+      { id: "nav-service-local", name: "Local Pin" },
+      { id: "nav-service-clean", name: "Clean White" },
+      { id: "nav-service-card", name: "Card Float" },
+      { id: "nav-service-friendly", name: "Friendly Pill" },
+      { id: "nav-service-phone", name: "Phone Number" },
+      { id: "nav-service-hours", name: "Hours Display" },
+      { id: "nav-service-map", name: "Map Address" },
+      { id: "nav-service-trust", name: "Trust Badges" },
+    ],
+  },
+  {
+    id: "ecommerce", name: "E-commerce & Conversion", color: "emerald",
+    description: "High-conversion, product-focused",
+    templates: [
+      { id: "nav-ecom-shop", name: "Shop Nav" },
+      { id: "nav-ecom-mega", name: "Mega Categories" },
+      { id: "nav-ecom-minimal", name: "Minimal Cart" },
+      { id: "nav-ecom-search", name: "Search Focus" },
+      { id: "nav-ecom-promo", name: "Promo Banner" },
+      { id: "nav-ecom-dark", name: "Dark Premium" },
+      { id: "nav-ecom-category", name: "Category Icons" },
+      { id: "nav-ecom-brand", name: "Brand Center" },
+      { id: "nav-ecom-sale", name: "Sale Countdown" },
+      { id: "nav-ecom-sticky", name: "Sticky Compact" },
+    ],
+  },
+  {
+    id: "event", name: "Event & Launch", color: "red",
+    description: "Excitement, urgency, time-bound",
+    templates: [
+      { id: "nav-event-countdown", name: "Countdown Timer" },
+      { id: "nav-event-ticket", name: "Get Tickets" },
+      { id: "nav-event-festive", name: "Festive Party" },
+      { id: "nav-event-dark", name: "Dark Cinema" },
+      { id: "nav-event-badge", name: "Event Badge" },
+      { id: "nav-event-stage", name: "Stage Curtain" },
+      { id: "nav-event-schedule", name: "Schedule Links" },
+      { id: "nav-event-live", name: "Live Indicator" },
+      { id: "nav-event-speaker", name: "Speaker Ticker" },
+      { id: "nav-event-neon", name: "Neon Party" },
+    ],
+  },
+  {
+    id: "luxury", name: "Luxury & Premium", color: "amber",
+    description: "Elegant, minimal, exclusive",
+    templates: [
+      { id: "nav-luxury-minimal", name: "Ultra Minimal" },
+      { id: "nav-luxury-gold", name: "Gold Accent" },
+      { id: "nav-luxury-editorial", name: "Editorial" },
+      { id: "nav-luxury-serif", name: "Serif Classic" },
+      { id: "nav-luxury-noir", name: "All Black" },
+      { id: "nav-luxury-marble", name: "Marble Texture" },
+      { id: "nav-luxury-silk", name: "Silk Smooth" },
+      { id: "nav-luxury-monogram", name: "Monogram" },
+      { id: "nav-luxury-curtain", name: "Curtain Drape" },
+      { id: "nav-luxury-diamond", name: "Diamond Cut" },
+    ],
+  },
+  {
+    id: "personal", name: "Personal & Freelancer", color: "cyan",
+    description: "Human, authentic, personality-driven",
+    templates: [
+      { id: "nav-personal-hello", name: "Hello Intro" },
+      { id: "nav-personal-photo", name: "Avatar Photo" },
+      { id: "nav-personal-social", name: "Social Links" },
+      { id: "nav-personal-minimal", name: "Name Only" },
+      { id: "nav-personal-card", name: "Business Card" },
+      { id: "nav-personal-blog", name: "Blog Style" },
+      { id: "nav-personal-stack", name: "Tech Stack" },
+      { id: "nav-personal-handwrite", name: "Handwritten" },
+      { id: "nav-personal-gradient", name: "Soft Gradient" },
+      { id: "nav-personal-dot", name: "Dot Indicator" },
+    ],
+  },
+  {
+    id: "restaurant", name: "Restaurant & Food", color: "orange",
+    description: "Appetizing, warm, sensory",
+    templates: [
+      { id: "nav-restaurant-menu", name: "Menu Focus" },
+      { id: "nav-restaurant-chef", name: "Chef Hat" },
+      { id: "nav-restaurant-elegant", name: "Fine Dining" },
+      { id: "nav-restaurant-rustic", name: "Rustic Wood" },
+      { id: "nav-restaurant-modern", name: "Modern Bistro" },
+      { id: "nav-restaurant-sushi", name: "Japanese Min" },
+      { id: "nav-restaurant-pizza", name: "Italian Warm" },
+      { id: "nav-restaurant-cafe", name: "Coffee Shop" },
+      { id: "nav-restaurant-bar", name: "Bar Lounge" },
+      { id: "nav-restaurant-reserve", name: "Reserve Table" },
+    ],
+  },
+  {
+    id: "education", name: "Education & Academy", color: "emerald",
+    description: "Inspiring, structured, knowledge-driven",
+    templates: [
+      { id: "nav-edu-classic", name: "Academic" },
+      { id: "nav-edu-modern", name: "E-Learning" },
+      { id: "nav-edu-book", name: "Book Theme" },
+      { id: "nav-edu-chalk", name: "Chalkboard" },
+      { id: "nav-edu-campus", name: "Campus Map" },
+      { id: "nav-edu-course", name: "Course Catalog" },
+      { id: "nav-edu-bright", name: "Bright Youth" },
+      { id: "nav-edu-lab", name: "Science Lab" },
+      { id: "nav-edu-library", name: "Library Card" },
+      { id: "nav-edu-minimal", name: "Clean Minimal" },
+    ],
+  },
+  {
+    id: "company", name: "Company", color: "blue",
+    description: "Professional, trustworthy, corporate",
+    templates: [
+      { id: "nav-company-corporate", name: "Corporate" },
+      { id: "nav-company-glass", name: "Glass Effect" },
+      { id: "nav-company-dark", name: "Dark Pro" },
+      { id: "nav-company-split", name: "Split Layout" },
+      { id: "nav-company-mega", name: "Mega Menu" },
+      { id: "nav-company-topbar", name: "Top Info Bar" },
+      { id: "nav-company-centered", name: "Center Logo" },
+      { id: "nav-company-sidebar", name: "Side Nav" },
+      { id: "nav-company-modern", name: "Modern Clean" },
+      { id: "nav-company-bold", name: "Bold Type" },
+    ],
+  },
+  {
+    id: "agency", name: "Creative Agency", color: "pink",
+    description: "Bold, artistic, expressive",
+    templates: [
+      { id: "nav-agency-creative", name: "Creative Bold" },
+      { id: "nav-agency-neon", name: "Neon Accent" },
+      { id: "nav-agency-film", name: "Film Cinema" },
+      { id: "nav-agency-grid", name: "Grid Layout" },
+      { id: "nav-agency-paint", name: "Paint Art" },
+      { id: "nav-agency-minimal", name: "Art Minimal" },
+      { id: "nav-agency-bold", name: "Oversized" },
+      { id: "nav-agency-dark", name: "Dark Moody" },
+      { id: "nav-agency-color", name: "Color Block" },
+      { id: "nav-agency-studio", name: "Studio Space" },
+    ],
+  },
+  {
+    id: "freelancer", name: "Freelancer", color: "cyan",
+    description: "Personal, authentic, skill-focused",
+    templates: [
+      { id: "nav-freelancer-simple", name: "Simple Clean" },
+      { id: "nav-freelancer-code", name: "Code Editor" },
+      { id: "nav-freelancer-coffee", name: "Coffee Vibe" },
+      { id: "nav-freelancer-desk", name: "Desktop Work" },
+      { id: "nav-freelancer-badge", name: "ID Badge" },
+      { id: "nav-freelancer-tools", name: "Tool Belt" },
+      { id: "nav-freelancer-calendar", name: "Calendar" },
+      { id: "nav-freelancer-connect", name: "Hire CTA" },
+      { id: "nav-freelancer-portfolio", name: "Portfolio" },
+      { id: "nav-freelancer-quotes", name: "Client Quote" },
+    ],
+  },
+  {
+    id: "resume", name: "Resume / CV", color: "violet",
+    description: "Professional, personal, creative",
+    templates: [
+      { id: "nav-resume-paper", name: "Paper Doc" },
+      { id: "nav-resume-timeline", name: "Timeline Nav" },
+      { id: "nav-resume-tab", name: "Tab Sections" },
+      { id: "nav-resume-minimal", name: "Name + Tabs" },
+      { id: "nav-resume-card", name: "Card Header" },
+      { id: "nav-resume-dashboard", name: "Dashboard" },
+      { id: "nav-resume-terminal", name: "Terminal CLI" },
+      { id: "nav-resume-scroll", name: "Scroll Paper" },
+      { id: "nav-resume-blueprint", name: "Blueprint" },
+      { id: "nav-resume-spotlight", name: "Spotlight" },
+    ],
+  },
+  {
+    id: "clinic", name: "Medical Clinic", color: "emerald",
+    description: "Clean, trustworthy, caring",
+    templates: [
+      { id: "nav-clinic-clean", name: "Clean White" },
+      { id: "nav-clinic-pulse", name: "Pulse Line" },
+      { id: "nav-clinic-trust", name: "Trust Badge" },
+      { id: "nav-clinic-booking", name: "Book Appt" },
+      { id: "nav-clinic-emergency", name: "Emergency" },
+      { id: "nav-clinic-modern", name: "Modern Care" },
+      { id: "nav-clinic-care", name: "Patient Care" },
+      { id: "nav-clinic-dna", name: "DNA Accent" },
+      { id: "nav-clinic-shield", name: "Health Shield" },
+      { id: "nav-clinic-green", name: "Nature Heal" },
+    ],
+  },
+  {
+    id: "real-estate", name: "Real Estate", color: "amber",
+    description: "Premium, aspirational, location-focused",
+    templates: [
+      { id: "nav-realestate-luxury", name: "Luxury Prop" },
+      { id: "nav-realestate-search", name: "Search Bar" },
+      { id: "nav-realestate-modern", name: "Modern Clean" },
+      { id: "nav-realestate-dark", name: "Dark Premium" },
+      { id: "nav-realestate-gold", name: "Gold Accent" },
+      { id: "nav-realestate-map", name: "Map Location" },
+      { id: "nav-realestate-key", name: "Key Icon" },
+      { id: "nav-realestate-glass", name: "Glass Effect" },
+      { id: "nav-realestate-building", name: "Building Line" },
+      { id: "nav-realestate-compass", name: "Compass Nav" },
+    ],
+  },
+  {
+    id: "photography", name: "Photography", color: "pink",
+    description: "Visual, artistic, portfolio-driven",
+    templates: [
+      { id: "nav-photo-gallery", name: "Gallery Style" },
+      { id: "nav-photo-dark", name: "Dark Room" },
+      { id: "nav-photo-minimal", name: "Ultra Minimal" },
+      { id: "nav-photo-film", name: "Film Strip" },
+      { id: "nav-photo-aperture", name: "Aperture" },
+      { id: "nav-photo-lightbox", name: "Lightbox" },
+      { id: "nav-photo-viewfinder", name: "Viewfinder" },
+      { id: "nav-photo-polaroid", name: "Polaroid" },
+      { id: "nav-photo-exposure", name: "Exposure" },
+      { id: "nav-photo-lens", name: "Lens Focus" },
+    ],
+  },
+  {
+    id: "law-firm", name: "Law Firm", color: "amber",
+    description: "Authoritative, trustworthy, prestigious",
+    templates: [
+      { id: "nav-law-classic", name: "Classic Legal" },
+      { id: "nav-law-column", name: "Greek Column" },
+      { id: "nav-law-scales", name: "Scales" },
+      { id: "nav-law-dark", name: "Dark Authority" },
+      { id: "nav-law-gold", name: "Gold Serif" },
+      { id: "nav-law-library", name: "Law Library" },
+      { id: "nav-law-document", name: "Legal Doc" },
+      { id: "nav-law-emblem", name: "Crest Emblem" },
+      { id: "nav-law-marble", name: "Marble Hall" },
+      { id: "nav-law-gavel", name: "Gavel Icon" },
+    ],
+  },
+  {
+    id: "gym", name: "Gym / Fitness", color: "red",
+    description: "Energetic, powerful, motivating",
+    templates: [
+      { id: "nav-gym-energy", name: "High Energy" },
+      { id: "nav-gym-dark", name: "Dark Red" },
+      { id: "nav-gym-pulse", name: "Pulse Beat" },
+      { id: "nav-gym-power", name: "Power Bar" },
+      { id: "nav-gym-neon", name: "Neon Sign" },
+      { id: "nav-gym-track", name: "Race Track" },
+      { id: "nav-gym-flame", name: "Fire Flame" },
+      { id: "nav-gym-steel", name: "Steel Metal" },
+      { id: "nav-gym-timer", name: "Timer Clock" },
+      { id: "nav-gym-champion", name: "Champion" },
+    ],
+  },
+];
+
 const creativeOriginals = [
   { id: "liquid-morphism", name: "Liquid Morphism", description: "Organic morphing blobs with glassmorphism cards" },
   { id: "isometric-world", name: "Isometric World", description: "CSS isometric city with rising buildings" },
@@ -404,6 +712,7 @@ export default function TestIndexPage() {
   const blocks = getAllBlocks();
   const totalRegistry = blocks.reduce((sum, b) => sum + b.templates.length, 0);
   const totalHeroExp = heroCategories.reduce((s, c) => s + c.templates.length, 0) + creativeOriginals.length + standaloneExperiments.length;
+  const totalNavExp = navCategories.reduce((s, c) => s + c.templates.length, 0);
 
   const [active, setActive] = useState<string | null>(null);
 
@@ -419,7 +728,7 @@ export default function TestIndexPage() {
             Click a component to view its categories and templates.
           </p>
           <p className="text-xs text-gray-600 mt-2">
-            {blocks.length + 1} sections · {totalRegistry + totalHeroExp} total templates
+            {blocks.length + 2} sections · {totalRegistry + totalHeroExp + totalNavExp} total templates
           </p>
         </div>
       </div>
@@ -499,6 +808,55 @@ export default function TestIndexPage() {
           )}
         </div>
 
+        {/* ═══ Experimental Navigation ═══ */}
+        <div className="rounded-xl border border-teal-500/20 overflow-hidden">
+          <button
+            onClick={() => toggle("nav-exp")}
+            className={`w-full flex items-center gap-4 p-5 text-left transition-colors ${active === "nav-exp" ? "bg-teal-500/10" : "bg-gray-900/50 hover:bg-gray-900"}`}
+          >
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-teal-500/20 to-cyan-500/20 flex items-center justify-center text-teal-400 font-bold text-lg shrink-0">
+              N
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="font-bold text-lg">Experimental Navigation</h2>
+              <p className="text-xs text-gray-500">{navCategories.length} categories · {totalNavExp} templates</p>
+            </div>
+            <span className={`text-gray-500 text-xl transition-transform ${active === "nav-exp" ? "rotate-180" : ""}`}>▾</span>
+          </button>
+
+          {active === "nav-exp" && (
+            <div className="border-t border-teal-500/10 bg-gray-950/50 p-5 space-y-4">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {navCategories.map((cat) => (
+                  <div key={cat.id} className={`border rounded-xl overflow-hidden ${borderColor[cat.color]}`}>
+                    <Link
+                      href={`/test/nav/${cat.id}`}
+                      className="flex items-center gap-3 p-3 hover:bg-white/[0.02] transition-colors"
+                    >
+                      <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${dotColor[cat.color]}`} />
+                      <div className="flex-1 min-w-0">
+                        <span className="font-semibold text-sm">{cat.name}</span>
+                        <span className="text-xs text-gray-600 ml-2">{cat.templates.length}</span>
+                      </div>
+                    </Link>
+                    <div className="px-3 pb-3 flex flex-wrap gap-1.5">
+                      {cat.templates.map((t) => (
+                        <Link
+                          key={t.id}
+                          href={`/test/nav/${cat.id}/${t.id}`}
+                          className={`text-xs bg-gray-800 ${linkColor[cat.color]} px-2.5 py-1 rounded transition-colors`}
+                        >
+                          {t.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* ═══ Registry Blocks ═══ */}
         {blocks.map((block) => (
           <div key={block.type} className="rounded-xl border border-gray-800 overflow-hidden">
@@ -549,7 +907,7 @@ export default function TestIndexPage() {
 
         {/* Footer */}
         <div className="pt-6 border-t border-gray-800 text-center text-gray-600 text-xs">
-          {blocks.length + 1} sections · {totalRegistry + totalHeroExp} total templates
+          {blocks.length + 2} sections · {totalRegistry + totalHeroExp + totalNavExp} total templates
         </div>
       </div>
     </div>
