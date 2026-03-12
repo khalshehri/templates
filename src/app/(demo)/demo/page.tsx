@@ -62,7 +62,22 @@ const CATEGORIES = [
 ] as const;
 
 /* ── Known templates registry (add here as you build them) ── */
-const TEMPLATES: Record<string, Record<string, { id: string; name: string }[]>> = {};
+const TEMPLATES: Record<string, Record<string, { id: string; name: string }[]>> = {
+  hero: {
+    company: [
+      { id: "hero-01", name: "Pulse Grid" },
+      { id: "hero-02", name: "Aurora Waves" },
+      { id: "hero-03", name: "Metric Tower" },
+      { id: "hero-04", name: "Orbital Ring" },
+      { id: "hero-05", name: "Horizon Line" },
+      { id: "hero-06", name: "Data Stream" },
+      { id: "hero-07", name: "Hexagon Mesh" },
+      { id: "hero-08", name: "Blueprint Layers" },
+      { id: "hero-09", name: "Particle Constellation" },
+      { id: "hero-10", name: "Topographic Map" },
+    ],
+  },
+};
 
 /* ── Color utilities ───────────────────────────────────────── */
 const borderColors: Record<string, string> = {
