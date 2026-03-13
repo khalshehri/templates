@@ -14,7 +14,7 @@ export default function Page() {
           href="/demo"
           className="text-gray-400 hover:text-white text-sm transition-colors"
         >
-          ← Back
+          &larr; Back
         </Link>
         <div className="flex gap-2">
           <button

@@ -1,251 +1,290 @@
 "use client";
 
-import { Sparkles, Zap, Shield, Globe, ArrowRight } from "lucide-react";
-
-interface Hero02Props {
-  language: "en" | "ar";
-}
+import { useState, useEffect } from "react";
+import { ArrowRight, Palette } from "lucide-react";
 
 const content = {
   en: {
-    headingStart: "Build the future with",
-    headingAccent: "intelligent software",
-    sub: "From idea to production in record time. Our platform gives startups the tools to compete with giants.",
-    cta: "Start Building — It's Free",
-    pills: [
-      { label: "Lightning Fast", icon: "zap" },
-      { label: "Enterprise Ready", icon: "shield" },
-      { label: "Global Scale", icon: "globe" },
+    heading: "WE DON'T DO ORDINARY",
+    sub: "Strategy \u00b7 Design \u00b7 Technology",
+    cta: "View our work",
+    cards: [
+      { title: "Rebrand", category: "Identity" },
+      { title: "Platform", category: "Digital" },
+      { title: "Campaign", category: "Motion" },
     ],
   },
   ar: {
-    headingStart: "ابنِ المستقبل مع",
-    headingAccent: "برمجيات ذكية",
-    sub: "من الفكرة إلى الإنتاج في وقت قياسي. منصتنا تمنح الشركات الناشئة أدوات المنافسة مع العمالقة.",
-    cta: "ابدأ البناء — مجاناً",
-    pills: [
-      { label: "سريع البرق", icon: "zap" },
-      { label: "جاهز للمؤسسات", icon: "shield" },
-      { label: "نطاق عالمي", icon: "globe" },
+    heading: "\u0644\u0627 \u0646\u0642\u062f\u0645 \u0627\u0644\u0645\u0623\u0644\u0648\u0641",
+    sub: "\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629 \u00b7 \u062a\u0635\u0645\u064a\u0645 \u00b7 \u062a\u0643\u0646\u0648\u0644\u0648\u062c\u064a\u0627",
+    cta: "\u0634\u0627\u0647\u062f \u0623\u0639\u0645\u0627\u0644\u0646\u0627",
+    cards: [
+      { title: "\u0647\u0648\u064a\u0629 \u0628\u0635\u0631\u064a\u0629", category: "" },
+      { title: "\u0645\u0646\u0635\u0629 \u0631\u0642\u0645\u064a\u0629", category: "" },
+      { title: "\u062d\u0645\u0644\u0629 \u0625\u0639\u0644\u0627\u0646\u064a\u0629", category: "" },
     ],
   },
 };
 
-const PillIcon = ({ icon }: { icon: string }) => {
-  switch (icon) {
-    case "zap":
-      return <Zap className="w-4 h-4" />;
-    case "shield":
-      return <Shield className="w-4 h-4" />;
-    case "globe":
-      return <Globe className="w-4 h-4" />;
-    default:
-      return null;
-  }
-};
+const cardPositions = [
+  { top: "18%", left: "12%" , rotate: -3 },
+  { top: "42%", left: "52%", rotate: 2 },
+  { top: "64%", left: "22%", rotate: -1.5 },
+];
 
-export function Hero02({ language }: Hero02Props) {
+export function Hero02({ language }: { language: "en" | "ar" }) {
   const t = content[language];
   const isAr = language === "ar";
+  const fontHeading = isAr ? "var(--font-changa)" : "var(--font-inter)";
+  const fontBody = isAr ? "var(--font-tajawal)" : "var(--font-inter)";
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
       <style>{`
-        @keyframes aurora-blob1 {
-          0%, 100% { transform: translate(0, 0); }
-          25% { transform: translate(80px, -60px); }
-          50% { transform: translate(-40px, 80px); }
-          75% { transform: translate(60px, 40px); }
+        @keyframes h02SlideLeft {
+          from { opacity: 0; transform: translateX(${isAr ? "40px" : "-40px"}); }
+          to { opacity: 1; transform: translateX(0); }
         }
-        @keyframes aurora-blob2 {
-          0%, 100% { transform: translate(0, 0); }
-          25% { transform: translate(-60px, 80px); }
-          50% { transform: translate(70px, -40px); }
-          75% { transform: translate(-80px, -60px); }
+        @keyframes h02FadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
-        @keyframes aurora-blob3 {
-          0%, 100% { transform: translate(0, 0); }
-          25% { transform: translate(50px, 70px); }
-          50% { transform: translate(-80px, -50px); }
-          75% { transform: translate(40px, -80px); }
+        @keyframes h02CardPop {
+          from { opacity: 0; transform: scale(0.8); }
+          to { opacity: 1; transform: scale(1); }
         }
-        @keyframes aurora-blob4 {
-          0%, 100% { transform: translate(0, 0); }
-          25% { transform: translate(-70px, -40px); }
-          50% { transform: translate(60px, 60px); }
-          75% { transform: translate(-50px, 70px); }
+        @keyframes h02Float0 {
+          0%, 100% { transform: translateY(0px) rotate(${cardPositions[0].rotate}deg); }
+          50% { transform: translateY(-8px) rotate(${cardPositions[0].rotate}deg); }
         }
-        @keyframes aurora-fadeUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes h02Float1 {
+          0%, 100% { transform: translateY(0px) rotate(${cardPositions[1].rotate}deg); }
+          50% { transform: translateY(8px) rotate(${cardPositions[1].rotate}deg); }
         }
-        @keyframes aurora-shimmer {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
-        .aurora-fadeUp {
-          animation: aurora-fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          opacity: 0;
-        }
-        .aurora-d1 { animation-delay: 0.1s; }
-        .aurora-d2 { animation-delay: 0.2s; }
-        .aurora-d3 { animation-delay: 0.35s; }
-        .aurora-d4 { animation-delay: 0.5s; }
-        .aurora-shimmer-btn {
-          position: relative;
-          overflow: hidden;
-        }
-        .aurora-shimmer-btn::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            110deg,
-            transparent 25%,
-            rgba(255,255,255,0.15) 50%,
-            transparent 75%
-          );
-          background-size: 200% 100%;
-          animation: aurora-shimmer 3s ease-in-out infinite;
+        @keyframes h02Float2 {
+          0%, 100% { transform: translateY(0px) rotate(${cardPositions[2].rotate}deg); }
+          50% { transform: translateY(-6px) rotate(${cardPositions[2].rotate}deg); }
         }
         @media (prefers-reduced-motion: reduce) {
-          .aurora-fadeUp { animation: none; opacity: 1; }
-          .aurora-blob { animation: none !important; }
-          .aurora-shimmer-btn::after { animation: none; }
+          .h02-animate { animation: none !important; opacity: 1 !important; transform: none !important; }
+        }
+        @media (max-width: 768px) {
+          .h02-split { flex-direction: column !important; }
+          .h02-left, .h02-right { width: 100% !important; min-height: 50vh !important; }
+          .h02-divider-wrap { display: none !important; }
         }
       `}</style>
 
       <section
-        className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center"
         style={{
-          background: "#030014",
-          fontFamily: isAr ? "var(--font-readex-pro)" : "var(--font-inter)",
+          minHeight: "100vh",
+          display: "flex",
+          position: "relative",
+          overflow: "hidden",
+          fontFamily: fontBody,
         }}
+        className="h02-split"
       >
-        {/* Gradient Mesh Blobs */}
+        {/* LEFT — Pure Black */}
         <div
-          className="aurora-blob absolute pointer-events-none rounded-full"
+          className="h02-left"
           style={{
-            width: "500px",
-            height: "500px",
-            top: "10%",
-            left: "15%",
-            background: "radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%)",
-            filter: "blur(100px)",
-            animation: "aurora-blob1 20s ease-in-out infinite",
+            width: "50%",
+            minHeight: "100vh",
+            background: "#000000",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: "clamp(32px, 6vw, 80px)",
+            position: "relative",
+            zIndex: 2,
           }}
-        />
-        <div
-          className="aurora-blob absolute pointer-events-none rounded-full"
-          style={{
-            width: "500px",
-            height: "500px",
-            top: "20%",
-            right: "10%",
-            background: "radial-gradient(circle, rgba(37,99,235,0.16) 0%, transparent 70%)",
-            filter: "blur(100px)",
-            animation: "aurora-blob2 25s ease-in-out infinite",
-          }}
-        />
-        <div
-          className="aurora-blob absolute pointer-events-none rounded-full"
-          style={{
-            width: "500px",
-            height: "500px",
-            bottom: "15%",
-            left: "35%",
-            background: "radial-gradient(circle, rgba(6,182,212,0.14) 0%, transparent 70%)",
-            filter: "blur(100px)",
-            animation: "aurora-blob3 30s ease-in-out infinite",
-          }}
-        />
-        <div
-          className="aurora-blob absolute pointer-events-none rounded-full"
-          style={{
-            width: "500px",
-            height: "500px",
-            bottom: "25%",
-            right: "25%",
-            background: "radial-gradient(circle, rgba(236,72,153,0.12) 0%, transparent 70%)",
-            filter: "blur(100px)",
-            animation: "aurora-blob4 35s ease-in-out infinite",
-          }}
-        />
-
-        {/* Content */}
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-24 sm:py-32 lg:py-40 flex flex-col items-center text-center">
-          {/* Sparkles icon */}
-          <div className="aurora-fadeUp aurora-d1 mb-6">
-            <Sparkles className="w-6 h-6 text-violet-400" />
-          </div>
-
-          {/* Heading */}
-          <h1
-            className="aurora-fadeUp aurora-d2 max-w-4xl"
+        >
+          <div
+            className="h02-animate"
             style={{
-              fontSize: "clamp(2.5rem, 6.5vw, 5rem)",
-              fontWeight: 700,
-              letterSpacing: "-0.03em",
-              lineHeight: 1.1,
-              color: "#f8fafc",
+              animation: mounted ? "h02SlideLeft 0.6s cubic-bezier(0.16,1,0.3,1) both" : "none",
+              opacity: mounted ? undefined : 0,
             }}
           >
-            {t.headingStart}{" "}
-            <span
+            <div
               style={{
-                background: "linear-gradient(135deg, #7c3aed 0%, #2563eb 50%, #06b6d4 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                marginBottom: "32px",
               }}
             >
-              {t.headingAccent}
-            </span>
-          </h1>
+              <Palette size={18} color="#ff6b6b" />
+              <span style={{ color: "#ff6b6b", fontSize: "13px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: fontBody }}>
+                {isAr ? "ستوديو إبداعي" : "Creative Studio"}
+              </span>
+            </div>
 
-          {/* Subtitle */}
-          <p
-            className="aurora-fadeUp aurora-d3 mt-7 max-w-2xl text-lg sm:text-xl"
-            style={{ color: "#94a3b8", fontWeight: 300, lineHeight: 1.7 }}
-          >
-            {t.sub}
-          </p>
-
-          {/* CTA */}
-          <div className="aurora-fadeUp aurora-d3 mt-10">
-            <button
-              className="aurora-shimmer-btn cursor-pointer inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-semibold text-base transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98]"
+            <h1
               style={{
-                background: "linear-gradient(135deg, #7c3aed 0%, #2563eb 60%, #06b6d4 100%)",
-                boxShadow: "0 0 40px rgba(124,58,237,0.3), 0 0 80px rgba(37,99,235,0.15)",
+                fontFamily: fontHeading,
+                fontSize: "clamp(2.5rem, 7vw, 5rem)",
+                fontWeight: 800,
+                color: "#ffffff",
+                lineHeight: 0.95,
+                letterSpacing: isAr ? "0" : "-0.04em",
+                textTransform: isAr ? "none" : "uppercase",
+                marginBottom: "24px",
               }}
+            >
+              {t.heading}
+            </h1>
+
+            <p
+              style={{
+                color: "rgba(255,255,255,0.5)",
+                fontSize: "clamp(1rem, 2vw, 1.15rem)",
+                fontWeight: 300,
+                marginBottom: "48px",
+                fontFamily: fontBody,
+                letterSpacing: "0.02em",
+              }}
+            >
+              {t.sub}
+            </p>
+
+            <button
+              className="cursor-pointer"
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "#ffffff",
+                fontSize: "16px",
+                fontWeight: 500,
+                fontFamily: fontBody,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "12px",
+                padding: 0,
+                transition: "gap 0.3s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.gap = "20px")}
+              onMouseLeave={(e) => (e.currentTarget.style.gap = "12px")}
             >
               {t.cta}
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight size={20} />
             </button>
           </div>
+        </div>
 
-          {/* Feature Pills */}
-          <div className="aurora-fadeUp aurora-d4 flex flex-wrap items-center justify-center gap-3 mt-14">
-            {t.pills.map((pill, i) => (
+        {/* WAVY SVG DIVIDER */}
+        <div
+          className="h02-divider-wrap"
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: 0,
+            bottom: 0,
+            width: "80px",
+            transform: isAr ? "translateX(50%) scaleX(-1)" : "translateX(-50%)",
+            zIndex: 3,
+            pointerEvents: "none",
+          }}
+        >
+          <svg
+            viewBox="0 0 80 800"
+            preserveAspectRatio="none"
+            style={{ width: "100%", height: "100%" }}
+          >
+            <path
+              d="M40,0 C60,100 20,200 40,300 C60,400 20,500 40,600 C60,700 20,750 40,800"
+              fill="none"
+              stroke="rgba(255,107,107,0.3)"
+              strokeWidth="1.5"
+            />
+          </svg>
+        </div>
+
+        {/* RIGHT — Vivid Gradient */}
+        <div
+          className="h02-right h02-animate"
+          style={{
+            width: "50%",
+            minHeight: "100vh",
+            background: "linear-gradient(135deg, #ff6b6b 0%, #ee5a24 50%, #f0932b 100%)",
+            position: "relative",
+            zIndex: 1,
+            animation: mounted ? "h02FadeIn 0.4s ease both" : "none",
+            animationDelay: "200ms",
+            opacity: mounted ? undefined : 0,
+          }}
+        >
+          {/* Floating project cards */}
+          {t.cards.map((card, i) => (
+            <div
+              key={i}
+              className="h02-animate"
+              style={{
+                position: "absolute",
+                top: cardPositions[i].top,
+                ...(isAr
+                  ? { right: cardPositions[i].left }
+                  : { left: cardPositions[i].left }),
+                width: "160px",
+                minHeight: "200px",
+                background: "rgba(255,255,255,0.95)",
+                borderRadius: "16px",
+                padding: "24px 20px",
+                boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-end",
+                animation: mounted
+                  ? `h02CardPop 0.5s cubic-bezier(0.16,1,0.3,1) ${400 + i * 100}ms both, h02Float${i} ${4 + i}s ease-in-out infinite ${600 + i * 100}ms`
+                  : "none",
+                opacity: mounted ? undefined : 0,
+              }}
+            >
+              {/* Colored bar at top */}
               <div
-                key={i}
-                className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full transition-colors hover:bg-white/[0.08]"
                 style={{
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  backdropFilter: "blur(20px)",
+                  position: "absolute",
+                  top: "16px",
+                  left: "20px",
+                  right: "20px",
+                  height: "80px",
+                  borderRadius: "10px",
+                  background:
+                    i === 0
+                      ? "linear-gradient(135deg, #1d1d1f, #3a3a3c)"
+                      : i === 1
+                      ? "linear-gradient(135deg, #ff6b6b, #ee5a24)"
+                      : "linear-gradient(135deg, #f0932b, #f9ca24)",
+                  opacity: 0.9,
                 }}
-              >
-                <span style={{ color: "#a78bfa" }}>
-                  <PillIcon icon={pill.icon} />
-                </span>
-                <span className="text-sm" style={{ color: "#cbd5e1", fontWeight: 400 }}>
-                  {pill.label}
-                </span>
+              />
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <p
+                  style={{
+                    fontFamily: fontHeading,
+                    fontWeight: 700,
+                    fontSize: "15px",
+                    color: "#1d1d1f",
+                    marginBottom: card.category ? "4px" : 0,
+                  }}
+                >
+                  {card.title}
+                </p>
+                {card.category && (
+                  <p style={{ color: "#86868b", fontSize: "12px", fontFamily: fontBody }}>
+                    {card.category}
+                  </p>
+                )}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
     </>

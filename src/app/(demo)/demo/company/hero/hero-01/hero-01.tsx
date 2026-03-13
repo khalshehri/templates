@@ -1,335 +1,450 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Layers, ArrowRight, Play } from "lucide-react";
-
-interface Hero01Props {
-  language: "en" | "ar";
-}
+import { useState, useEffect } from "react";
+import { Layers, Zap, Lock, ArrowRight } from "lucide-react";
 
 const content = {
   en: {
-    badge: "Introducing Nexus 3.0",
-    heading: "The platform for modern enterprise",
-    sub: "Unify your operations, automate workflows, and scale with confidence. Built for teams that move fast.",
-    cta1: "Get Started",
-    cta2: "Book a Demo",
+    badge: "New: Horizon 2.0",
+    heading: "The workspace that works with you",
+    sub: "Unify projects, automate workflows, and scale your team — all in one platform.",
+    cta: "Start Free Trial",
+    ctaSub: "No credit card required",
     stats: [
-      { value: 10000, suffix: "+", label: "Teams" },
-      { value: 99.9, suffix: "%", label: "Uptime", decimals: 1 },
-      { value: 4.8, suffix: "", label: "Rating", decimals: 1 },
-      { value: 150, suffix: "+", label: "Countries" },
+      { value: 99.9, suffix: "%", label: "Uptime" },
+      { value: 10, suffix: "K+", label: "Teams" },
     ],
-    productRows: [
-      { name: "Pipeline Alpha", status: "active" },
-      { name: "Revenue Sync", status: "active" },
-      { name: "User Analytics", status: "pending" },
-      { name: "Deployment CI/CD", status: "active" },
-      { name: "Security Audit", status: "warning" },
+    features: [
+      { icon: Zap, title: "Lightning Fast", desc: "Sub-second response times globally" },
+      { icon: Lock, title: "Enterprise Security", desc: "SOC2, GDPR, and ISO certified" },
     ],
+    ctaCard: {
+      heading: "Ready to transform your workflow?",
+      cta: "Start Free Trial",
+    },
   },
   ar: {
-    badge: "تقديم نكسس 3.0",
-    heading: "المنصة للمؤسسات الحديثة",
-    sub: "وحّد عملياتك، وأتمت سير العمل، وتوسع بثقة. مصممة للفرق سريعة الحركة.",
-    cta1: "ابدأ الآن",
-    cta2: "احجز عرضاً",
+    badge: "جديد: هورايزن 2.0",
+    heading: "مساحة العمل التي تعمل معك",
+    sub: "وحّد المشاريع وأتمت سير العمل ووسّع فريقك — كل ذلك في منصة واحدة.",
+    cta: "ابدأ مجاناً",
+    ctaSub: "لا حاجة لبطاقة ائتمان",
     stats: [
-      { value: 10000, suffix: "+", label: "فريق" },
-      { value: 99.9, suffix: "%", label: "وقت التشغيل", decimals: 1 },
-      { value: 4.8, suffix: "", label: "التقييم", decimals: 1 },
-      { value: 150, suffix: "+", label: "دولة" },
+      { value: 99.9, suffix: "%", label: "وقت التشغيل" },
+      { value: 10, suffix: "K+", label: "فريق" },
     ],
-    productRows: [
-      { name: "خط الأنابيب ألفا", status: "active" },
-      { name: "مزامنة الإيرادات", status: "active" },
-      { name: "تحليلات المستخدم", status: "pending" },
-      { name: "نشر CI/CD", status: "active" },
-      { name: "تدقيق الأمان", status: "warning" },
+    features: [
+      { icon: Zap, title: "سرعة البرق", desc: "أوقات استجابة أقل من ثانية عالمياً" },
+      { icon: Lock, title: "أمان مؤسسي", desc: "معتمد SOC2 و GDPR و ISO" },
     ],
+    ctaCard: {
+      heading: "مستعد لتحويل سير عملك؟",
+      cta: "ابدأ مجاناً",
+    },
   },
 };
 
-function useCountUp(
-  end: number,
-  duration: number = 2000,
-  decimals: number = 0
-) {
-  const [count, setCount] = useState(0);
-  const startedRef = useRef(false);
+function CountUp({ target, suffix, duration = 2000 }: { target: number; suffix: string; duration?: number }) {
+  const [current, setCurrent] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
-    if (startedRef.current) return;
-    startedRef.current = true;
+    const timer = setTimeout(() => setHasStarted(true), 400);
+    return () => clearTimeout(timer);
+  }, []);
 
-    const startTime = performance.now();
-    const step = (now: number) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Number((eased * end).toFixed(decimals)));
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [end, duration, decimals]);
+  useEffect(() => {
+    if (!hasStarted) return;
+    const steps = 60;
+    const increment = target / steps;
+    let step = 0;
+    const interval = setInterval(() => {
+      step++;
+      if (step >= steps) {
+        setCurrent(target);
+        clearInterval(interval);
+      } else {
+        setCurrent(Number((increment * step).toFixed(1)));
+      }
+    }, duration / steps);
+    return () => clearInterval(interval);
+  }, [hasStarted, target, duration]);
 
-  return count;
+  return (
+    <span>
+      {current}
+      {suffix}
+    </span>
+  );
 }
 
-export function Hero01({ language }: Hero01Props) {
+export function Hero01({ language }: { language: "en" | "ar" }) {
   const t = content[language];
   const isAr = language === "ar";
-
-  const stat0 = useCountUp(t.stats[0].value, 2000, 0);
-  const stat1 = useCountUp(t.stats[1].value, 2000, t.stats[1].decimals ?? 0);
-  const stat2 = useCountUp(t.stats[2].value, 2000, t.stats[2].decimals ?? 0);
-  const stat3 = useCountUp(t.stats[3].value, 2000, 0);
-  const statValues = [stat0, stat1, stat2, stat3];
-
-  const statusColors: Record<string, string> = {
-    active: "#22c55e",
-    pending: "#eab308",
-    warning: "#f97316",
-  };
+  const fontHeading = isAr ? "var(--font-cairo)" : "var(--font-inter)";
+  const fontBody = isAr ? "var(--font-cairo)" : "var(--font-inter)";
 
   return (
     <>
       <style>{`
-        @keyframes nexus-fadeUp {
-          from { opacity: 0; transform: translateY(30px); }
+        @keyframes h01FadeUp {
+          from { opacity: 0; transform: translateY(24px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes nexus-orbBreathe {
-          0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.12; }
-          50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.2; }
+        @keyframes h01Pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.7; }
         }
-        @keyframes nexus-float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-6px); }
-        }
-        .nexus-fadeUp {
-          animation: nexus-fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          opacity: 0;
-        }
-        .nexus-delay-1 { animation-delay: 0.1s; }
-        .nexus-delay-2 { animation-delay: 0.2s; }
-        .nexus-delay-3 { animation-delay: 0.35s; }
-        .nexus-delay-4 { animation-delay: 0.5s; }
-        .nexus-delay-5 { animation-delay: 0.65s; }
-        .nexus-delay-6 { animation-delay: 0.8s; }
-        .nexus-delay-7 { animation-delay: 0.95s; }
         @media (prefers-reduced-motion: reduce) {
-          .nexus-fadeUp {
-            animation: none;
-            opacity: 1;
-          }
-          .nexus-orb, .nexus-product-card {
-            animation: none !important;
-          }
+          .h01-animate { animation: none !important; opacity: 1 !important; transform: none !important; }
         }
       `}</style>
 
       <section
-        className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center"
         style={{
-          background: "linear-gradient(180deg, #050507 0%, #0a0a1a 100%)",
-          fontFamily: isAr ? "var(--font-cairo)" : "var(--font-inter)",
+          background: "#f5f5f7",
+          minHeight: "100vh",
+          fontFamily: fontBody,
+          padding: "24px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        {/* Ambient Orb */}
         <div
-          className="nexus-orb absolute pointer-events-none"
           style={{
-            width: "700px",
-            height: "700px",
-            top: "30%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            background:
-              "radial-gradient(circle, rgba(99,102,241,0.25) 0%, rgba(167,139,250,0.1) 40%, transparent 70%)",
-            filter: "blur(150px)",
-            animation: "nexus-orbBreathe 8s ease-in-out infinite",
+            maxWidth: "1200px",
+            width: "100%",
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gridTemplateRows: "auto auto",
+            gap: "16px",
           }}
-        />
-
-        {/* Content */}
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-24 sm:py-32 lg:py-40 flex flex-col items-center text-center">
-          {/* Badge */}
-          <div className="nexus-fadeUp nexus-delay-1 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.05] border border-white/[0.1] backdrop-blur-md mb-8">
-            <Layers className="w-4 h-4 text-indigo-400" />
-            <span
-              className="text-sm text-indigo-300"
-              style={{ letterSpacing: "0.02em" }}
-            >
-              {t.badge}
-            </span>
-          </div>
-
-          {/* Heading */}
-          <h1
-            className="nexus-fadeUp nexus-delay-2 max-w-4xl"
-            style={{
-              fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
-              fontWeight: 700,
-              letterSpacing: "-0.03em",
-              lineHeight: 1.1,
-              color: "#ededed",
-            }}
-          >
-            {t.heading}
-          </h1>
-
-          {/* Subtitle */}
-          <p
-            className="nexus-fadeUp nexus-delay-3 mt-6 max-w-2xl text-lg sm:text-xl"
-            style={{ color: "#a1a1aa", fontWeight: 300, lineHeight: 1.7 }}
-          >
-            {t.sub}
-          </p>
-
-          {/* CTAs */}
-          <div className="nexus-fadeUp nexus-delay-4 flex flex-wrap items-center justify-center gap-4 mt-10">
-            <button
-              className="cursor-pointer inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-white font-medium text-sm transition-all hover:brightness-110 active:scale-[0.98]"
-              style={{
-                background:
-                  "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
-                boxShadow:
-                  "0 0 30px rgba(99,102,241,0.3), 0 0 60px rgba(99,102,241,0.1)",
-              }}
-            >
-              {t.cta1}
-              <ArrowRight className="w-4 h-4" />
-            </button>
-            <button
-              className="cursor-pointer inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-sm font-medium transition-all hover:bg-white/[0.08] active:scale-[0.98]"
-              style={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                color: "#d4d4d8",
-              }}
-            >
-              <Play className="w-4 h-4" />
-              {t.cta2}
-            </button>
-          </div>
-
-          {/* Product Preview Card */}
+          className="h01-grid"
+        >
+          {/* HERO TEXT — spans 2 cols, 2 rows */}
           <div
-            className="nexus-fadeUp nexus-delay-5 mt-16 w-full max-w-2xl rounded-2xl p-[1px]"
+            className="h01-animate h01-hero-text"
             style={{
-              background:
-                "linear-gradient(135deg, rgba(99,102,241,0.2), rgba(255,255,255,0.05), rgba(167,139,250,0.15))",
+              gridColumn: "1 / 3",
+              gridRow: "1 / 3",
+              background: "#ffffff",
+              borderRadius: "24px",
+              padding: "clamp(24px, 5vw, 48px)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)",
+              animation: "h01FadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both",
+              animationDelay: "0ms",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.06)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)";
             }}
           >
             <div
-              className="nexus-product-card rounded-2xl p-6"
               style={{
-                background: "rgba(10,10,26,0.8)",
-                backdropFilter: "blur(40px)",
-                animation: "nexus-float 6s ease-in-out infinite",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                background: "#0071e3",
+                color: "#fff",
+                fontSize: "13px",
+                fontWeight: 600,
+                padding: "6px 14px",
+                borderRadius: "999px",
+                marginBottom: "24px",
+                width: "fit-content",
+                fontFamily: fontBody,
               }}
             >
-              {/* Card header */}
-              <div className="flex items-center justify-between mb-5">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/60" />
-                </div>
-                <span
-                  className="text-xs px-3 py-1 rounded-full"
-                  style={{
-                    background: "rgba(99,102,241,0.15)",
-                    color: "#818cf8",
-                  }}
-                >
-                  Dashboard
-                </span>
-              </div>
+              <Layers size={14} />
+              {t.badge}
+            </div>
 
-              {/* Product rows */}
-              <div className="space-y-3">
-                {t.productRows.map((row, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between px-4 py-3 rounded-xl"
-                    style={{
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.04)",
-                    }}
-                  >
-                    <span
-                      className="text-sm"
-                      style={{ color: "#d4d4d8", fontWeight: 400 }}
-                    >
-                      {row.name}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="w-2 h-2 rounded-full"
-                        style={{ background: statusColors[row.status] }}
-                      />
-                      <span className="text-xs" style={{ color: "#71717a" }}>
-                        {row.status === "active"
-                          ? isAr
-                            ? "نشط"
-                            : "Active"
-                          : row.status === "pending"
-                            ? isAr
-                              ? "قيد الانتظار"
-                              : "Pending"
-                            : isAr
-                              ? "تحذير"
-                              : "Warning"}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <h1
+              style={{
+                fontFamily: fontHeading,
+                fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                fontWeight: 700,
+                color: "#1d1d1f",
+                lineHeight: 1.1,
+                letterSpacing: "-0.02em",
+                marginBottom: "16px",
+              }}
+            >
+              {t.heading}
+            </h1>
+
+            <p
+              style={{
+                color: "#6e6e73",
+                fontSize: "clamp(1rem, 2vw, 1.2rem)",
+                lineHeight: 1.6,
+                maxWidth: "540px",
+                marginBottom: "32px",
+                fontFamily: fontBody,
+              }}
+            >
+              {t.sub}
+            </p>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
+              <button
+                className="cursor-pointer"
+                style={{
+                  background: "#0071e3",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "14px",
+                  padding: "14px 28px",
+                  fontSize: "16px",
+                  fontWeight: 600,
+                  fontFamily: fontBody,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  transition: "background 0.2s ease",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#0062c4")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "#0071e3")}
+              >
+                {t.cta}
+                <ArrowRight size={18} />
+              </button>
+              <span style={{ color: "#86868b", fontSize: "14px", fontFamily: fontBody }}>{t.ctaSub}</span>
             </div>
           </div>
 
-          {/* Trust Logos */}
-          <div className="nexus-fadeUp nexus-delay-6 mt-16 flex flex-wrap items-center justify-center gap-8">
-            {Array.from({ length: 6 }).map((_, i) => (
+          {/* STAT CARDS */}
+          {t.stats.map((stat, i) => (
+            <div
+              key={i}
+              className="h01-animate h01-stat-card"
+              style={{
+                gridColumn: "3 / 4",
+                background: "#ffffff",
+                borderRadius: "24px",
+                padding: "32px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
+                boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)",
+                animation: "h01FadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both",
+                animationDelay: `${(i + 1) * 50}ms`,
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.06)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)";
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "clamp(2rem, 4vw, 3rem)",
+                  fontWeight: 800,
+                  color: "#1d1d1f",
+                  fontFamily: fontHeading,
+                  lineHeight: 1,
+                  marginBottom: "8px",
+                }}
+              >
+                <CountUp target={stat.value} suffix={stat.suffix} />
+              </div>
+              <div style={{ color: "#86868b", fontSize: "14px", fontWeight: 500, fontFamily: fontBody }}>
+                {stat.label}
+              </div>
+            </div>
+          ))}
+
+          {/* FEATURE CARDS */}
+          {t.features.map((feat, i) => {
+            const Icon = feat.icon;
+            return (
               <div
                 key={i}
-                className="rounded-lg"
+                className="h01-animate h01-feature-card"
                 style={{
-                  width: `${70 + i * 10}px`,
-                  height: "28px",
-                  background: "rgba(255,255,255,0.06)",
-                  opacity: 0.3,
+                  background: "#ffffff",
+                  borderRadius: "24px",
+                  padding: "32px",
+                  boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)",
+                  animation: "h01FadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both",
+                  animationDelay: `${(i + 3) * 50}ms`,
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
                 }}
-              />
-            ))}
-          </div>
-
-          {/* Stats */}
-          <div className="nexus-fadeUp nexus-delay-7 mt-14 grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-12 w-full max-w-2xl">
-            {t.stats.map((stat, i) => (
-              <div key={i} className="flex flex-col items-center gap-1">
-                <span
-                  className="text-3xl sm:text-4xl font-bold"
-                  style={{ color: "#ededed", letterSpacing: "-0.02em" }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.06)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)";
+                }}
+              >
+                <div
+                  style={{
+                    width: "48px",
+                    height: "48px",
+                    borderRadius: "14px",
+                    background: "rgba(0,113,227,0.08)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginBottom: "16px",
+                  }}
                 >
-                  {stat.decimals
-                    ? statValues[i].toFixed(stat.decimals)
-                    : Math.floor(statValues[i]).toLocaleString()}
-                  {stat.suffix}
-                </span>
-                <span
-                  className="text-sm"
-                  style={{ color: "#71717a", fontWeight: 400 }}
+                  <Icon size={22} color="#0071e3" />
+                </div>
+                <h3
+                  style={{
+                    fontFamily: fontHeading,
+                    fontWeight: 700,
+                    fontSize: "18px",
+                    color: "#1d1d1f",
+                    marginBottom: "6px",
+                  }}
                 >
-                  {stat.label}
-                </span>
+                  {feat.title}
+                </h3>
+                <p style={{ color: "#86868b", fontSize: "14px", lineHeight: 1.5, fontFamily: fontBody }}>
+                  {feat.desc}
+                </p>
               </div>
-            ))}
+            );
+          })}
+
+          {/* CTA CARD — dark, spans last column row 2 */}
+          <div
+            className="h01-animate h01-cta-card"
+            style={{
+              background: "#1d1d1f",
+              borderRadius: "24px",
+              padding: "32px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              position: "relative",
+              overflow: "hidden",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)",
+              animation: "h01FadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both",
+              animationDelay: "250ms",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.2)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)";
+            }}
+          >
+            {/* Decorative gradient arc */}
+            <div
+              style={{
+                position: "absolute",
+                top: "-60px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "200px",
+                height: "200px",
+                borderRadius: "50%",
+                border: "2px solid transparent",
+                borderTopColor: "#0071e3",
+                borderRightColor: "#34c759",
+                opacity: 0.3,
+              }}
+            />
+            <h3
+              style={{
+                fontFamily: fontHeading,
+                color: "#ffffff",
+                fontWeight: 700,
+                fontSize: "clamp(1rem, 2vw, 1.25rem)",
+                marginBottom: "20px",
+                lineHeight: 1.3,
+              }}
+            >
+              {t.ctaCard.heading}
+            </h3>
+            <button
+              className="cursor-pointer"
+              style={{
+                background: "#0071e3",
+                color: "#fff",
+                border: "none",
+                borderRadius: "14px",
+                padding: "12px 24px",
+                fontSize: "15px",
+                fontWeight: 600,
+                fontFamily: fontBody,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                transition: "background 0.2s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#0062c4")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "#0071e3")}
+            >
+              {t.ctaCard.cta}
+              <ArrowRight size={16} />
+            </button>
           </div>
         </div>
       </section>
+
+      {/* Responsive overrides */}
+      <style>{`
+        @media (max-width: 768px) {
+          .h01-grid {
+            grid-template-columns: 1fr !important;
+            grid-template-rows: auto !important;
+          }
+          .h01-hero-text {
+            grid-column: 1 / -1 !important;
+            grid-row: auto !important;
+          }
+          .h01-stat-card {
+            grid-column: 1 / -1 !important;
+          }
+          .h01-feature-card {
+            grid-column: 1 / -1 !important;
+          }
+          .h01-cta-card {
+            grid-column: 1 / -1 !important;
+          }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+          .h01-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+          .h01-hero-text {
+            grid-column: 1 / 3 !important;
+            grid-row: auto !important;
+          }
+          .h01-stat-card {
+            grid-column: auto !important;
+          }
+          .h01-cta-card {
+            grid-column: 1 / 3 !important;
+          }
+        }
+      `}</style>
     </>
   );
 }

@@ -65,16 +65,9 @@ const CATEGORIES = [
 const TEMPLATES: Record<string, Record<string, { id: string; name: string }[]>> = {
   hero: {
     company: [
-      { id: "hero-01", name: "Nexus — Enterprise SaaS" },
-      { id: "hero-02", name: "Aurora — Tech Startup" },
-      { id: "hero-03", name: "Obsidian — Premium Finance" },
-      { id: "hero-04", name: "Prism — Creative Agency" },
-      { id: "hero-05", name: "Zenith — Architecture" },
-      { id: "hero-06", name: "Pulse — Healthcare" },
-      { id: "hero-07", name: "Cipher — Cybersecurity" },
-      { id: "hero-08", name: "Amber — Hospitality" },
-      { id: "hero-09", name: "Verdict — Law Firm" },
-      { id: "hero-10", name: "Velocity — Sports & Fitness" },
+      { id: "hero-01", name: "Horizon (Bento Grid)" },
+      { id: "hero-02", name: "Noir (Split Screen)" },
+      { id: "hero-03", name: "Cosmos (Particle Field)" },
     ],
   },
 };
