@@ -62,7 +62,22 @@ const CATEGORIES = [
 ] as const;
 
 /* ── Known templates registry (add here as you build them) ── */
-const TEMPLATES: Record<string, Record<string, { id: string; name: string }[]>> = {};
+const TEMPLATES: Record<string, Record<string, { id: string; name: string }[]>> = {
+  hero: {
+    company: [
+      { id: "hero-01", name: "Cinematic Reveal (Film Noir)" },
+      { id: "hero-02", name: "Warm Editorial (Magazine Split)" },
+      { id: "hero-03", name: "Neon Grid (OLED Cyber)" },
+      { id: "hero-04", name: "Diagonal Force (Clip-Path)" },
+      { id: "hero-05", name: "Ticker Tape (Kinetic Marquee)" },
+      { id: "hero-06", name: "Product Stage (SaaS Card)" },
+      { id: "hero-07", name: "Mosaic Grid (Bento Layout)" },
+      { id: "hero-08", name: "Amber Luxury (Dark Gold)" },
+      { id: "hero-09", name: "Terminal (Developer HUD)" },
+      { id: "hero-10", name: "Paper Stack (Layered Depth)" },
+    ],
+  },
+};
 
 /* ── Color utilities ───────────────────────────────────────── */
 const borderColors: Record<string, string> = {
