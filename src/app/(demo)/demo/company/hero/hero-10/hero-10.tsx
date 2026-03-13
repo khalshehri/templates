@@ -1,180 +1,246 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Zap, ArrowRight, Dumbbell, Users, Clock } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Zap } from "lucide-react";
+
+interface Hero10Props {
+  language: "en" | "ar";
+}
 
 const content = {
   en: {
-    heading: "PUSH YOUR",
-    headingLine2: "LIMITS.",
+    heading: "PUSH YOUR LIMITS.",
     accent: "REDEFINE POSSIBLE.",
-    sub: "World-class trainers, cutting-edge facilities, and a community that pushes you to be your best.",
+    sub: "World-class trainers, cutting-edge facilities, and a community that drives you to be extraordinary.",
     cta1: "Join Now",
     cta2: "View Plans",
-    counterLabel: "Active Members",
-    badges: [
-      { icon: Dumbbell, label: "Olympic Equipment" },
-      { icon: Users, label: "Expert Trainers" },
-      { icon: Clock, label: "24/7 Access" },
-    ],
+    badges: ["Olympic Equipment", "Expert Trainers", "24/7 Access"],
+    statNumber: "10,000+",
+    statLabel: "Active Members",
+    decorative: "10K",
   },
   ar: {
-    heading: "تجاوز",
-    headingLine2: "حدودك.",
+    heading: "تجاوز حدودك.",
     accent: "أعد تعريف الممكن.",
-    sub: "مدربون عالميون ومرافق متطورة ومجتمع يدفعك لتكون الأفضل.",
+    sub: "مدربون عالميون ومرافق متطورة ومجتمع يدفعك لتكون استثنائياً.",
     cta1: "انضم الآن",
     cta2: "عرض الخطط",
-    counterLabel: "عضو نشط",
-    badges: [
-      { icon: Dumbbell, label: "معدات أولمبية" },
-      { icon: Users, label: "مدربون خبراء" },
-      { icon: Clock, label: "دخول 24/7" },
-    ],
+    badges: ["معدات أولمبية", "مدربون خبراء", "دخول 24/7"],
+    statNumber: "+10,000",
+    statLabel: "عضو نشط",
+    decorative: "10K",
   },
 };
 
-function useCountUp(target: number, duration: number, start: boolean): number {
-  const [count, setCount] = useState(0);
-  const frameRef = useRef<number>(0);
-
-  useEffect(() => {
-    if (!start) return;
-    setCount(0);
-    const startTime = performance.now();
-
-    function tick() {
-      const elapsed = performance.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic
-      const eased = 1 - (1 - progress) * (1 - progress) * (1 - progress);
-      setCount(Math.floor(eased * target));
-      if (progress < 1) {
-        frameRef.current = requestAnimationFrame(tick);
-      }
-    }
-
-    frameRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameRef.current);
-  }, [target, duration, start]);
-
-  return count;
-}
-
-export function Hero10({ language }: { language: "en" | "ar" }) {
+export function Hero10({ language }: Hero10Props) {
   const [mounted, setMounted] = useState(false);
+  const [count, setCount] = useState(0);
   const t = content[language];
   const isAr = language === "ar";
-  const count = useCountUp(10000, 2000, mounted);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (!mounted) return;
+
+    const target = 10000;
+    const duration = 2500;
+    const steps = 80;
+    const stepTime = duration / steps;
+    let step = 0;
+
+    const interval = setInterval(() => {
+      step++;
+      const progress = step / steps;
+      const eased = 1 - (1 - progress) * (1 - progress) * (1 - progress);
+      setCount(target * eased);
+      if (step >= steps) {
+        clearInterval(interval);
+        setCount(target);
+      }
+    }, stepTime);
+
+    return () => clearInterval(interval);
+  }, [mounted]);
+
+  const formattedCount =
+    count >= 10000
+      ? isAr
+        ? "+10,000"
+        : "10,000+"
+      : count
+          .toFixed(0)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
   return (
     <>
       <style>{`
-        @keyframes hero10FadeUp {
-          from { opacity: 0; transform: translateY(28px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes hero10-stripes {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(80px); }
         }
-        @keyframes hero10FadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+        @keyframes hero10-pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.01); }
         }
-        @keyframes hero10Stripes {
-          from { transform: translateX(0); }
-          to { transform: translateX(80px); }
+        @keyframes hero10-fadeUp {
+          0% { opacity: 0; transform: translateY(24px); }
+          100% { opacity: 1; transform: translateY(0); }
         }
-        @keyframes hero10Pulse {
-          0%, 100% { opacity: 0.85; }
-          50% { opacity: 1; }
+        @keyframes hero10-slideUp {
+          0% { opacity: 0; transform: translateY(16px); }
+          100% { opacity: 1; transform: translateY(0); }
         }
         @media (prefers-reduced-motion: reduce) {
-          .hero10-animate { animation: none !important; opacity: 1 !important; transform: none !important; }
-          .hero10-stripes { animation: none !important; }
-          .hero10-pulse { animation: none !important; }
+          .hero10-stripes, .hero10-pulse, .hero10-fade, .hero10-badge {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
         }
       `}</style>
 
       <section
         className="relative min-h-screen overflow-hidden"
-        style={{ backgroundColor: "#0a0a0a" }}
+        style={{
+          background: "#0a0a0a",
+          fontFamily: isAr
+            ? "var(--font-tajawal)"
+            : "var(--font-inter)",
+        }}
       >
-        {/* Animated diagonal stripes background */}
+        {/* Animated stripe background */}
         <div
           className="hero10-stripes absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage:
-              "repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 40px)",
-            backgroundSize: "56.57px 56.57px",
-            animation: mounted ? "hero10Stripes 20s linear infinite" : "none",
+            background:
+              "repeating-linear-gradient(45deg, transparent, transparent 38px, rgba(255,255,255,0.04) 38px, rgba(255,255,255,0.04) 40px)",
+            animation: "hero10-stripes 25s linear infinite",
           }}
         />
 
-        {/* Layout container */}
-        <div className="relative min-h-screen flex flex-col lg:flex-row">
-          {/* Left content — 55% */}
+        {/* Gradient diagonal side */}
+        <div
+          className="hero10-pulse absolute top-0 bottom-0 hidden lg:block"
+          style={{
+            right: isAr ? "auto" : "0",
+            left: isAr ? "0" : "auto",
+            width: "45%",
+            background: "linear-gradient(135deg, #ef4444, #f97316)",
+            clipPath: isAr
+              ? "polygon(0 0, 80% 0, 100% 100%, 0 100%)"
+              : "polygon(20% 0, 100% 0, 100% 100%, 0 100%)",
+            animation: "hero10-pulse 3s ease-in-out infinite",
+          }}
+        >
+          {/* Decorative large text */}
           <div
-            className={`relative z-10 flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24 py-24 sm:py-32 lg:py-40 w-full lg:w-[55%] ${isAr ? "lg:order-2" : "lg:order-1"}`}
+            className="absolute inset-0 flex items-center justify-center select-none"
+            style={{
+              fontSize: "clamp(8rem, 20vw, 16rem)",
+              fontWeight: 900,
+              color: "rgba(255,255,255,0.06)",
+              letterSpacing: "-0.04em",
+              fontFamily: isAr
+                ? "var(--font-changa)"
+                : "var(--font-inter)",
+            }}
           >
-            {/* Zap icon */}
+            {t.decorative}
+          </div>
+
+          {/* Counter stat on gradient */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10">
             <div
-              className="hero10-animate mb-8"
-              style={{
-                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) forwards" : "none",
-                opacity: mounted ? undefined : 0,
-              }}
+              className="text-5xl lg:text-6xl font-bold text-white mb-2"
+              style={{ textShadow: "0 2px 20px rgba(0,0,0,0.2)" }}
             >
-              <Zap size={28} strokeWidth={1.5} style={{ color: "#ef4444" }} />
+              {formattedCount}
             </div>
+            <div
+              className="text-white/80 text-lg font-medium"
+            >
+              {t.statLabel}
+            </div>
+          </div>
+        </div>
 
+        {/* Mobile gradient strip */}
+        <div
+          className="lg:hidden w-full py-16 flex flex-col items-center justify-center"
+          style={{
+            background: "linear-gradient(135deg, #ef4444, #f97316)",
+          }}
+        >
+          <div className="text-4xl font-bold text-white mb-1">
+            {formattedCount}
+          </div>
+          <div className="text-white/80 text-base font-medium">
+            {t.statLabel}
+          </div>
+        </div>
+
+        {/* Left content (55%) */}
+        <div
+          className="relative z-10 max-w-7xl mx-auto px-6 py-16 lg:py-28"
+        >
+          <div
+            className="w-full lg:w-[55%] space-y-8"
+            style={{
+              marginLeft: isAr ? "auto" : undefined,
+              marginRight: isAr ? undefined : undefined,
+            }}
+          >
             {/* Heading */}
-            <h1
-              className={`hero10-animate ${isAr ? "font-[family-name:var(--font-changa)]" : "font-[family-name:var(--font-inter)]"}`}
+            <div
+              className="hero10-fade"
               style={{
-                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 150ms both" : "none",
-                opacity: mounted ? undefined : 0,
-                fontSize: "clamp(2.5rem, 6vw, 5.5rem)",
-                fontWeight: 800,
-                lineHeight: 1.0,
-                letterSpacing: "-0.03em",
-                color: "#fafafa",
+                opacity: mounted ? 1 : 0,
+                animation: mounted
+                  ? "hero10-fadeUp 0.7s ease-out forwards"
+                  : "none",
               }}
             >
-              {t.heading}
-              <br />
-              {t.headingLine2}
-            </h1>
-
-            {/* Accent line with gradient */}
-            <h2
-              className={`hero10-animate mt-2 ${isAr ? "font-[family-name:var(--font-changa)]" : "font-[family-name:var(--font-inter)]"}`}
-              style={{
-                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 300ms both" : "none",
-                opacity: mounted ? undefined : 0,
-                fontSize: "clamp(2rem, 5vw, 4.5rem)",
-                fontWeight: 800,
-                lineHeight: 1.0,
-                letterSpacing: "-0.03em",
-                background: "linear-gradient(135deg, #ef4444, #f97316)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              {t.accent}
-            </h2>
+              <h1
+                className="font-extrabold uppercase leading-tight"
+                style={{
+                  fontSize: "clamp(2rem, 6vw, 4rem)",
+                  color: "#fafafa",
+                  letterSpacing: "-0.02em",
+                  fontFamily: isAr
+                    ? "var(--font-changa)"
+                    : "var(--font-inter)",
+                }}
+              >
+                {t.heading}
+                <br />
+                <span
+                  style={{
+                    background:
+                      "linear-gradient(90deg, #ef4444, #f97316)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  {t.accent}
+                </span>
+              </h1>
+            </div>
 
             {/* Subtitle */}
             <p
-              className={`hero10-animate max-w-lg mt-6 mb-8 leading-relaxed ${isAr ? "font-[family-name:var(--font-tajawal)]" : "font-[family-name:var(--font-inter)]"}`}
+              className="hero10-fade text-lg max-w-md leading-relaxed"
               style={{
-                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 450ms both" : "none",
-                opacity: mounted ? undefined : 0,
-                fontSize: "clamp(1rem, 1.5vw, 1.125rem)",
-                fontWeight: 300,
                 color: "#737373",
+                fontWeight: 300,
+                opacity: mounted ? 1 : 0,
+                animation: mounted
+                  ? "hero10-fadeUp 0.7s ease-out 0.15s forwards"
+                  : "none",
+                animationFillMode: "backwards",
               }}
             >
               {t.sub}
@@ -182,31 +248,32 @@ export function Hero10({ language }: { language: "en" | "ar" }) {
 
             {/* CTAs */}
             <div
-              className="hero10-animate flex flex-wrap items-center gap-4 mb-10"
+              className="hero10-fade flex flex-wrap gap-4"
               style={{
-                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 600ms both" : "none",
-                opacity: mounted ? undefined : 0,
+                opacity: mounted ? 1 : 0,
+                animation: mounted
+                  ? "hero10-fadeUp 0.7s ease-out 0.3s forwards"
+                  : "none",
+                animationFillMode: "backwards",
               }}
             >
-              {/* Primary CTA — gradient */}
               <button
-                className={`cursor-pointer px-8 py-3.5 rounded-xl text-white text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20 hover:scale-[1.02] active:scale-[0.98] ${isAr ? "font-[family-name:var(--font-tajawal)]" : "font-[family-name:var(--font-inter)]"}`}
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-base cursor-pointer transition-transform hover:scale-[1.02]"
                 style={{
-                  background: "linear-gradient(135deg, #ef4444, #f97316)",
-                  minHeight: "44px",
+                  background:
+                    "linear-gradient(90deg, #ef4444, #f97316)",
+                  color: "#ffffff",
                 }}
               >
+                <Zap className="w-5 h-5" />
                 {t.cta1}
               </button>
-
-              {/* Secondary CTA — ghost */}
               <button
-                className={`cursor-pointer px-8 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/10 active:scale-[0.98] ${isAr ? "font-[family-name:var(--font-tajawal)]" : "font-[family-name:var(--font-inter)]"}`}
+                className="px-8 py-3.5 rounded-xl font-semibold text-base cursor-pointer transition-transform hover:scale-[1.02]"
                 style={{
-                  border: "1px solid rgba(250, 250, 250, 0.15)",
-                  color: "#fafafa",
-                  minHeight: "44px",
                   background: "transparent",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  color: "#fafafa",
                 }}
               >
                 {t.cta2}
@@ -215,93 +282,35 @@ export function Hero10({ language }: { language: "en" | "ar" }) {
 
             {/* Achievement badges */}
             <div
-              className="hero10-animate flex flex-wrap gap-3"
+              className="hero10-fade flex flex-wrap gap-3 pt-4"
               style={{
-                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 750ms both" : "none",
-                opacity: mounted ? undefined : 0,
+                opacity: mounted ? 1 : 0,
+                animation: mounted
+                  ? "hero10-fadeUp 0.7s ease-out 0.45s forwards"
+                  : "none",
+                animationFillMode: "backwards",
               }}
             >
               {t.badges.map((badge, i) => (
-                <div
+                <span
                   key={i}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full"
+                  className="hero10-badge px-4 py-2 rounded-full text-sm font-medium"
                   style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.05)",
-                    border: "1px solid rgba(255, 255, 255, 0.06)",
-                    backdropFilter: "blur(12px)",
-                    WebkitBackdropFilter: "blur(12px)",
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    color: "#fafafa",
+                    opacity: mounted ? 1 : 0,
+                    animation: mounted
+                      ? `hero10-slideUp 0.5s ease-out ${
+                          0.6 + i * 0.1
+                        }s forwards`
+                      : "none",
+                    animationFillMode: "backwards",
                   }}
                 >
-                  <badge.icon size={14} strokeWidth={1.5} style={{ color: "#f97316" }} />
-                  <span
-                    className={`text-xs ${isAr ? "font-[family-name:var(--font-tajawal)]" : "font-[family-name:var(--font-inter)]"}`}
-                    style={{ color: "#a3a3a3" }}
-                  >
-                    {badge.label}
-                  </span>
-                </div>
+                  {badge}
+                </span>
               ))}
-            </div>
-          </div>
-
-          {/* Right gradient panel — 45% with diagonal clip */}
-          <div
-            className={`hero10-pulse relative w-full lg:w-[45%] min-h-[300px] lg:min-h-full flex items-center justify-center ${isAr ? "lg:order-1" : "lg:order-2"}`}
-            style={{
-              background: "linear-gradient(135deg, #ef4444, #f97316)",
-              clipPath: isAr
-                ? "polygon(0 0, 80% 0, 100% 100%, 0 100%)"
-                : "polygon(20% 0, 100% 0, 100% 100%, 0 100%)",
-              animation: mounted ? "hero10Pulse 4s ease-in-out infinite" : "none",
-            }}
-          >
-            {/* Large decorative number */}
-            <div
-              className="hero10-animate absolute inset-0 flex items-center justify-center pointer-events-none select-none"
-              style={{
-                animation: mounted ? "hero10FadeIn 1000ms cubic-bezier(0.16,1,0.3,1) 500ms both" : "none",
-                opacity: mounted ? undefined : 0,
-              }}
-            >
-              <span
-                className="font-[family-name:var(--font-inter)]"
-                style={{
-                  fontSize: "clamp(6rem, 14vw, 14rem)",
-                  fontWeight: 900,
-                  color: "rgba(255, 255, 255, 0.08)",
-                  letterSpacing: "-0.04em",
-                }}
-              >
-                10K+
-              </span>
-            </div>
-
-            {/* CountUp content */}
-            <div
-              className="hero10-animate relative z-10 text-center px-8"
-              style={{
-                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 800ms both" : "none",
-                opacity: mounted ? undefined : 0,
-              }}
-            >
-              <div
-                className="font-[family-name:var(--font-inter)]"
-                style={{
-                  fontSize: "clamp(3rem, 7vw, 6rem)",
-                  fontWeight: 800,
-                  color: "#ffffff",
-                  letterSpacing: "-0.03em",
-                  lineHeight: 1,
-                  textShadow: "0 2px 20px rgba(0,0,0,0.15)",
-                }}
-              >
-                {count.toLocaleString()}+
-              </div>
-              <p
-                className={`mt-3 text-white/80 text-base sm:text-lg font-light ${isAr ? "font-[family-name:var(--font-tajawal)]" : "font-[family-name:var(--font-inter)]"}`}
-              >
-                {t.counterLabel}
-              </p>
             </div>
           </div>
         </div>
