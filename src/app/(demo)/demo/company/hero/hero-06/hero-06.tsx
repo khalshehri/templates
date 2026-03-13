@@ -1,454 +1,375 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Star, MapPin, Wifi, Coffee, Car, Utensils, Hotel } from "lucide-react";
-
-interface Hero06Props {
-  language: "en" | "ar";
-}
+import {
+  Clock,
+  Phone,
+  Stethoscope,
+  Baby,
+  HeartPulse,
+} from "lucide-react";
 
 const content = {
   en: {
-    badge: "Luxury Hospitality",
-    location: "Riyadh, Kingdom of Saudi Arabia",
-    headingLine1: "Where Every Moment",
-    headingAccent: "Becomes a Memory",
-    subtitle:
-      "Experience world-class hospitality in the heart of the city. Luxurious rooms, exquisite dining, and unforgettable experiences await.",
-    cta1: "Book Your Stay",
-    cta2: "Take a Virtual Tour",
-    rating: "4.9 out of 5",
-    reviews: "2,400+ guest reviews",
-    amenities: [
-      { icon: "wifi", label: "Free WiFi" },
-      { icon: "coffee", label: "Fine Dining" },
-      { icon: "car", label: "Valet Parking" },
-      { icon: "utensils", label: "Room Service" },
+    badge: "Open 24/7",
+    headingLine1: "Compassionate care,",
+    headingAccent: "advanced medicine",
+    sub: "Expert physicians, cutting-edge facilities, and personalized treatment plans — 24 hours, 7 days a week.",
+    cta1: "Book Appointment",
+    cta2: "Emergency: 920-XXX-XXX",
+    specialists: "50+ Specialists",
+    services: [
+      {
+        icon: "stethoscope",
+        title: "General Medicine",
+        desc: "Comprehensive primary care for all ages",
+      },
+      {
+        icon: "baby",
+        title: "Pediatrics",
+        desc: "Specialized care for children and adolescents",
+      },
+      {
+        icon: "heart",
+        title: "Cardiology",
+        desc: "Advanced cardiac diagnostics and treatment",
+      },
     ],
   },
   ar: {
-    badge: "ضيافة فاخرة",
-    location: "الرياض، المملكة العربية السعودية",
-    headingLine1: "حيث تصبح كل لحظة",
-    headingAccent: "ذكرى",
-    subtitle:
-      "عش تجربة ضيافة عالمية في قلب المدينة. غرف فاخرة ومطاعم راقية وتجارب لا تُنسى بانتظارك.",
-    cta1: "احجز إقامتك",
-    cta2: "جولة افتراضية",
-    rating: "4.9 من 5",
-    reviews: "أكثر من 2,400 تقييم",
-    amenities: [
-      { icon: "wifi", label: "واي فاي مجاني" },
-      { icon: "coffee", label: "مطاعم راقية" },
-      { icon: "car", label: "خدمة صف السيارات" },
-      { icon: "utensils", label: "خدمة الغرف" },
+    badge: "مفتوح 24/7",
+    headingLine1: "رعاية حانية،",
+    headingAccent: "طب متقدم",
+    sub: "أطباء خبراء ومرافق متطورة وخطط علاج مخصصة — 24 ساعة، 7 أيام في الأسبوع.",
+    cta1: "احجز موعداً",
+    cta2: "طوارئ: 920-XXX-XXX",
+    specialists: "+50 متخصص",
+    services: [
+      {
+        icon: "stethoscope",
+        title: "الطب العام",
+        desc: "رعاية أولية شاملة لجميع الأعمار",
+      },
+      {
+        icon: "baby",
+        title: "طب الأطفال",
+        desc: "رعاية متخصصة للأطفال والمراهقين",
+      },
+      {
+        icon: "heart",
+        title: "طب القلب",
+        desc: "تشخيص وعلاج القلب المتقدم",
+      },
     ],
   },
 };
 
-const iconMap: Record<string, typeof Wifi> = {
-  wifi: Wifi,
-  coffee: Coffee,
-  car: Car,
-  utensils: Utensils,
+const iconMap = {
+  stethoscope: Stethoscope,
+  baby: Baby,
+  heart: HeartPulse,
 };
 
-export function Hero06({ language }: Hero06Props) {
+export function Hero06({ language }: { language: "en" | "ar" }) {
   const [mounted, setMounted] = useState(false);
-  const isAr = language === "ar";
   const t = content[language];
+  const isAr = language === "ar";
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const fontHeading = isAr ? "var(--font-amiri)" : "var(--font-inter)";
-  const fontBody = isAr ? "var(--font-tajawal)" : "var(--font-inter)";
-
   return (
-    <>
+    <section
+      className="relative min-h-screen overflow-hidden"
+      style={{
+        background: "linear-gradient(180deg, #f0f4ff 0%, #ffffff 50%, #f0fdf4 100%)",
+        fontFamily: isAr
+          ? "var(--font-noto-sans-arabic), sans-serif"
+          : "var(--font-rubik), sans-serif",
+      }}
+    >
       <style>{`
         @keyframes hero06FadeUp {
-          from { opacity: 0; transform: translateY(24px); }
+          from { opacity: 0; transform: translateY(28px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes hero06FadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+        @keyframes hero06SlideIn {
+          from { opacity: 0; transform: translateX(40px); }
+          to { opacity: 1; transform: translateX(0); }
         }
-        .hero06-fadeUp {
-          opacity: 0;
-          animation: hero06FadeUp 0.4s ease-out forwards;
+        @keyframes hero06SlideInRtl {
+          from { opacity: 0; transform: translateX(-40px); }
+          to { opacity: 1; transform: translateX(0); }
         }
-        .hero06-fadeIn {
-          opacity: 0;
-          animation: hero06FadeIn 0.4s ease-out forwards;
+        @keyframes hero06Float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-4px); }
+        }
+        @keyframes hero06PulseDot {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.3); opacity: 0.7; }
+        }
+        @keyframes hero06BlobPulse {
+          0%, 100% { opacity: 0.08; transform: scale(1); }
+          50% { opacity: 0.12; transform: scale(1.05); }
         }
         @media (prefers-reduced-motion: reduce) {
-          .hero06-fadeUp,
-          .hero06-fadeIn {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-          }
+          .hero06-animated { animation: none !important; opacity: 1 !important; transform: none !important; }
+          .hero06-float { animation: none !important; }
+          .hero06-pulse { animation: none !important; }
         }
       `}</style>
 
-      <section
+      {/* Decorative blobs */}
+      <div
+        className="absolute top-20 right-1/4 w-[300px] h-[300px] rounded-full pointer-events-none"
         style={{
-          fontFamily: fontBody,
-          background: `radial-gradient(ellipse at center, rgba(254,243,199,0.25) 0%, #fffbeb 70%)`,
-          minHeight: "100vh",
-          position: "relative",
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          background: "radial-gradient(circle, #2563eb 0%, transparent 70%)",
+          opacity: 0.08,
+          filter: "blur(80px)",
+          animation: "hero06BlobPulse 6s ease-in-out infinite",
         }}
-      >
-        {/* Faint diamond pattern */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: `
-              repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 28px,
-                rgba(217,119,6,0.03) 28px,
-                rgba(217,119,6,0.03) 29px
-              ),
-              repeating-linear-gradient(
-                -45deg,
-                transparent,
-                transparent 28px,
-                rgba(217,119,6,0.03) 28px,
-                rgba(217,119,6,0.03) 29px
-              )
-            `,
-            pointerEvents: "none",
-          }}
-        />
+      />
+      <div
+        className="absolute bottom-20 right-1/3 w-[250px] h-[250px] rounded-full pointer-events-none"
+        style={{
+          background: "radial-gradient(circle, #10b981 0%, transparent 70%)",
+          opacity: 0.06,
+          filter: "blur(80px)",
+          animation: "hero06BlobPulse 6s ease-in-out 3s infinite",
+        }}
+      />
 
-        {/* Content with decorative frame */}
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            width: "100%",
-            maxWidth: 800,
-            margin: "0 auto",
-            padding: "80px 24px",
-          }}
-        >
-          {/* Gold border frame */}
-          <div
-            className={mounted ? "hero06-fadeIn" : ""}
-            style={{
-              animationDelay: "0ms",
-              position: "relative",
-              border: "1px solid rgba(217,119,6,0.3)",
-              borderRadius: 4,
-              padding: "clamp(32px, 6vw, 64px)",
-            }}
-          >
-            {/* Corner ornaments — top-left */}
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-24 sm:py-32 lg:py-40">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+          {/* Left content */}
+          <div>
+            {/* Badge */}
             <div
+              className="hero06-animated inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
               style={{
-                position: "absolute",
-                top: -5,
-                left: -5,
-                width: 10,
-                height: 10,
-                background: "#d97706",
-                borderRadius: 1,
+                backgroundColor: "rgba(16, 185, 129, 0.1)",
+                border: "1px solid rgba(16, 185, 129, 0.2)",
+                animation: mounted
+                  ? "hero06FadeUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards"
+                  : "none",
+                opacity: mounted ? undefined : 0,
               }}
-            />
-            {/* top-right */}
-            <div
-              style={{
-                position: "absolute",
-                top: -5,
-                right: -5,
-                width: 10,
-                height: 10,
-                background: "#d97706",
-                borderRadius: 1,
-              }}
-            />
-            {/* bottom-left */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: -5,
-                left: -5,
-                width: 10,
-                height: 10,
-                background: "#d97706",
-                borderRadius: 1,
-              }}
-            />
-            {/* bottom-right */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: -5,
-                right: -5,
-                width: 10,
-                height: 10,
-                background: "#d97706",
-                borderRadius: 1,
-              }}
-            />
+            >
+              <span
+                className="hero06-pulse relative flex h-2.5 w-2.5"
+              >
+                <span
+                  className="absolute inline-flex h-full w-full rounded-full"
+                  style={{
+                    backgroundColor: "#10b981",
+                    animation: "hero06PulseDot 2s ease-in-out infinite",
+                  }}
+                />
+                <span
+                  className="relative inline-flex rounded-full h-2.5 w-2.5"
+                  style={{ backgroundColor: "#10b981" }}
+                />
+              </span>
+              <Clock size={14} style={{ color: "#10b981" }} />
+              <span
+                className="text-sm font-medium"
+                style={{ color: "#065f46" }}
+              >
+                {t.badge}
+              </span>
+            </div>
 
-            <div style={{ textAlign: "center" }}>
-              {/* Stars */}
-              <div
-                className={mounted ? "hero06-fadeUp" : ""}
+            {/* Heading */}
+            <h1
+              className="hero06-animated"
+              style={{
+                fontSize: "clamp(2.25rem, 5vw, 3.75rem)",
+                lineHeight: 1.1,
+                fontWeight: 700,
+                color: "#0f172a",
+                animation: mounted
+                  ? "hero06FadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s forwards"
+                  : "none",
+                opacity: mounted ? undefined : 0,
+              }}
+            >
+              {t.headingLine1}
+              <br />
+              <span
                 style={{
-                  animationDelay: "50ms",
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: 4,
-                  marginBottom: 16,
+                  background: "linear-gradient(135deg, #2563eb, #10b981)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
                 }}
               >
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <Star
+                {t.headingAccent}
+              </span>
+            </h1>
+
+            {/* Subtitle */}
+            <p
+              className="hero06-animated mt-6 max-w-lg"
+              style={{
+                color: "#475569",
+                fontSize: "clamp(1rem, 1.5vw, 1.125rem)",
+                lineHeight: 1.7,
+                fontWeight: 300,
+                animation: mounted
+                  ? "hero06FadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.25s forwards"
+                  : "none",
+                opacity: mounted ? undefined : 0,
+              }}
+            >
+              {t.sub}
+            </p>
+
+            {/* CTAs */}
+            <div
+              className="hero06-animated flex flex-wrap items-center gap-4 mt-8"
+              style={{
+                animation: mounted
+                  ? "hero06FadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.4s forwards"
+                  : "none",
+                opacity: mounted ? undefined : 0,
+              }}
+            >
+              <button
+                className="cursor-pointer px-7 py-3.5 rounded-xl text-white font-medium text-sm transition-all duration-300 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+                style={{
+                  background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
+                  boxShadow: "0 4px 20px rgba(37, 99, 235, 0.3)",
+                  minHeight: "48px",
+                }}
+              >
+                {t.cta1}
+              </button>
+              <button
+                className="cursor-pointer inline-flex items-center gap-2 px-5 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-100"
+                style={{
+                  color: "#0f172a",
+                  border: "1px solid #e2e8f0",
+                  backgroundColor: "white",
+                  minHeight: "48px",
+                }}
+              >
+                <Phone size={16} style={{ color: "#2563eb" }} />
+                {t.cta2}
+              </button>
+            </div>
+
+            {/* Specialists count */}
+            <div
+              className="hero06-animated mt-8 flex items-center gap-3"
+              style={{
+                animation: mounted
+                  ? "hero06FadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.55s forwards"
+                  : "none",
+                opacity: mounted ? undefined : 0,
+              }}
+            >
+              <div className="flex -space-x-2 rtl:space-x-reverse">
+                {[0, 1, 2, 3].map((i) => (
+                  <div
                     key={i}
-                    size={20}
-                    fill="#d97706"
-                    color="#d97706"
-                    style={{ flexShrink: 0 }}
+                    className="w-8 h-8 rounded-full border-2 border-white"
+                    style={{
+                      background: [
+                        "linear-gradient(135deg, #93c5fd, #2563eb)",
+                        "linear-gradient(135deg, #6ee7b7, #10b981)",
+                        "linear-gradient(135deg, #fbbf24, #f59e0b)",
+                        "linear-gradient(135deg, #c4b5fd, #8b5cf6)",
+                      ][i],
+                    }}
                   />
                 ))}
               </div>
-
-              {/* Badge */}
-              <div
-                className={mounted ? "hero06-fadeUp" : ""}
-                style={{ animationDelay: "90ms", marginBottom: 12 }}
+              <span
+                className="text-sm font-medium"
+                style={{ color: "#0f172a" }}
               >
-                <span
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 6,
-                    fontSize: 13,
-                    fontWeight: 500,
-                    color: "#92400e",
-                    fontFamily: fontBody,
-                  }}
-                >
-                  <Hotel size={15} />
-                  {t.badge}
-                </span>
-              </div>
-
-              {/* Location */}
-              <div
-                className={mounted ? "hero06-fadeUp" : ""}
-                style={{ animationDelay: "130ms", marginBottom: 24 }}
-              >
-                <span
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 6,
-                    fontSize: 13,
-                    color: "#92400e",
-                    fontFamily: fontBody,
-                  }}
-                >
-                  <MapPin size={14} />
-                  {t.location}
-                </span>
-              </div>
-
-              {/* Heading */}
-              <h1
-                className={mounted ? "hero06-fadeUp" : ""}
-                style={{
-                  animationDelay: "170ms",
-                  fontFamily: fontHeading,
-                  fontWeight: 700,
-                  fontSize: "clamp(30px, 5vw, 52px)",
-                  lineHeight: 1.2,
-                  color: "#1c1917",
-                  margin: "0 0 24px 0",
-                }}
-              >
-                {t.headingLine1}
-                <br />
-                <span style={{ color: "#d97706" }}>{t.headingAccent}</span>
-              </h1>
-
-              {/* Subtitle */}
-              <p
-                className={mounted ? "hero06-fadeUp" : ""}
-                style={{
-                  animationDelay: "210ms",
-                  fontFamily: fontBody,
-                  fontSize: 16,
-                  lineHeight: 1.7,
-                  color: "#57534e",
-                  margin: "0 auto 20px auto",
-                  maxWidth: 540,
-                }}
-              >
-                {t.subtitle}
-              </p>
-
-              {/* Rating */}
-              <div
-                className={mounted ? "hero06-fadeUp" : ""}
-                style={{
-                  animationDelay: "250ms",
-                  marginBottom: 32,
-                  fontSize: 14,
-                  color: "#78716c",
-                  fontFamily: fontBody,
-                }}
-              >
-                <span style={{ fontWeight: 600, color: "#92400e" }}>
-                  {t.rating}
-                </span>
-                {" · "}
-                {t.reviews}
-              </div>
-
-              {/* CTAs */}
-              <div
-                className={mounted ? "hero06-fadeUp" : ""}
-                style={{
-                  animationDelay: "290ms",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 12,
-                  marginBottom: 40,
-                }}
-              >
-                <button
-                  style={{
-                    cursor: "pointer",
-                    background: "#d97706",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: 8,
-                    padding: "14px 36px",
-                    fontSize: 16,
-                    fontWeight: 600,
-                    fontFamily: fontBody,
-                    minHeight: 48,
-                    minWidth: 44,
-                    transition:
-                      "opacity 0.2s ease-out, transform 0.2s ease-out",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.opacity = "0.9";
-                    e.currentTarget.style.transform = "translateY(-1px)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.opacity = "1";
-                    e.currentTarget.style.transform = "translateY(0)";
-                  }}
-                >
-                  {t.cta1}
-                </button>
-                <button
-                  style={{
-                    cursor: "pointer",
-                    background: "none",
-                    border: "none",
-                    padding: "8px 16px",
-                    fontSize: 15,
-                    fontWeight: 500,
-                    fontFamily: fontBody,
-                    color: "#92400e",
-                    minHeight: 44,
-                    minWidth: 44,
-                    transition: "color 0.2s ease-out",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 4,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "#d97706";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "#92400e";
-                  }}
-                >
-                  {t.cta2}{" "}
-                  <span
-                    style={{
-                      display: "inline-block",
-                      transform: isAr ? "scaleX(-1)" : undefined,
-                    }}
-                  >
-                    &rarr;
-                  </span>
-                </button>
-              </div>
-
-              {/* Amenities */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  flexWrap: "wrap",
-                  gap: "clamp(16px, 4vw, 32px)",
-                }}
-              >
-                {t.amenities.map((amenity, i) => {
-                  const Icon = iconMap[amenity.icon];
-                  return (
-                    <div
-                      key={i}
-                      className={mounted ? "hero06-fadeUp" : ""}
-                      style={{
-                        animationDelay: `${330 + i * 40}ms`,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        gap: 8,
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: 48,
-                          height: 48,
-                          borderRadius: "50%",
-                          border: "1px solid rgba(217,119,6,0.3)",
-                          background: "rgba(217,119,6,0.06)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Icon size={20} color="#d97706" />
-                      </div>
-                      <span
-                        style={{
-                          fontSize: 12,
-                          fontWeight: 500,
-                          color: "#78716c",
-                          fontFamily: fontBody,
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {amenity.label}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
+                {t.specialists}
+              </span>
             </div>
           </div>
+
+          {/* Right — service cards */}
+          <div className="relative h-[420px] sm:h-[460px]">
+            {t.services.map((service, index) => {
+              const Icon = iconMap[service.icon as keyof typeof iconMap];
+              const slideAnim = isAr ? "hero06SlideInRtl" : "hero06SlideIn";
+              const offsets = [
+                { top: 0, insetInlineStart: 0 },
+                { top: 80, insetInlineStart: 40 },
+                { top: 160, insetInlineStart: 80 },
+              ];
+
+              return (
+                <div
+                  key={`${language}-${index}`}
+                  className="hero06-animated hero06-float absolute w-[300px] sm:w-[340px]"
+                  style={{
+                    top: offsets[index].top,
+                    insetInlineStart: offsets[index].insetInlineStart,
+                    animation: mounted
+                      ? `${slideAnim} 0.7s cubic-bezier(0.16,1,0.3,1) ${0.3 + index * 0.12}s forwards, hero06Float 5s ease-in-out ${index * 0.8}s infinite`
+                      : "none",
+                    opacity: mounted ? undefined : 0,
+                    zIndex: 3 - index,
+                  }}
+                >
+                  <div
+                    className="p-6 rounded-2xl backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+                    style={{
+                      backgroundColor: "rgba(255, 255, 255, 0.85)",
+                      border: "1px solid rgba(255, 255, 255, 0.6)",
+                      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04)",
+                    }}
+                  >
+                    <div
+                      className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
+                      style={{
+                        background:
+                          index === 0
+                            ? "linear-gradient(135deg, #dbeafe, #bfdbfe)"
+                            : index === 1
+                            ? "linear-gradient(135deg, #d1fae5, #a7f3d0)"
+                            : "linear-gradient(135deg, #fce7f3, #fbcfe8)",
+                      }}
+                    >
+                      <Icon
+                        size={20}
+                        style={{
+                          color:
+                            index === 0
+                              ? "#2563eb"
+                              : index === 1
+                              ? "#10b981"
+                              : "#ec4899",
+                        }}
+                      />
+                    </div>
+                    <h3
+                      className="font-semibold text-base mb-1.5"
+                      style={{ color: "#0f172a" }}
+                    >
+                      {service.title}
+                    </h3>
+                    <p
+                      className="text-sm leading-relaxed"
+                      style={{ color: "#64748b", fontWeight: 300 }}
+                    >
+                      {service.desc}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

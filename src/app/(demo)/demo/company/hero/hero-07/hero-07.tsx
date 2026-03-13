@@ -1,417 +1,422 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ShieldCheck, Shield, Zap, Lock } from "lucide-react";
-
-interface Hero07Props {
-  language: "en" | "ar";
-}
+import { ShieldCheck } from "lucide-react";
 
 const content = {
   en: {
-    badge: "> initializing secure protocol_",
-    heading: "Intelligent Security",
-    headingAccent: "for the Digital Age",
-    subtitle:
-      "AI-powered threat detection, real-time monitoring, and zero-trust architecture. Protect your infrastructure with next-generation cybersecurity.",
+    badge: "> system.secure_",
+    headingLine1: "Zero trust.",
+    headingAccent: "Total protection.",
+    sub: "AI-powered threat detection guarding critical infrastructure across 45 countries. Zero breaches. Zero compromises.",
     cta: "Deploy Now",
-    metrics: [
-      { icon: "shield", label: "99.99% Uptime" },
-      { icon: "zap", label: "< 10ms Response" },
-      { icon: "lock", label: "256-bit Encryption" },
-    ],
+    metrics: ["99.99% Uptime", "< 10ms Response", "256-bit Encryption"],
+    terminal: {
+      title: "threat_monitor",
+      status: "All systems operational",
+      events: [
+        "✓ Blocked DDoS attempt — 14:32 UTC",
+        "✓ Firewall rule updated — 14:28 UTC",
+        "✓ Vulnerability scan complete — 14:15 UTC",
+      ],
+      threatLabel: "Threat Level",
+      threatValue: "LOW",
+      threatPercent: 27,
+    },
   },
   ar: {
-    badge: "> تهيئة البروتوكول الآمن_",
-    heading: "أمان ذكي",
-    headingAccent: "للعصر الرقمي",
-    subtitle:
-      "كشف التهديدات بالذكاء الاصطناعي، مراقبة فورية، وبنية عدم الثقة. احمِ بنيتك التحتية بالجيل القادم من الأمن السيبراني.",
+    badge: "> النظام آمن_",
+    headingLine1: "صفر ثقة.",
+    headingAccent: "حماية كاملة.",
+    sub: "كشف التهديدات بالذكاء الاصطناعي يحمي البنية التحتية الحيوية في 45 دولة. صفر اختراقات. صفر تنازلات.",
     cta: "ابدأ النشر",
-    metrics: [
-      { icon: "shield", label: "99.99% وقت التشغيل" },
-      { icon: "zap", label: "أقل من 10 مللي ثانية" },
-      { icon: "lock", label: "تشفير 256 بت" },
-    ],
+    metrics: ["99.99% وقت التشغيل", "أقل من 10مللي ثانية", "تشفير 256 بت"],
+    terminal: {
+      title: "مراقب_التهديدات",
+      status: "جميع الأنظمة تعمل",
+      events: [
+        "✓ تم صد هجوم DDoS — 14:32 UTC",
+        "✓ تحديث قاعدة الجدار — 14:28 UTC",
+        "✓ اكتمل فحص الثغرات — 14:15 UTC",
+      ],
+      threatLabel: "مستوى التهديد",
+      threatValue: "منخفض",
+      threatPercent: 27,
+    },
   },
 };
 
-const metricIconMap: Record<string, typeof Shield> = {
-  shield: Shield,
-  zap: Zap,
-  lock: Lock,
-};
-
-export function Hero07({ language }: Hero07Props) {
+export function Hero07({ language }: { language: "en" | "ar" }) {
   const [mounted, setMounted] = useState(false);
-  const isAr = language === "ar";
+  const [visibleEvents, setVisibleEvents] = useState(0);
   const t = content[language];
+  const isAr = language === "ar";
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const fontHeading = isAr
-    ? "var(--font-readex-pro)"
-    : "var(--font-inter)";
-  const fontBody = isAr
-    ? "var(--font-readex-pro)"
-    : "var(--font-inter)";
+  useEffect(() => {
+    if (!mounted) return;
+    setVisibleEvents(0);
+    const timers = [
+      setTimeout(() => setVisibleEvents(1), 600),
+      setTimeout(() => setVisibleEvents(2), 1000),
+      setTimeout(() => setVisibleEvents(3), 1400),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, [mounted, language]);
 
   return (
-    <>
+    <section
+      className="relative min-h-screen overflow-hidden"
+      style={{
+        background: "linear-gradient(180deg, #050505 0%, #0a0f0a 100%)",
+        fontFamily: isAr
+          ? "var(--font-readex-pro), sans-serif"
+          : "var(--font-inter), sans-serif",
+      }}
+    >
       <style>{`
         @keyframes hero07FadeUp {
-          from { opacity: 0; transform: translateY(24px); }
+          from { opacity: 0; transform: translateY(28px); }
           to { opacity: 1; transform: translateY(0); }
         }
         @keyframes hero07Blink {
           0%, 100% { opacity: 1; }
           50% { opacity: 0; }
         }
-        @keyframes hero07Glow {
-          0%, 100% { box-shadow: 0 0 12px rgba(6,182,212,0.4), 0 0 24px rgba(6,182,212,0.15); }
-          50% { box-shadow: 0 0 20px rgba(6,182,212,0.6), 0 0 40px rgba(6,182,212,0.25); }
+        @keyframes hero07Scanline {
+          0% { transform: translateY(-100%); }
+          100% { transform: translateY(100vh); }
         }
-        @keyframes hero07Dash {
-          to { stroke-dashoffset: 0; }
+        @keyframes hero07GlowPulse {
+          0%, 100% { box-shadow: 0 0 30px rgba(34, 197, 94, 0.3); }
+          50% { box-shadow: 0 0 50px rgba(34, 197, 94, 0.5); }
         }
-        .hero07-fadeUp {
-          opacity: 0;
-          animation: hero07FadeUp 0.4s ease-out forwards;
+        @keyframes hero07RadialBreathe {
+          0%, 100% { opacity: 0.08; }
+          50% { opacity: 0.15; }
         }
-        .hero07-blink {
-          animation: hero07Blink 1s step-end infinite;
+        @keyframes hero07EventFade {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-        .hero07-glow {
-          animation: hero07Glow 2.5s ease-in-out infinite;
+        @keyframes hero07SlideIn {
+          from { opacity: 0; transform: translateX(40px); }
+          to { opacity: 1; transform: translateX(0); }
         }
-        .hero07-circuit {
-          stroke-dasharray: 12 8;
-          stroke-dashoffset: 200;
-          animation: hero07Dash 4s linear infinite;
-        }
-        .hero07-circuit-slow {
-          stroke-dasharray: 16 10;
-          stroke-dashoffset: 260;
-          animation: hero07Dash 6s linear infinite;
+        @keyframes hero07SlideInRtl {
+          from { opacity: 0; transform: translateX(-40px); }
+          to { opacity: 1; transform: translateX(0); }
         }
         @media (prefers-reduced-motion: reduce) {
-          .hero07-fadeUp {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-          }
-          .hero07-blink,
-          .hero07-glow,
-          .hero07-circuit,
-          .hero07-circuit-slow {
-            animation: none !important;
-          }
-          .hero07-glow {
-            box-shadow: 0 0 12px rgba(6,182,212,0.4) !important;
-          }
+          .hero07-animated { animation: none !important; opacity: 1 !important; transform: none !important; }
+          .hero07-scanline { display: none !important; }
+          .hero07-glow { animation: none !important; }
+          .hero07-blink { animation: none !important; opacity: 1 !important; }
         }
       `}</style>
 
-      <section
+      {/* Grid overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
         style={{
-          fontFamily: fontBody,
-          background: "#030712",
-          minHeight: "100vh",
-          position: "relative",
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          backgroundImage:
+            "repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(34,197,94,0.06) 49px, rgba(34,197,94,0.06) 50px), repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(34,197,94,0.06) 49px, rgba(34,197,94,0.06) 50px)",
         }}
-      >
-        {/* Scan-line overlay */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: `repeating-linear-gradient(
-              0deg,
-              transparent,
-              transparent 2px,
-              rgba(6,182,212,0.015) 2px,
-              rgba(6,182,212,0.015) 4px
-            )`,
-            pointerEvents: "none",
-            zIndex: 1,
-          }}
-        />
+      />
 
-        {/* Left circuit SVG */}
-        <svg
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-            width: 200,
-            height: "100%",
-            pointerEvents: "none",
-          }}
-          aria-hidden="true"
-        >
-          <path
-            d="M 180 80 L 60 80 L 60 200 L 20 200"
-            fill="none"
-            stroke="#06b6d4"
-            strokeOpacity="0.3"
-            strokeWidth="1"
-          />
-          <path
-            d="M 180 80 L 60 80 L 60 200 L 20 200"
-            fill="none"
-            stroke="#22d3ee"
-            strokeOpacity="0.4"
-            strokeWidth="1"
-            className="hero07-circuit"
-          />
-          <path
-            d="M 160 180 L 100 180 L 100 320 L 40 320"
-            fill="none"
-            stroke="#06b6d4"
-            strokeOpacity="0.3"
-            strokeWidth="1"
-          />
-          <path
-            d="M 160 180 L 100 180 L 100 320 L 40 320"
-            fill="none"
-            stroke="#22d3ee"
-            strokeOpacity="0.4"
-            strokeWidth="1"
-            className="hero07-circuit-slow"
-          />
-          <path
-            d="M 140 400 L 80 400 L 80 500 L 30 500"
-            fill="none"
-            stroke="#06b6d4"
-            strokeOpacity="0.3"
-            strokeWidth="1"
-          />
-          <path
-            d="M 140 400 L 80 400 L 80 500 L 30 500"
-            fill="none"
-            stroke="#22d3ee"
-            strokeOpacity="0.4"
-            strokeWidth="1"
-            className="hero07-circuit"
-          />
-          {/* Circuit nodes */}
-          <circle cx="60" cy="200" r="3" fill="#06b6d4" fillOpacity="0.4" />
-          <circle cx="100" cy="320" r="3" fill="#06b6d4" fillOpacity="0.4" />
-          <circle cx="80" cy="500" r="3" fill="#06b6d4" fillOpacity="0.4" />
-        </svg>
+      {/* Scan line */}
+      <div
+        className="hero07-scanline absolute inset-x-0 top-0 h-[2px] pointer-events-none"
+        style={{
+          background: "linear-gradient(90deg, transparent 0%, rgba(34,197,94,0.15) 50%, transparent 100%)",
+          animation: "hero07Scanline 4s linear infinite",
+        }}
+      />
 
-        {/* Right circuit SVG */}
-        <svg
-          style={{
-            position: "absolute",
-            right: 0,
-            top: 0,
-            width: 200,
-            height: "100%",
-            pointerEvents: "none",
-          }}
-          aria-hidden="true"
-        >
-          <path
-            d="M 20 120 L 120 120 L 120 260 L 180 260"
-            fill="none"
-            stroke="#06b6d4"
-            strokeOpacity="0.3"
-            strokeWidth="1"
-          />
-          <path
-            d="M 20 120 L 120 120 L 120 260 L 180 260"
-            fill="none"
-            stroke="#22d3ee"
-            strokeOpacity="0.4"
-            strokeWidth="1"
-            className="hero07-circuit-slow"
-          />
-          <path
-            d="M 40 300 L 100 300 L 100 440 L 160 440"
-            fill="none"
-            stroke="#06b6d4"
-            strokeOpacity="0.3"
-            strokeWidth="1"
-          />
-          <path
-            d="M 40 300 L 100 300 L 100 440 L 160 440"
-            fill="none"
-            stroke="#22d3ee"
-            strokeOpacity="0.4"
-            strokeWidth="1"
-            className="hero07-circuit"
-          />
-          {/* Circuit nodes */}
-          <circle cx="120" cy="260" r="3" fill="#06b6d4" fillOpacity="0.4" />
-          <circle cx="100" cy="440" r="3" fill="#06b6d4" fillOpacity="0.4" />
-        </svg>
+      {/* Scan-line horizontal stripes */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)",
+          opacity: 0.3,
+        }}
+      />
 
-        {/* Main content */}
-        <div
-          style={{
-            position: "relative",
-            zIndex: 2,
-            maxWidth: 720,
-            margin: "0 auto",
-            padding: "80px 24px",
-            textAlign: "center",
-          }}
-        >
-          {/* Code badge */}
-          <div
-            className={mounted ? "hero07-fadeUp" : ""}
-            style={{ animationDelay: "0ms", marginBottom: 28 }}
-          >
-            <span
+      {/* Green radial glow */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          width: "600px",
+          height: "600px",
+          top: "10%",
+          left: "15%",
+          background: "radial-gradient(circle, rgba(34,197,94,0.12) 0%, transparent 70%)",
+          animation: "hero07RadialBreathe 4s ease-in-out infinite",
+        }}
+      />
+
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-24 sm:py-32 lg:py-40">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-16 lg:gap-20 items-center">
+          {/* Left */}
+          <div>
+            {/* Code badge */}
+            <div
+              className="hero07-animated inline-flex items-center gap-2 px-4 py-2 rounded-lg mb-8"
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-                background: "rgba(6,182,212,0.08)",
-                border: "1px solid rgba(6,182,212,0.2)",
-                borderRadius: 6,
-                padding: "8px 16px",
+                backgroundColor: "rgba(34, 197, 94, 0.08)",
+                border: "1px solid rgba(34, 197, 94, 0.15)",
                 fontFamily: "monospace",
-                fontSize: 13,
-                color: "#22d3ee",
-                letterSpacing: "0.02em",
+                animation: mounted
+                  ? "hero07FadeUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards"
+                  : "none",
+                opacity: mounted ? undefined : 0,
               }}
             >
-              <ShieldCheck size={15} style={{ flexShrink: 0 }} />
-              <span>{t.badge.replace("_", "")}</span>
-              <span className="hero07-blink" style={{ fontWeight: 700 }}>
-                |
-              </span>
-            </span>
-          </div>
-
-          {/* Heading */}
-          <h1
-            className={mounted ? "hero07-fadeUp" : ""}
-            style={{
-              animationDelay: "40ms",
-              fontFamily: fontHeading,
-              fontWeight: 700,
-              fontSize: "clamp(32px, 5vw, 56px)",
-              lineHeight: 1.15,
-              color: "#f0fdfa",
-              margin: "0 0 20px 0",
-              letterSpacing: isAr ? undefined : "-0.02em",
-            }}
-          >
-            {t.heading}
-            <br />
-            <span style={{ color: "#06b6d4" }}>{t.headingAccent}</span>
-          </h1>
-
-          {/* Subtitle */}
-          <p
-            className={mounted ? "hero07-fadeUp" : ""}
-            style={{
-              animationDelay: "80ms",
-              fontFamily: fontBody,
-              fontSize: 16,
-              lineHeight: 1.7,
-              color: "#94a3b8",
-              margin: "0 auto 40px auto",
-              maxWidth: 560,
-            }}
-          >
-            {t.subtitle}
-          </p>
-
-          {/* Metric cards */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              flexWrap: "wrap",
-              gap: 16,
-              marginBottom: 40,
-            }}
-          >
-            {t.metrics.map((metric, i) => {
-              const Icon = metricIconMap[metric.icon];
-              return (
-                <div
-                  key={i}
-                  className={mounted ? "hero07-fadeUp" : ""}
+              <ShieldCheck size={14} style={{ color: "#22c55e" }} />
+              <span className="text-sm" style={{ color: "#86efac" }}>
+                {t.badge}
+                <span
+                  className="hero07-blink inline-block w-[2px] h-[14px] ml-0.5 rtl:mr-0.5 align-middle"
                   style={{
-                    animationDelay: `${120 + i * 40}ms`,
-                    background: "rgba(6,182,212,0.06)",
-                    border: "1px solid rgba(6,182,212,0.15)",
-                    borderRadius: 10,
-                    padding: "16px 24px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    minWidth: 180,
+                    backgroundColor: "#22c55e",
+                    animation: "hero07Blink 1s steps(1) infinite",
+                  }}
+                />
+              </span>
+            </div>
+
+            {/* Heading */}
+            <h1
+              className="hero07-animated"
+              style={{
+                fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+                lineHeight: 1.05,
+                fontWeight: 800,
+                color: "#ffffff",
+                letterSpacing: "-0.02em",
+                animation: mounted
+                  ? "hero07FadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s forwards"
+                  : "none",
+                opacity: mounted ? undefined : 0,
+              }}
+            >
+              {t.headingLine1}
+              <br />
+              <span
+                style={{
+                  background: "linear-gradient(135deg, #22c55e, #86efac)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                {t.headingAccent}
+              </span>
+            </h1>
+
+            {/* Sub */}
+            <p
+              className="hero07-animated mt-6 max-w-lg"
+              style={{
+                color: "#9ca3af",
+                fontSize: "clamp(1rem, 1.5vw, 1.125rem)",
+                lineHeight: 1.7,
+                fontWeight: 300,
+                animation: mounted
+                  ? "hero07FadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.25s forwards"
+                  : "none",
+                opacity: mounted ? undefined : 0,
+              }}
+            >
+              {t.sub}
+            </p>
+
+            {/* CTA */}
+            <div
+              className="hero07-animated mt-8"
+              style={{
+                animation: mounted
+                  ? "hero07FadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.4s forwards"
+                  : "none",
+                opacity: mounted ? undefined : 0,
+              }}
+            >
+              <button
+                className="hero07-glow cursor-pointer px-8 py-4 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
+                style={{
+                  backgroundColor: "#22c55e",
+                  color: "#050505",
+                  boxShadow: "0 0 30px rgba(34, 197, 94, 0.3)",
+                  animation: "hero07GlowPulse 3s ease-in-out infinite",
+                  minHeight: "48px",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                {t.cta}
+              </button>
+            </div>
+
+            {/* Metrics */}
+            <div
+              className="hero07-animated flex flex-wrap gap-3 mt-8"
+              style={{
+                animation: mounted
+                  ? "hero07FadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.55s forwards"
+                  : "none",
+                opacity: mounted ? undefined : 0,
+              }}
+            >
+              {t.metrics.map((metric, i) => (
+                <span
+                  key={i}
+                  className="px-4 py-2 rounded-full text-xs font-medium"
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.04)",
+                    border: "1px solid rgba(255, 255, 255, 0.08)",
+                    color: "#d1d5db",
+                    fontFamily: "monospace",
                   }}
                 >
-                  <Icon
-                    size={20}
-                    color="#06b6d4"
-                    style={{ flexShrink: 0 }}
-                  />
-                  <span
-                    style={{
-                      fontFamily: fontBody,
-                      fontSize: 14,
-                      fontWeight: 600,
-                      color: "#e2e8f0",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {metric.label}
-                  </span>
-                </div>
-              );
-            })}
+                  {metric}
+                </span>
+              ))}
+            </div>
           </div>
 
-          {/* CTA */}
+          {/* Right — Terminal card */}
           <div
-            className={mounted ? "hero07-fadeUp" : ""}
-            style={{ animationDelay: "240ms" }}
+            className="hero07-animated"
+            style={{
+              animation: mounted
+                ? `${isAr ? "hero07SlideInRtl" : "hero07SlideIn"} 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s forwards`
+                : "none",
+              opacity: mounted ? undefined : 0,
+            }}
           >
-            <button
-              className="hero07-glow"
+            <div
+              className="rounded-2xl overflow-hidden backdrop-blur-xl"
               style={{
-                cursor: "pointer",
-                background: "#06b6d4",
-                color: "#030712",
-                border: "none",
-                borderRadius: 8,
-                padding: "14px 36px",
-                fontSize: 16,
-                fontWeight: 700,
-                fontFamily: fontBody,
-                minHeight: 48,
-                minWidth: 44,
-                transition:
-                  "opacity 0.2s ease-out, transform 0.2s ease-out",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.opacity = "0.9";
-                e.currentTarget.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.opacity = "1";
-                e.currentTarget.style.transform = "translateY(0)";
+                backgroundColor: "rgba(0, 0, 0, 0.4)",
+                border: "1px solid rgba(34, 197, 94, 0.1)",
+                boxShadow: "0 0 60px rgba(34, 197, 94, 0.05), 0 8px 32px rgba(0, 0, 0, 0.4)",
               }}
             >
-              {t.cta}
-            </button>
+              {/* Terminal header */}
+              <div
+                className="flex items-center gap-2 px-5 py-3"
+                style={{
+                  borderBottom: "1px solid rgba(34, 197, 94, 0.08)",
+                  backgroundColor: "rgba(0, 0, 0, 0.3)",
+                }}
+              >
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "#ef4444" }} />
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "#eab308" }} />
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "#22c55e" }} />
+                </div>
+                <span
+                  className="text-xs ml-2 rtl:mr-2"
+                  style={{ color: "#4b5563", fontFamily: "monospace" }}
+                >
+                  {t.terminal.title}
+                </span>
+              </div>
+
+              {/* Terminal body */}
+              <div className="p-5 space-y-4" style={{ fontFamily: "monospace" }}>
+                {/* Status */}
+                <div className="flex items-center gap-2">
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: "#22c55e" }}
+                  />
+                  <span className="text-xs" style={{ color: "#86efac" }}>
+                    {t.terminal.status}
+                  </span>
+                </div>
+
+                {/* Divider */}
+                <div
+                  className="h-px"
+                  style={{ backgroundColor: "rgba(34, 197, 94, 0.1)" }}
+                />
+
+                {/* Events */}
+                <div className="space-y-2.5">
+                  {t.terminal.events.map((event, i) => (
+                    <div
+                      key={`${language}-${i}`}
+                      className="hero07-animated text-xs leading-relaxed"
+                      style={{
+                        color: i < visibleEvents ? "#9ca3af" : "transparent",
+                        animation:
+                          i < visibleEvents
+                            ? `hero07EventFade 0.4s cubic-bezier(0.16,1,0.3,1) forwards`
+                            : "none",
+                        opacity: i < visibleEvents ? undefined : 0,
+                      }}
+                    >
+                      {event}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Divider */}
+                <div
+                  className="h-px"
+                  style={{ backgroundColor: "rgba(34, 197, 94, 0.1)" }}
+                />
+
+                {/* Threat level */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs" style={{ color: "#4b5563" }}>
+                      {t.terminal.threatLabel}
+                    </span>
+                    <span
+                      className="text-xs font-semibold"
+                      style={{ color: "#22c55e" }}
+                    >
+                      {t.terminal.threatValue}
+                    </span>
+                  </div>
+                  <div
+                    className="h-2 rounded-full overflow-hidden"
+                    style={{ backgroundColor: "rgba(34, 197, 94, 0.1)" }}
+                  >
+                    <div
+                      className="h-full rounded-full transition-all duration-1000"
+                      style={{
+                        width: mounted ? `${t.terminal.threatPercent}%` : "0%",
+                        background: "linear-gradient(90deg, #22c55e, #86efac)",
+                        boxShadow: "0 0 10px rgba(34, 197, 94, 0.4)",
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Cursor line */}
+                <div className="flex items-center gap-1 pt-2">
+                  <span className="text-xs" style={{ color: "#22c55e" }}>
+                    $
+                  </span>
+                  <span
+                    className="hero07-blink inline-block w-[7px] h-[14px]"
+                    style={{
+                      backgroundColor: "#22c55e",
+                      animation: "hero07Blink 1s steps(1) infinite",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

@@ -1,26 +1,39 @@
 "use client";
+
 import { useState } from "react";
 import Link from "next/link";
 import { Hero03 } from "./hero-03";
 
 export default function Page() {
   const [language, setLanguage] = useState<"en" | "ar">("en");
+
   return (
     <div dir={language === "ar" ? "rtl" : "ltr"}>
-      <div className="sticky top-0 z-50 bg-gray-950/90 backdrop-blur border-b border-gray-800 px-6 py-3 flex items-center justify-between">
-        <Link href="/demo" className="text-gray-400 hover:text-white text-sm">
+      <div className="sticky top-0 z-50 bg-gray-950/90 backdrop-blur-xl border-b border-white/[0.06] px-6 py-3 flex items-center justify-between">
+        <Link
+          href="/demo"
+          className="text-gray-400 hover:text-white text-sm transition-colors"
+        >
           ← Back
         </Link>
         <div className="flex gap-2">
           <button
             onClick={() => setLanguage("en")}
-            className={`px-3 py-1 rounded text-sm cursor-pointer ${language === "en" ? "bg-blue-600 text-white" : "bg-gray-800 text-gray-400"}`}
+            className={`px-3 py-1.5 rounded-lg text-sm cursor-pointer transition-all ${
+              language === "en"
+                ? "bg-white text-gray-900 shadow-sm"
+                : "bg-white/5 text-gray-400 hover:bg-white/10"
+            }`}
           >
             EN
           </button>
           <button
             onClick={() => setLanguage("ar")}
-            className={`px-3 py-1 rounded text-sm cursor-pointer ${language === "ar" ? "bg-blue-600 text-white" : "bg-gray-800 text-gray-400"}`}
+            className={`px-3 py-1.5 rounded-lg text-sm cursor-pointer transition-all ${
+              language === "ar"
+                ? "bg-white text-gray-900 shadow-sm"
+                : "bg-white/5 text-gray-400 hover:bg-white/10"
+            }`}
           >
             AR
           </button>

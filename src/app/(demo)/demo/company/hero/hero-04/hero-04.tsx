@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Palette } from "lucide-react";
+import { Palette, ArrowRight, ExternalLink } from "lucide-react";
 
 interface Hero04Props {
   language: "en" | "ar";
@@ -9,232 +8,163 @@ interface Hero04Props {
 
 const content = {
   en: {
-    heading: "We Create Brands That",
-    accent: "Move People",
-    sub: "Strategy. Design. Technology. We build digital experiences that captivate audiences and drive real business growth.",
-    cta1: "See Our Work",
-    cta2: "Let\u2019s Talk",
-    cards: ["Brand Identity", "Digital Platform", "Campaign Launch"],
+    label: "CREATIVE STUDIO",
+    heading: "WE MAKE BRANDS",
+    accent: "UNFORGETTABLE",
+    sub: "Strategy, design, and technology fused into experiences that demand attention.",
+    cta1: "View Our Work",
+    cta2: "Start a Project",
+    cards: [
+      { label: "Brand Identity", gradient: "linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)" },
+      { label: "Digital Platform", gradient: "linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)" },
+      { label: "Campaign", gradient: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)" },
+    ],
   },
   ar: {
-    heading: "\u0646\u0635\u0646\u0639 \u0639\u0644\u0627\u0645\u0627\u062a \u062a\u062c\u0627\u0631\u064a\u0629",
-    accent: "\u062a\u062d\u0631\u0651\u0643 \u0627\u0644\u0646\u0627\u0633",
-    sub: "\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629. \u062a\u0635\u0645\u064a\u0645. \u062a\u0643\u0646\u0648\u0644\u0648\u062c\u064a\u0627. \u0646\u0628\u0646\u064a \u062a\u062c\u0627\u0631\u0628 \u0631\u0642\u0645\u064a\u0629 \u062a\u0623\u0633\u0631 \u0627\u0644\u062c\u0645\u0647\u0648\u0631 \u0648\u062a\u062d\u0642\u0642 \u0646\u0645\u0648\u0627\u064b \u062d\u0642\u064a\u0642\u064a\u0627\u064b.",
-    cta1: "\u0634\u0627\u0647\u062f \u0623\u0639\u0645\u0627\u0644\u0646\u0627",
-    cta2: "\u0644\u0646\u062a\u062d\u062f\u062b",
-    cards: ["\u0647\u0648\u064a\u0629 \u0628\u0635\u0631\u064a\u0629", "\u0645\u0646\u0635\u0629 \u0631\u0642\u0645\u064a\u0629", "\u0625\u0637\u0644\u0627\u0642 \u062d\u0645\u0644\u0629"],
+    label: "استوديو إبداعي",
+    heading: "نجعل العلامات التجارية",
+    accent: "لا تُنسى",
+    sub: "استراتيجية وتصميم وتكنولوجيا مدمجة في تجارب تستحوذ على الانتباه.",
+    cta1: "شاهد أعمالنا",
+    cta2: "ابدأ مشروعاً",
+    cards: [
+      { label: "هوية العلامة", gradient: "linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)" },
+      { label: "منصة رقمية", gradient: "linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)" },
+      { label: "حملة إعلانية", gradient: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)" },
+    ],
   },
 };
 
-const marqueeItems = ["ACME Corp", "TechFlow", "Zenith", "Lunar Inc", "Apex Digital", "NovaStar", "BluePeak"];
-
-const cardGradients = [
-  "linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)",
-  "linear-gradient(135deg, #ec4899 0%, #f97316 100%)",
-  "linear-gradient(135deg, #f97316 0%, #8b5cf6 100%)",
-];
-
 const cardTransforms = [
-  { rotate: -6, translateY: 0 },
-  { rotate: 3, translateY: 40 },
-  { rotate: -3, translateY: 80 },
+  { rotate: -8, translateX: 20, translateY: 0 },
+  { rotate: 4, translateX: -15, translateY: -30 },
+  { rotate: -2, translateX: 10, translateY: -60 },
 ];
 
-const blobs = [
-  { size: 400, x: "60%", y: "15%", gradient: "radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%)", duration: 15 },
-  { size: 350, x: "75%", y: "55%", gradient: "radial-gradient(circle, rgba(236, 72, 153, 0.25) 0%, transparent 70%)", duration: 20 },
-  { size: 300, x: "40%", y: "70%", gradient: "radial-gradient(circle, rgba(249, 115, 22, 0.25) 0%, transparent 70%)", duration: 25 },
-];
+const cardFloatDurations = [4, 5, 6];
 
 export function Hero04({ language }: Hero04Props) {
-  const isAr = language === "ar";
   const t = content[language];
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
+  const isAr = language === "ar";
 
   return (
     <>
       <style>{`
-        @keyframes fadeUp04 {
-          from { opacity: 0; transform: translateY(24px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes prism-fadeSlideRight {
+          from { opacity: 0; transform: translateX(-40px); }
+          to { opacity: 1; transform: translateX(0); }
         }
-        @keyframes blobDrift0 {
-          0%, 100% { transform: translate(0, 0); }
-          33% { transform: translate(40px, -30px); }
-          66% { transform: translate(-20px, 20px); }
+        @keyframes prism-fadeSlideLeft {
+          from { opacity: 0; transform: translateX(40px); }
+          to { opacity: 1; transform: translateX(0); }
         }
-        @keyframes blobDrift1 {
-          0%, 100% { transform: translate(0, 0); }
-          33% { transform: translate(-30px, 40px); }
-          66% { transform: translate(25px, -15px); }
+        @keyframes prism-fadeSlideRightRTL {
+          from { opacity: 0; transform: translateX(40px); }
+          to { opacity: 1; transform: translateX(0); }
         }
-        @keyframes blobDrift2 {
-          0%, 100% { transform: translate(0, 0); }
-          33% { transform: translate(20px, 30px); }
-          66% { transform: translate(-40px, -20px); }
+        @keyframes prism-fadeSlideLeftRTL {
+          from { opacity: 0; transform: translateX(-40px); }
+          to { opacity: 1; transform: translateX(0); }
         }
-        @keyframes cardFloat0 {
-          0%, 100% { transform: rotate(-6deg) translateY(0px); }
-          50% { transform: rotate(-6deg) translateY(-10px); }
+        @keyframes prism-float0 {
+          0%, 100% { transform: rotate(-8deg) translate(20px, 0); }
+          50% { transform: rotate(-8deg) translate(20px, -8px); }
         }
-        @keyframes cardFloat1 {
-          0%, 100% { transform: rotate(3deg) translateY(40px); }
-          50% { transform: rotate(3deg) translateY(30px); }
+        @keyframes prism-float1 {
+          0%, 100% { transform: rotate(4deg) translate(-15px, -30px); }
+          50% { transform: rotate(4deg) translate(-15px, -38px); }
         }
-        @keyframes cardFloat2 {
-          0%, 100% { transform: rotate(-3deg) translateY(80px); }
-          50% { transform: rotate(-3deg) translateY(70px); }
+        @keyframes prism-float2 {
+          0%, 100% { transform: rotate(-2deg) translate(10px, -60px); }
+          50% { transform: rotate(-2deg) translate(10px, -68px); }
         }
-        @keyframes marqueeScroll {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
+        @keyframes prism-gradientLine {
+          0% { background-position: 0% 0%; }
+          100% { background-position: 200% 0%; }
         }
-        .hero04-fade-up {
+        .prism-slideRight {
+          animation: prism-fadeSlideRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
           opacity: 0;
-          animation: fadeUp04 0.6s ease-out forwards;
         }
-        .hero04-card-0 { animation: cardFloat0 4s ease-in-out infinite; }
-        .hero04-card-1 { animation: cardFloat1 4s ease-in-out infinite; animation-delay: 0.5s; }
-        .hero04-card-2 { animation: cardFloat2 4s ease-in-out infinite; animation-delay: 1s; }
-        .hero04-blob-0 { animation: blobDrift0 15s ease-in-out infinite; }
-        .hero04-blob-1 { animation: blobDrift1 20s ease-in-out infinite; }
-        .hero04-blob-2 { animation: blobDrift2 25s ease-in-out infinite; }
-        .hero04-marquee-track {
-          animation: marqueeScroll 30s linear infinite;
+        .prism-slideLeft {
+          animation: prism-fadeSlideLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          opacity: 0;
         }
-        .hero04-cards-container {
-          display: none;
+        [dir="rtl"] .prism-slideRight {
+          animation-name: prism-fadeSlideRightRTL;
         }
-        @media (min-width: 1024px) {
-          .hero04-cards-container {
-            display: block !important;
-          }
+        [dir="rtl"] .prism-slideLeft {
+          animation-name: prism-fadeSlideLeftRTL;
         }
+        .prism-d1 { animation-delay: 0.1s; }
+        .prism-d2 { animation-delay: 0.2s; }
+        .prism-d3 { animation-delay: 0.35s; }
+        .prism-d4 { animation-delay: 0.5s; }
+        .prism-d5 { animation-delay: 0.3s; }
+        .prism-d6 { animation-delay: 0.45s; }
+        .prism-d7 { animation-delay: 0.6s; }
         @media (prefers-reduced-motion: reduce) {
-          .hero04-fade-up {
-            animation: none;
-            opacity: 1;
-          }
-          .hero04-card-0,
-          .hero04-card-1,
-          .hero04-card-2 {
-            animation: none !important;
-          }
-          .hero04-card-0 { transform: rotate(-6deg) translateY(0px); }
-          .hero04-card-1 { transform: rotate(3deg) translateY(40px); }
-          .hero04-card-2 { transform: rotate(-3deg) translateY(80px); }
-          .hero04-blob-0,
-          .hero04-blob-1,
-          .hero04-blob-2 {
-            animation: none !important;
-          }
-          .hero04-marquee-track {
-            animation: none !important;
-          }
+          .prism-slideRight, .prism-slideLeft { animation: none; opacity: 1; }
+          .prism-card { animation: none !important; }
         }
       `}</style>
 
       <section
+        className="relative min-h-screen overflow-hidden"
         style={{
-          background: "#0f0720",
-          position: "relative",
-          overflow: "hidden",
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          fontFamily: isAr ? "var(--font-tajawal), sans-serif" : "var(--font-inter), sans-serif",
+          background: "#0a0a0a",
+          fontFamily: isAr ? "var(--font-tajawal)" : "var(--font-inter)",
         }}
       >
-        {/* Blurred gradient blobs */}
-        {blobs.map((blob, i) => (
-          <div
-            key={i}
-            className={`hero04-blob-${i}`}
-            style={{
-              position: "absolute",
-              left: blob.x,
-              top: blob.y,
-              width: `${blob.size}px`,
-              height: `${blob.size}px`,
-              background: blob.gradient,
-              filter: "blur(100px)",
-              pointerEvents: "none",
-              transform: "translate(-50%, -50%)",
-            }}
-          />
-        ))}
-
-        {/* Main content */}
+        {/* Diagonal Gradient Line */}
         <div
+          className="absolute pointer-events-none"
           style={{
-            position: "relative",
-            zIndex: 10,
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            maxWidth: "1280px",
-            width: "100%",
-            margin: "0 auto",
-            padding: "80px 24px 40px",
-            gap: "48px",
-            flexDirection: isAr ? "row-reverse" : "row",
+            width: "150%",
+            height: "2px",
+            top: "55%",
+            left: "-25%",
+            transform: "rotate(-15deg)",
+            background: "linear-gradient(90deg, transparent 0%, #f43f5e 25%, #a855f7 50%, #3b82f6 75%, transparent 100%)",
+            backgroundSize: "200% 100%",
+            animation: "prism-gradientLine 4s linear infinite",
+            opacity: 0.3,
           }}
-        >
-          {/* Text side */}
-          <div
-            style={{
-              flex: "1 1 55%",
-              textAlign: isAr ? "right" : "left",
-            }}
-          >
-            {/* Badge */}
-            <div
-              className="hero04-fade-up"
-              style={{ animationDelay: "0ms", marginBottom: "24px" }}
-            >
+        />
+
+        {/* Main Layout */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-24 sm:py-32 lg:py-40 flex flex-col lg:flex-row items-center gap-16 lg:gap-8">
+          {/* Left Content — 55% */}
+          <div className="w-full lg:w-[55%] flex flex-col items-start">
+            {/* Label */}
+            <div className="prism-slideRight prism-d1 inline-flex items-center gap-2 mb-8">
+              <Palette className="w-4 h-4" style={{ color: "#f43f5e" }} />
               <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  padding: "6px 16px",
-                  borderRadius: "9999px",
-                  background: "rgba(139, 92, 246, 0.12)",
-                  color: "#c084fc",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  border: "1px solid rgba(139, 92, 246, 0.2)",
-                }}
+                className="text-xs tracking-widest uppercase font-medium"
+                style={{ color: "#a3a3a3", letterSpacing: "0.2em" }}
               >
-                <Palette size={16} />
-                {isAr ? "\u0648\u0643\u0627\u0644\u0629 \u0625\u0628\u062f\u0627\u0639\u064a\u0629" : "Creative Agency"}
+                {t.label}
               </span>
             </div>
 
             {/* Heading */}
             <h1
-              className="hero04-fade-up"
+              className="prism-slideRight prism-d2"
               style={{
-                animationDelay: "30ms",
-                fontSize: "clamp(36px, 5.5vw, 68px)",
-                fontWeight: 700,
-                lineHeight: 1.1,
-                color: "#ffffff",
-                margin: "0 0 24px",
-                letterSpacing: isAr ? "0" : "-0.02em",
-                fontFamily: isAr ? "var(--font-changa), sans-serif" : "inherit",
+                fontSize: "clamp(3rem, 8vw, 6rem)",
+                fontWeight: 800,
+                letterSpacing: "-0.04em",
+                lineHeight: 0.95,
+                color: "#fafafa",
+                textTransform: isAr ? "none" : "uppercase",
+                fontFamily: isAr ? "var(--font-changa)" : "var(--font-inter)",
               }}
             >
               {t.heading}
               <br />
               <span
                 style={{
-                  background: "linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%)",
+                  background: "linear-gradient(135deg, #f43f5e 0%, #a855f7 50%, #3b82f6 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -246,205 +176,89 @@ export function Hero04({ language }: Hero04Props) {
 
             {/* Subtitle */}
             <p
-              className="hero04-fade-up"
-              style={{
-                animationDelay: "60ms",
-                fontSize: "clamp(16px, 1.8vw, 20px)",
-                lineHeight: 1.7,
-                color: "rgba(255, 255, 255, 0.55)",
-                maxWidth: "520px",
-                margin: "0 0 36px",
-                marginLeft: isAr ? "auto" : undefined,
-              }}
+              className="prism-slideRight prism-d3 mt-7 max-w-md text-lg"
+              style={{ color: "#a3a3a3", fontWeight: 300, lineHeight: 1.7 }}
             >
               {t.sub}
             </p>
 
             {/* CTAs */}
-            <div
-              className="hero04-fade-up"
-              style={{
-                animationDelay: "90ms",
-                display: "flex",
-                gap: "16px",
-                flexWrap: "wrap",
-                flexDirection: isAr ? "row-reverse" : "row",
-              }}
-            >
+            <div className="prism-slideRight prism-d4 flex flex-wrap items-center gap-4 mt-10">
               <button
+                className="cursor-pointer inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-white font-semibold text-sm transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98]"
                 style={{
-                  padding: "16px 32px",
-                  borderRadius: "12px",
-                  background: "linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)",
-                  color: "#ffffff",
-                  fontSize: "16px",
-                  fontWeight: 600,
-                  border: "none",
-                  cursor: "pointer",
-                  transition: "transform 0.2s ease-out, box-shadow 0.2s ease-out",
-                  boxShadow: "0 0 30px rgba(139, 92, 246, 0.3)",
-                  fontFamily: "inherit",
-                  minHeight: "44px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 0 40px rgba(139, 92, 246, 0.5)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 0 30px rgba(139, 92, 246, 0.3)";
+                  background: "linear-gradient(135deg, #f43f5e 0%, #a855f7 60%, #3b82f6 100%)",
+                  boxShadow: "0 0 30px rgba(244,63,94,0.25), 0 0 60px rgba(168,85,247,0.15)",
                 }}
               >
                 {t.cta1}
+                <ArrowRight className="w-4 h-4" />
               </button>
               <button
+                className="cursor-pointer inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-sm font-medium transition-all hover:bg-white/[0.08] active:scale-[0.98]"
                 style={{
-                  padding: "16px 32px",
-                  borderRadius: "12px",
-                  background: "transparent",
-                  color: "rgba(255, 255, 255, 0.8)",
-                  fontSize: "16px",
-                  fontWeight: 600,
-                  border: "1px solid rgba(255, 255, 255, 0.15)",
-                  cursor: "pointer",
-                  transition: "transform 0.2s ease-out, border-color 0.2s ease-out",
-                  fontFamily: "inherit",
-                  minHeight: "44px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.5)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)";
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  color: "#d4d4d4",
                 }}
               >
                 {t.cta2}
+                <ExternalLink className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          {/* Floating cards side */}
-          <div
-            className="hero04-cards-container"
-            style={{
-              flex: "0 0 40%",
-              position: "relative",
-              height: "480px",
-            }}
-          >
-            {t.cards.map((card, i) => (
-              <div
-                key={i}
-                className={`hero04-card-${i}`}
-                style={{
-                  position: "absolute",
-                  left: `${i * 30 + 20}px`,
-                  top: "40px",
-                  width: "260px",
-                  height: "160px",
-                  borderRadius: "16px",
-                  background: cardGradients[i],
-                  boxShadow: "0 20px 50px rgba(0, 0, 0, 0.4)",
-                  display: "flex",
-                  alignItems: "flex-end",
-                  padding: "20px",
-                  opacity: mounted ? 1 : 0,
-                  transition: "opacity 0.6s ease-out",
-                  transitionDelay: `${i * 0.15}s`,
-                }}
-              >
-                <span
-                  style={{
-                    color: "#ffffff",
-                    fontSize: "16px",
-                    fontWeight: 600,
-                    textShadow: "0 2px 8px rgba(0, 0, 0, 0.3)",
-                  }}
-                >
-                  {card}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Marquee ticker */}
-        <div
-          className="hero04-fade-up"
-          style={{
-            animationDelay: "150ms",
-            position: "relative",
-            zIndex: 10,
-            borderTop: "1px solid rgba(255, 255, 255, 0.06)",
-            padding: "20px 0",
-            overflow: "hidden",
-            marginTop: "auto",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0",
-              width: "max-content",
-            }}
-          >
-            <div
-              className="hero04-marquee-track"
-              style={{
-                display: "flex",
-                gap: "24px",
-                paddingRight: "24px",
-              }}
-            >
-              {[...marqueeItems, ...marqueeItems].map((item, i) => (
+          {/* Right Cards — 45% */}
+          <div className="w-full lg:w-[45%] flex items-center justify-center">
+            <div className="relative" style={{ width: "280px", height: "380px" }}>
+              {t.cards.map((card, i) => (
                 <div
                   key={i}
+                  className={`prism-card prism-slideLeft prism-d${i + 5} absolute rounded-2xl overflow-hidden`}
                   style={{
-                    padding: "8px 24px",
-                    borderRadius: "8px",
-                    background: "rgba(255, 255, 255, 0.04)",
-                    border: "1px solid rgba(255, 255, 255, 0.06)",
-                    color: "rgba(255, 255, 255, 0.35)",
-                    fontSize: "13px",
-                    fontWeight: 500,
-                    whiteSpace: "nowrap",
-                    letterSpacing: "0.05em",
-                    textTransform: "uppercase",
+                    width: "180px",
+                    height: "240px",
+                    left: "50%",
+                    top: "50%",
+                    marginLeft: "-90px",
+                    marginTop: "-120px",
+                    background: card.gradient,
+                    animation: `prism-float${i} ${cardFloatDurations[i]}s ease-in-out infinite`,
+                    boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
+                    border: "1px solid rgba(255,255,255,0.1)",
                   }}
                 >
-                  {item}
-                </div>
-              ))}
-            </div>
-            <div
-              className="hero04-marquee-track"
-              style={{
-                display: "flex",
-                gap: "24px",
-                paddingRight: "24px",
-              }}
-              aria-hidden="true"
-            >
-              {[...marqueeItems, ...marqueeItems].map((item, i) => (
-                <div
-                  key={`dup-${i}`}
-                  style={{
-                    padding: "8px 24px",
-                    borderRadius: "8px",
-                    background: "rgba(255, 255, 255, 0.04)",
-                    border: "1px solid rgba(255, 255, 255, 0.06)",
-                    color: "rgba(255, 255, 255, 0.35)",
-                    fontSize: "13px",
-                    fontWeight: 500,
-                    whiteSpace: "nowrap",
-                    letterSpacing: "0.05em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {item}
+                  {/* Card overlay content */}
+                  <div
+                    className="absolute inset-0 flex flex-col justify-end p-5"
+                    style={{
+                      background: "linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.5) 100%)",
+                    }}
+                  >
+                    <span
+                      className="text-xs font-medium uppercase tracking-wider"
+                      style={{ color: "rgba(255,255,255,0.7)", letterSpacing: "0.1em" }}
+                    >
+                      {isAr ? "مشروع" : "Project"}
+                    </span>
+                    <span className="text-sm font-semibold text-white mt-1">
+                      {card.label}
+                    </span>
+                  </div>
+
+                  {/* Decorative elements */}
+                  <div
+                    className="absolute top-4 right-4 w-8 h-8 rounded-full"
+                    style={{ background: "rgba(255,255,255,0.15)", backdropFilter: "blur(10px)" }}
+                  />
+                  <div
+                    className="absolute top-5 left-5 w-12 h-1 rounded-full"
+                    style={{ background: "rgba(255,255,255,0.2)" }}
+                  />
+                  <div
+                    className="absolute top-9 left-5 w-8 h-1 rounded-full"
+                    style={{ background: "rgba(255,255,255,0.12)" }}
+                  />
                 </div>
               ))}
             </div>

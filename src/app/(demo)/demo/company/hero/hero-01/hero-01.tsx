@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Building2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Layers, ArrowRight, Play } from "lucide-react";
 
 interface Hero01Props {
   language: "en" | "ar";
@@ -9,402 +9,322 @@ interface Hero01Props {
 
 const content = {
   en: {
-    badge: "#1 Digital Transformation Partner",
-    heading: "Powering the Next Generation",
-    accent: "of Business",
-    sub: "We deliver enterprise solutions that transform operations, accelerate growth, and drive measurable results across every industry.",
-    cta1: "Start Your Project",
-    cta2: "View Case Studies",
-    trust: "Trusted by 500+ enterprises worldwide",
+    badge: "Introducing Nexus 3.0",
+    heading: "The platform for modern enterprise",
+    sub: "Unify your operations, automate workflows, and scale with confidence. Built for teams that move fast.",
+    cta1: "Get Started",
+    cta2: "Book a Demo",
     stats: [
-      { value: 500, suffix: "+", label: "Clients" },
-      { value: 1200, suffix: "+", label: "Projects" },
-      { value: 35, suffix: "", label: "Countries" },
-      { value: 18, suffix: "", label: "Years" },
+      { value: 10000, suffix: "+", label: "Teams" },
+      { value: 99.9, suffix: "%", label: "Uptime", decimals: 1 },
+      { value: 4.8, suffix: "", label: "Rating", decimals: 1 },
+      { value: 150, suffix: "+", label: "Countries" },
+    ],
+    productRows: [
+      { name: "Pipeline Alpha", status: "active" },
+      { name: "Revenue Sync", status: "active" },
+      { name: "User Analytics", status: "pending" },
+      { name: "Deployment CI/CD", status: "active" },
+      { name: "Security Audit", status: "warning" },
     ],
   },
   ar: {
-    badge: "#1 شريك التحول الرقمي",
-    heading: "نقود الجيل القادم",
-    accent: "من الأعمال",
-    sub: "نقدم حلولاً مؤسسية تحوّل العمليات وتسرّع النمو وتحقق نتائج قابلة للقياس في كل قطاع.",
-    cta1: "ابدأ مشروعك",
-    cta2: "عرض دراسات الحالة",
-    trust: "موثوق من قبل أكثر من 500 مؤسسة حول العالم",
+    badge: "تقديم نكسس 3.0",
+    heading: "المنصة للمؤسسات الحديثة",
+    sub: "وحّد عملياتك، وأتمت سير العمل، وتوسع بثقة. مصممة للفرق سريعة الحركة.",
+    cta1: "ابدأ الآن",
+    cta2: "احجز عرضاً",
     stats: [
-      { value: 500, suffix: "+", label: "عملاء" },
-      { value: 1200, suffix: "+", label: "مشاريع" },
-      { value: 35, suffix: "", label: "دولة" },
-      { value: 18, suffix: "", label: "سنوات" },
+      { value: 10000, suffix: "+", label: "فريق" },
+      { value: 99.9, suffix: "%", label: "وقت التشغيل", decimals: 1 },
+      { value: 4.8, suffix: "", label: "التقييم", decimals: 1 },
+      { value: 150, suffix: "+", label: "دولة" },
+    ],
+    productRows: [
+      { name: "خط الأنابيب ألفا", status: "active" },
+      { name: "مزامنة الإيرادات", status: "active" },
+      { name: "تحليلات المستخدم", status: "pending" },
+      { name: "نشر CI/CD", status: "active" },
+      { name: "تدقيق الأمان", status: "warning" },
     ],
   },
 };
 
-function useCountUp(target: number, duration: number = 2000, start: boolean = false) {
+function useCountUp(
+  end: number,
+  duration: number = 2000,
+  decimals: number = 0
+) {
   const [count, setCount] = useState(0);
+  const startedRef = useRef(false);
 
   useEffect(() => {
-    if (!start) return;
-    setCount(0);
-    const startTime = performance.now();
-    let rafId: number;
+    if (startedRef.current) return;
+    startedRef.current = true;
 
-    const animate = (now: number) => {
+    const startTime = performance.now();
+    const step = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(eased * target));
-      if (progress < 1) {
-        rafId = requestAnimationFrame(animate);
-      }
+      setCount(Number((eased * end).toFixed(decimals)));
+      if (progress < 1) requestAnimationFrame(step);
     };
-
-    rafId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafId);
-  }, [target, duration, start]);
+    requestAnimationFrame(step);
+  }, [end, duration, decimals]);
 
   return count;
 }
 
-function formatNumber(n: number, isAr: boolean): string {
-  if (isAr) {
-    return n.toLocaleString("ar-SA");
-  }
-  return n.toLocaleString("en-US");
-}
-
 export function Hero01({ language }: Hero01Props) {
-  const isAr = language === "ar";
   const t = content[language];
-  const [mounted, setMounted] = useState(false);
+  const isAr = language === "ar";
 
-  useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const stat0 = useCountUp(t.stats[0].value, 2000, mounted);
-  const stat1 = useCountUp(t.stats[1].value, 2000, mounted);
-  const stat2 = useCountUp(t.stats[2].value, 2000, mounted);
-  const stat3 = useCountUp(t.stats[3].value, 2000, mounted);
+  const stat0 = useCountUp(t.stats[0].value, 2000, 0);
+  const stat1 = useCountUp(t.stats[1].value, 2000, t.stats[1].decimals ?? 0);
+  const stat2 = useCountUp(t.stats[2].value, 2000, t.stats[2].decimals ?? 0);
+  const stat3 = useCountUp(t.stats[3].value, 2000, 0);
   const statValues = [stat0, stat1, stat2, stat3];
+
+  const statusColors: Record<string, string> = {
+    active: "#22c55e",
+    pending: "#eab308",
+    warning: "#f97316",
+  };
 
   return (
     <>
       <style>{`
-        @keyframes gridPulse {
-          0%, 100% { opacity: 0.03; }
-          50% { opacity: 0.08; }
-        }
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(24px); }
+        @keyframes nexus-fadeUp {
+          from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes dotPulse {
-          0%, 100% { opacity: 0.15; }
-          50% { opacity: 0.4; }
+        @keyframes nexus-orbBreathe {
+          0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.12; }
+          50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.2; }
         }
-        .hero01-fade-up {
+        @keyframes nexus-float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+        .nexus-fadeUp {
+          animation: nexus-fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
           opacity: 0;
-          animation: fadeUp 0.6s ease-out forwards;
         }
+        .nexus-delay-1 { animation-delay: 0.1s; }
+        .nexus-delay-2 { animation-delay: 0.2s; }
+        .nexus-delay-3 { animation-delay: 0.35s; }
+        .nexus-delay-4 { animation-delay: 0.5s; }
+        .nexus-delay-5 { animation-delay: 0.65s; }
+        .nexus-delay-6 { animation-delay: 0.8s; }
+        .nexus-delay-7 { animation-delay: 0.95s; }
         @media (prefers-reduced-motion: reduce) {
-          .hero01-fade-up {
+          .nexus-fadeUp {
             animation: none;
             opacity: 1;
           }
-          .hero01-grid-line {
+          .nexus-orb, .nexus-product-card {
             animation: none !important;
-          }
-          .hero01-dot {
-            animation: none !important;
-            opacity: 0.15 !important;
           }
         }
       `}</style>
 
       <section
+        className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center"
         style={{
-          background: "#0a0f1e",
-          position: "relative",
-          overflow: "hidden",
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          fontFamily: isAr ? "var(--font-cairo), sans-serif" : "var(--font-inter), sans-serif",
+          background: "linear-gradient(180deg, #050507 0%, #0a0a1a 100%)",
+          fontFamily: isAr ? "var(--font-cairo)" : "var(--font-inter)",
         }}
       >
-        {/* Animated grid background */}
+        {/* Ambient Orb */}
         <div
+          className="nexus-orb absolute pointer-events-none"
           style={{
-            position: "absolute",
-            inset: 0,
-            overflow: "hidden",
-            pointerEvents: "none",
-          }}
-        >
-          {/* Vertical lines */}
-          {Array.from({ length: 25 }).map((_, i) => (
-            <div
-              key={`v-${i}`}
-              className="hero01-grid-line"
-              style={{
-                position: "absolute",
-                left: `${i * 60}px`,
-                top: 0,
-                bottom: 0,
-                width: "1px",
-                background: "#3b82f6",
-                opacity: 0.04,
-                animation: `gridPulse ${3 + (i % 3)}s ease-in-out infinite`,
-                animationDelay: `${(i % 5) * 0.4}s`,
-              }}
-            />
-          ))}
-          {/* Horizontal lines */}
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div
-              key={`h-${i}`}
-              className="hero01-grid-line"
-              style={{
-                position: "absolute",
-                top: `${i * 60}px`,
-                left: 0,
-                right: 0,
-                height: "1px",
-                background: "#3b82f6",
-                opacity: 0.04,
-                animation: `gridPulse ${3 + (i % 3)}s ease-in-out infinite`,
-                animationDelay: `${(i % 5) * 0.4}s`,
-              }}
-            />
-          ))}
-          {/* Intersection dots */}
-          {Array.from({ length: 8 }).map((_, row) =>
-            Array.from({ length: 10 }).map((_, col) => (
-              <div
-                key={`dot-${row}-${col}`}
-                className="hero01-dot"
-                style={{
-                  position: "absolute",
-                  left: `${col * 120 + 60}px`,
-                  top: `${row * 120 + 60}px`,
-                  width: "3px",
-                  height: "3px",
-                  borderRadius: "50%",
-                  background: "#06b6d4",
-                  opacity: 0.15,
-                  animation: `dotPulse ${2 + ((row + col) % 3)}s ease-in-out infinite`,
-                  animationDelay: `${((row * 10 + col) % 7) * 0.3}s`,
-                }}
-              />
-            ))
-          )}
-        </div>
-
-        {/* Radial gradient overlay */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "radial-gradient(ellipse at center top, rgba(59, 130, 246, 0.12) 0%, transparent 60%)",
-            pointerEvents: "none",
+            width: "700px",
+            height: "700px",
+            top: "30%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            background:
+              "radial-gradient(circle, rgba(99,102,241,0.25) 0%, rgba(167,139,250,0.1) 40%, transparent 70%)",
+            filter: "blur(150px)",
+            animation: "nexus-orbBreathe 8s ease-in-out infinite",
           }}
         />
 
         {/* Content */}
-        <div
-          style={{
-            position: "relative",
-            zIndex: 10,
-            maxWidth: "900px",
-            width: "100%",
-            padding: "80px 24px 40px",
-            textAlign: "center",
-          }}
-        >
+        <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-24 sm:py-32 lg:py-40 flex flex-col items-center text-center">
           {/* Badge */}
-          <div
-            className="hero01-fade-up"
-            style={{
-              animationDelay: "0ms",
-              marginBottom: "32px",
-            }}
-          >
+          <div className="nexus-fadeUp nexus-delay-1 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.05] border border-white/[0.1] backdrop-blur-md mb-8">
+            <Layers className="w-4 h-4 text-indigo-400" />
             <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "8px 20px",
-                borderRadius: "9999px",
-                background: "rgba(59, 130, 246, 0.1)",
-                border: "1px solid rgba(59, 130, 246, 0.25)",
-                color: "#3b82f6",
-                fontSize: "14px",
-                fontWeight: 500,
-              }}
+              className="text-sm text-indigo-300"
+              style={{ letterSpacing: "0.02em" }}
             >
-              <Building2 size={16} />
               {t.badge}
             </span>
           </div>
 
           {/* Heading */}
           <h1
-            className="hero01-fade-up"
+            className="nexus-fadeUp nexus-delay-2 max-w-4xl"
             style={{
-              animationDelay: "30ms",
-              fontSize: "clamp(36px, 6vw, 72px)",
+              fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
               fontWeight: 700,
+              letterSpacing: "-0.03em",
               lineHeight: 1.1,
-              color: "#ffffff",
-              margin: "0 0 24px",
-              letterSpacing: isAr ? "0" : "-0.02em",
+              color: "#ededed",
             }}
           >
             {t.heading}
-            <br />
-            <span style={{ color: "#3b82f6" }}>{t.accent}</span>
           </h1>
 
           {/* Subtitle */}
           <p
-            className="hero01-fade-up"
-            style={{
-              animationDelay: "60ms",
-              fontSize: "clamp(16px, 2vw, 20px)",
-              lineHeight: 1.7,
-              color: "rgba(255, 255, 255, 0.6)",
-              maxWidth: "640px",
-              margin: "0 auto 40px",
-            }}
+            className="nexus-fadeUp nexus-delay-3 mt-6 max-w-2xl text-lg sm:text-xl"
+            style={{ color: "#a1a1aa", fontWeight: 300, lineHeight: 1.7 }}
           >
             {t.sub}
           </p>
 
           {/* CTAs */}
-          <div
-            className="hero01-fade-up"
-            style={{
-              animationDelay: "90ms",
-              display: "flex",
-              gap: "16px",
-              justifyContent: "center",
-              flexWrap: "wrap",
-              marginBottom: "48px",
-              flexDirection: isAr ? "row-reverse" : "row",
-            }}
-          >
+          <div className="nexus-fadeUp nexus-delay-4 flex flex-wrap items-center justify-center gap-4 mt-10">
             <button
+              className="cursor-pointer inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-white font-medium text-sm transition-all hover:brightness-110 active:scale-[0.98]"
               style={{
-                padding: "16px 32px",
-                borderRadius: "12px",
-                background: "#3b82f6",
-                color: "#ffffff",
-                fontSize: "16px",
-                fontWeight: 600,
-                border: "none",
-                cursor: "pointer",
-                transition: "transform 0.2s ease-out, box-shadow 0.2s ease-out",
-                boxShadow: "0 0 30px rgba(59, 130, 246, 0.3)",
-                fontFamily: "inherit",
-                minHeight: "44px",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 0 40px rgba(59, 130, 246, 0.5)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(59, 130, 246, 0.3)";
+                background:
+                  "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
+                boxShadow:
+                  "0 0 30px rgba(99,102,241,0.3), 0 0 60px rgba(99,102,241,0.1)",
               }}
             >
               {t.cta1}
+              <ArrowRight className="w-4 h-4" />
             </button>
             <button
+              className="cursor-pointer inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-sm font-medium transition-all hover:bg-white/[0.08] active:scale-[0.98]"
               style={{
-                padding: "16px 32px",
-                borderRadius: "12px",
-                background: "transparent",
-                color: "rgba(255, 255, 255, 0.8)",
-                fontSize: "16px",
-                fontWeight: 600,
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-                cursor: "pointer",
-                transition: "transform 0.2s ease-out, border-color 0.2s ease-out",
-                fontFamily: "inherit",
-                minHeight: "44px",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.borderColor = "rgba(59, 130, 246, 0.5)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                color: "#d4d4d8",
               }}
             >
+              <Play className="w-4 h-4" />
               {t.cta2}
             </button>
           </div>
 
-          {/* Trust line */}
-          <p
-            className="hero01-fade-up"
-            style={{
-              animationDelay: "120ms",
-              fontSize: "14px",
-              color: "rgba(255, 255, 255, 0.4)",
-              marginBottom: "32px",
-              fontWeight: 500,
-            }}
-          >
-            {t.trust}
-          </p>
-
-          {/* Stats bar */}
+          {/* Product Preview Card */}
           <div
-            className="hero01-fade-up"
+            className="nexus-fadeUp nexus-delay-5 mt-16 w-full max-w-2xl rounded-2xl p-[1px]"
             style={{
-              animationDelay: "150ms",
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "24px",
-              padding: "32px 24px",
-              borderRadius: "16px",
-              background: "rgba(255, 255, 255, 0.03)",
-              border: "1px solid rgba(255, 255, 255, 0.06)",
-              backdropFilter: "blur(12px)",
+              background:
+                "linear-gradient(135deg, rgba(99,102,241,0.2), rgba(255,255,255,0.05), rgba(167,139,250,0.15))",
             }}
           >
-            {t.stats.map((stat, i) => (
-              <div key={i} style={{ textAlign: "center" }}>
-                <div
+            <div
+              className="nexus-product-card rounded-2xl p-6"
+              style={{
+                background: "rgba(10,10,26,0.8)",
+                backdropFilter: "blur(40px)",
+                animation: "nexus-float 6s ease-in-out infinite",
+              }}
+            >
+              {/* Card header */}
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/60" />
+                </div>
+                <span
+                  className="text-xs px-3 py-1 rounded-full"
                   style={{
-                    fontSize: "clamp(24px, 4vw, 40px)",
-                    fontWeight: 700,
-                    color: i === 0 ? "#3b82f6" : i === 1 ? "#06b6d4" : "#ffffff",
-                    lineHeight: 1.2,
-                    direction: isAr ? "rtl" : "ltr",
+                    background: "rgba(99,102,241,0.15)",
+                    color: "#818cf8",
                   }}
                 >
-                  {isAr
-                    ? `${stat.suffix}${formatNumber(statValues[i], isAr)}`
-                    : `${formatNumber(statValues[i], isAr)}${stat.suffix}`}
-                </div>
-                <div
-                  style={{
-                    fontSize: "14px",
-                    color: "rgba(255, 255, 255, 0.5)",
-                    marginTop: "4px",
-                    fontWeight: 500,
-                  }}
+                  Dashboard
+                </span>
+              </div>
+
+              {/* Product rows */}
+              <div className="space-y-3">
+                {t.productRows.map((row, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between px-4 py-3 rounded-xl"
+                    style={{
+                      background: "rgba(255,255,255,0.03)",
+                      border: "1px solid rgba(255,255,255,0.04)",
+                    }}
+                  >
+                    <span
+                      className="text-sm"
+                      style={{ color: "#d4d4d8", fontWeight: 400 }}
+                    >
+                      {row.name}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="w-2 h-2 rounded-full"
+                        style={{ background: statusColors[row.status] }}
+                      />
+                      <span className="text-xs" style={{ color: "#71717a" }}>
+                        {row.status === "active"
+                          ? isAr
+                            ? "نشط"
+                            : "Active"
+                          : row.status === "pending"
+                            ? isAr
+                              ? "قيد الانتظار"
+                              : "Pending"
+                            : isAr
+                              ? "تحذير"
+                              : "Warning"}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Trust Logos */}
+          <div className="nexus-fadeUp nexus-delay-6 mt-16 flex flex-wrap items-center justify-center gap-8">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="rounded-lg"
+                style={{
+                  width: `${70 + i * 10}px`,
+                  height: "28px",
+                  background: "rgba(255,255,255,0.06)",
+                  opacity: 0.3,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Stats */}
+          <div className="nexus-fadeUp nexus-delay-7 mt-14 grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-12 w-full max-w-2xl">
+            {t.stats.map((stat, i) => (
+              <div key={i} className="flex flex-col items-center gap-1">
+                <span
+                  className="text-3xl sm:text-4xl font-bold"
+                  style={{ color: "#ededed", letterSpacing: "-0.02em" }}
+                >
+                  {stat.decimals
+                    ? statValues[i].toFixed(stat.decimals)
+                    : Math.floor(statValues[i]).toLocaleString()}
+                  {stat.suffix}
+                </span>
+                <span
+                  className="text-sm"
+                  style={{ color: "#71717a", fontWeight: 400 }}
                 >
                   {stat.label}
-                </div>
+                </span>
               </div>
             ))}
           </div>

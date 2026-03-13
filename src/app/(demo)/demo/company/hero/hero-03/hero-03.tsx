@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Shield, Lock, Award, Star } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { TrendingUp, ArrowRight } from "lucide-react";
 
 interface Hero03Props {
   language: "en" | "ar";
@@ -9,331 +9,199 @@ interface Hero03Props {
 
 const content = {
   en: {
-    heading: "Your Financial Future,",
-    accent: "Secured",
-    sub: "Three decades of trusted advisory. We protect and grow your wealth with proven strategies and unwavering integrity.",
-    cta: "Schedule a Consultation",
-    testimonial: "Rated 4.9/5 by 10,000+ clients",
-    trust: [
-      { icon: "shield", label: "Bank-Grade Security" },
-      { icon: "lock", label: "Licensed & Regulated" },
-      { icon: "award", label: "Award-Winning Service" },
+    badge: "EST. 1987",
+    heading: "Where capital meets conviction",
+    sub: "Four decades of institutional-grade wealth management. Precision. Discretion. Results.",
+    cta: "Schedule Consultation",
+    stats: [
+      { prefix: "$", value: 4.2, suffix: "B", label: "Assets Under Management", decimals: 1 },
+      { prefix: "", value: 18.7, suffix: "%", label: "Annual Returns", decimals: 1 },
+      { prefix: "", value: 2400, suffix: "+", label: "Active Clients", decimals: 0 },
     ],
   },
   ar: {
-    heading: "\u0645\u0633\u062a\u0642\u0628\u0644\u0643 \u0627\u0644\u0645\u0627\u0644\u064a\u060c",
-    accent: "\u0641\u064a \u0623\u0645\u0627\u0646",
-    sub: "\u062b\u0644\u0627\u062b\u0629 \u0639\u0642\u0648\u062f \u0645\u0646 \u0627\u0644\u0627\u0633\u062a\u0634\u0627\u0631\u0627\u062a \u0627\u0644\u0645\u0648\u062b\u0648\u0642\u0629. \u0646\u062d\u0645\u064a \u062b\u0631\u0648\u062a\u0643 \u0648\u0646\u0646\u0645\u064a\u0647\u0627 \u0628\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0627\u062a \u0645\u062b\u0628\u062a\u0629 \u0648\u0646\u0632\u0627\u0647\u0629 \u0631\u0627\u0633\u062e\u0629.",
-    cta: "\u062d\u062f\u062f \u0645\u0648\u0639\u062f \u0627\u0633\u062a\u0634\u0627\u0631\u0629",
-    testimonial: "\u062a\u0642\u064a\u064a\u0645 4.9/5 \u0645\u0646 \u0623\u0643\u062b\u0631 \u0645\u0646 10,000 \u0639\u0645\u064a\u0644",
-    trust: [
-      { icon: "shield", label: "\u0623\u0645\u0627\u0646 \u0628\u0645\u0633\u062a\u0648\u0649 \u0627\u0644\u0628\u0646\u0648\u0643" },
-      { icon: "lock", label: "\u0645\u0631\u062e\u0635 \u0648\u0645\u0646\u0638\u0645" },
-      { icon: "award", label: "\u062e\u062f\u0645\u0629 \u062d\u0627\u0626\u0632\u0629 \u0639\u0644\u0649 \u062c\u0648\u0627\u0626\u0632" },
+    badge: "تأسست 1987",
+    heading: "حيث يلتقي رأس المال بالقناعة",
+    sub: "أربعة عقود من إدارة الثروات بمستوى مؤسسي. دقة. سرية. نتائج.",
+    cta: "حدد موعد استشارة",
+    stats: [
+      { prefix: "$", value: 4.2, suffix: "B", label: "الأصول المُدارة", decimals: 1 },
+      { prefix: "", value: 18.7, suffix: "%", label: "العوائد السنوية", decimals: 1 },
+      { prefix: "", value: 2400, suffix: "+", label: "عملاء نشطون", decimals: 0 },
     ],
   },
 };
 
-const trustIcons: Record<string, typeof Shield> = {
-  shield: Shield,
-  lock: Lock,
-  award: Award,
-};
-
-export function Hero03({ language }: Hero03Props) {
-  const isAr = language === "ar";
-  const t = content[language];
-  const [mounted, setMounted] = useState(false);
+function useCountUp(end: number, duration: number = 2200, decimals: number = 0) {
+  const [count, setCount] = useState(0);
+  const startedRef = useRef(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
+    if (startedRef.current) return;
+    startedRef.current = true;
+
+    const startTime = performance.now();
+    const step = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Number((eased * end).toFixed(decimals)));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [end, duration, decimals]);
+
+  return count;
+}
+
+export function Hero03({ language }: Hero03Props) {
+  const t = content[language];
+  const isAr = language === "ar";
+
+  const stat0 = useCountUp(t.stats[0].value, 2200, t.stats[0].decimals);
+  const stat1 = useCountUp(t.stats[1].value, 2200, t.stats[1].decimals);
+  const stat2 = useCountUp(t.stats[2].value, 2200, t.stats[2].decimals);
+  const statValues = [stat0, stat1, stat2];
 
   return (
     <>
       <style>{`
-        @keyframes fadeUp03 {
+        @keyframes obsidian-fadeUp {
           from { opacity: 0; transform: translateY(24px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes shieldEntrance {
-          from { opacity: 0; transform: scale(0.8); }
-          to { opacity: 1; transform: scale(1); }
+        @keyframes obsidian-lineExtend {
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
         }
-        @keyframes diagonalDrift {
-          from { transform: translateY(0); }
-          to { transform: translateY(-200px); }
+        @keyframes obsidian-linePulse {
+          0%, 100% { opacity: 0.4; box-shadow: 0 0 8px rgba(212,168,83,0.15); }
+          50% { opacity: 0.7; box-shadow: 0 0 20px rgba(212,168,83,0.3); }
         }
-        .hero03-fade-up {
-          opacity: 0;
-          animation: fadeUp03 0.6s ease-out forwards;
-        }
-        .hero03-shield-icon {
-          animation: shieldEntrance 0.6s ease-out forwards;
+        .obsidian-fadeUp {
+          animation: obsidian-fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
           opacity: 0;
         }
-        .hero03-diag-lines {
-          animation: diagonalDrift 20s linear infinite;
+        .obsidian-d1 { animation-delay: 0.1s; }
+        .obsidian-d2 { animation-delay: 0.2s; }
+        .obsidian-d3 { animation-delay: 0.3s; }
+        .obsidian-d4 { animation-delay: 0.4s; }
+        .obsidian-d5 { animation-delay: 0.6s; }
+        .obsidian-d6 { animation-delay: 0.8s; }
+        .obsidian-line {
+          animation: obsidian-lineExtend 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards,
+                     obsidian-linePulse 4s ease-in-out 1.7s infinite;
+          transform: scaleX(0);
         }
         @media (prefers-reduced-motion: reduce) {
-          .hero03-fade-up {
-            animation: none;
-            opacity: 1;
-          }
-          .hero03-shield-icon {
-            animation: none;
-            opacity: 1;
-          }
-          .hero03-diag-lines {
-            animation: none !important;
-          }
+          .obsidian-fadeUp { animation: none; opacity: 1; }
+          .obsidian-line { animation: none; transform: scaleX(1); opacity: 0.4; }
         }
       `}</style>
 
       <section
+        className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center"
         style={{
-          background: "#0a1a0f",
-          position: "relative",
-          overflow: "hidden",
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          fontFamily: isAr ? "var(--font-almarai), sans-serif" : "var(--font-inter), sans-serif",
+          background: "#09090b",
+          fontFamily: isAr ? "var(--font-almarai)" : "var(--font-inter)",
         }}
       >
-        {/* Animated diagonal lines */}
-        <div
-          style={{
-            position: "absolute",
-            inset: "-200px 0 0 0",
-            pointerEvents: "none",
-            overflow: "hidden",
-          }}
-        >
-          <div
-            className="hero03-diag-lines"
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 80px, rgba(16, 185, 129, 0.05) 80px, rgba(16, 185, 129, 0.05) 81px)",
-              backgroundSize: "100% 100%",
-            }}
-          />
-        </div>
-
-        {/* Radial overlay */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "radial-gradient(ellipse at center, rgba(16, 185, 129, 0.06) 0%, transparent 60%)",
-            pointerEvents: "none",
-          }}
-        />
-
         {/* Content */}
-        <div
-          style={{
-            position: "relative",
-            zIndex: 10,
-            maxWidth: "820px",
-            width: "100%",
-            padding: "80px 24px 60px",
-            textAlign: "center",
-          }}
-        >
-          {/* Shield SVG */}
+        <div className="relative z-10 w-full max-w-4xl mx-auto px-6 py-24 sm:py-32 lg:py-44 flex flex-col items-center text-center">
+          {/* Badge */}
           <div
-            className="hero03-shield-icon"
-            style={{ marginBottom: "32px", animationDelay: "0ms" }}
+            className="obsidian-fadeUp obsidian-d1 inline-flex items-center gap-2.5 px-5 py-2 rounded-full mb-10"
+            style={{
+              border: "1px solid rgba(212,168,83,0.3)",
+              background: "rgba(212,168,83,0.05)",
+            }}
           >
-            <svg
-              width="80"
-              height="96"
-              viewBox="0 0 80 96"
-              fill="none"
-              style={{ margin: "0 auto", display: "block" }}
+            <TrendingUp className="w-3.5 h-3.5" style={{ color: "#d4a853" }} />
+            <span
+              className="text-xs tracking-widest uppercase"
+              style={{ color: "#d4a853", fontWeight: 500, letterSpacing: "0.15em" }}
             >
-              <path
-                d="M40 4L8 20V44C8 66.4 21.6 87.2 40 92C58.4 87.2 72 66.4 72 44V20L40 4Z"
-                fill="rgba(16, 185, 129, 0.1)"
-                stroke="#10b981"
-                strokeWidth="2.5"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M40 16L16 28V44C16 62.4 26.8 79.2 40 84C53.2 79.2 64 62.4 64 44V28L40 16Z"
-                fill="rgba(16, 185, 129, 0.06)"
-                stroke="rgba(16, 185, 129, 0.4)"
-                strokeWidth="1.5"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M30 48L37 55L52 40"
-                stroke="#10b981"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+              {t.badge}
+            </span>
           </div>
 
           {/* Heading */}
           <h1
-            className="hero03-fade-up"
+            className="obsidian-fadeUp obsidian-d2 max-w-4xl"
             style={{
-              animationDelay: "30ms",
-              fontSize: "clamp(36px, 6vw, 68px)",
-              fontWeight: 700,
+              fontSize: "clamp(3rem, 7vw, 5rem)",
+              fontWeight: 600,
+              letterSpacing: "-0.03em",
               lineHeight: 1.1,
-              color: "#ffffff",
-              margin: "0 0 24px",
-              letterSpacing: isAr ? "0" : "-0.02em",
-              fontFamily: isAr ? "var(--font-el-messiri), sans-serif" : "inherit",
+              color: "#ededed",
+              fontFamily: isAr ? "var(--font-el-messiri)" : "var(--font-inter)",
             }}
           >
             {t.heading}
-            <br />
-            <span style={{ color: "#10b981" }}>{t.accent}</span>
           </h1>
 
           {/* Subtitle */}
           <p
-            className="hero03-fade-up"
-            style={{
-              animationDelay: "60ms",
-              fontSize: "clamp(16px, 2vw, 20px)",
-              lineHeight: 1.7,
-              color: "rgba(255, 255, 255, 0.55)",
-              maxWidth: "600px",
-              margin: "0 auto 40px",
-            }}
+            className="obsidian-fadeUp obsidian-d3 mt-7 max-w-xl text-lg"
+            style={{ color: "#a3a3a3", fontWeight: 300, lineHeight: 1.8 }}
           >
             {t.sub}
           </p>
 
           {/* CTA */}
-          <div
-            className="hero03-fade-up"
-            style={{ animationDelay: "90ms", marginBottom: "48px" }}
-          >
+          <div className="obsidian-fadeUp obsidian-d4 mt-10">
             <button
+              className="cursor-pointer group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-sm font-medium transition-all hover:bg-[rgba(212,168,83,0.1)]"
               style={{
-                padding: "18px 40px",
-                borderRadius: "12px",
-                background: "#10b981",
-                color: "#ffffff",
-                fontSize: "17px",
-                fontWeight: 600,
-                border: "2px solid #f59e0b",
-                cursor: "pointer",
-                transition: "transform 0.2s ease-out, box-shadow 0.2s ease-out",
-                boxShadow: "0 0 30px rgba(16, 185, 129, 0.25), 0 0 0 0 rgba(245, 158, 11, 0)",
-                fontFamily: "inherit",
-                minHeight: "44px",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow =
-                  "0 0 40px rgba(16, 185, 129, 0.35), 0 0 0 4px rgba(245, 158, 11, 0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow =
-                  "0 0 30px rgba(16, 185, 129, 0.25), 0 0 0 0 rgba(245, 158, 11, 0)";
+                border: "1px solid rgba(212,168,83,0.3)",
+                color: "#d4a853",
+                background: "transparent",
+                letterSpacing: "0.04em",
               }}
             >
               {t.cta}
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
           </div>
 
-          {/* Trust badges */}
-          <div
-            className="hero03-fade-up"
-            style={{
-              animationDelay: "120ms",
-              display: "flex",
-              justifyContent: "center",
-              gap: "32px",
-              flexWrap: "wrap",
-              marginBottom: "40px",
-              flexDirection: isAr ? "row-reverse" : "row",
-            }}
-          >
-            {t.trust.map((item, i) => {
-              const IconComp = trustIcons[item.icon];
-              return (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    padding: "12px 20px",
-                    borderRadius: "12px",
-                    background: "rgba(255, 255, 255, 0.03)",
-                    border: "1px solid rgba(16, 185, 129, 0.15)",
-                    flexDirection: isAr ? "row-reverse" : "row",
-                  }}
-                >
-                  <IconComp size={20} style={{ color: "#10b981", flexShrink: 0 }} />
-                  <span
-                    style={{
-                      fontSize: "14px",
-                      color: "rgba(255, 255, 255, 0.7)",
-                      fontWeight: 500,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {item.label}
-                  </span>
-                </div>
-              );
-            })}
+          {/* Gold Divider Line */}
+          <div className="w-full flex justify-center mt-20">
+            <div
+              className="obsidian-line"
+              style={{
+                width: "50%",
+                height: "1px",
+                background: "linear-gradient(90deg, transparent 0%, #d4a853 50%, transparent 100%)",
+              }}
+            />
           </div>
 
-          {/* Star testimonial */}
-          <div
-            className="hero03-fade-up"
-            style={{
-              animationDelay: "150ms",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "12px",
-              flexDirection: isAr ? "row-reverse" : "row",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                gap: "2px",
-                flexDirection: isAr ? "row-reverse" : "row",
-              }}
-            >
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  size={18}
+          {/* Stats */}
+          <div className="obsidian-fadeUp obsidian-d6 mt-16 grid grid-cols-1 sm:grid-cols-3 gap-12 sm:gap-16 w-full max-w-3xl">
+            {t.stats.map((stat, i) => (
+              <div key={i} className="flex flex-col items-center gap-3">
+                <span
+                  className="text-4xl sm:text-5xl font-bold"
                   style={{
-                    color: "#f59e0b",
-                    fill: "#f59e0b",
+                    color: "#d4a853",
+                    letterSpacing: "-0.02em",
+                    fontFamily: isAr ? "var(--font-el-messiri)" : "var(--font-inter)",
                   }}
-                />
-              ))}
-            </div>
-            <span
-              style={{
-                fontSize: "14px",
-                color: "rgba(255, 255, 255, 0.5)",
-                fontWeight: 400,
-              }}
-            >
-              {t.testimonial}
-            </span>
+                >
+                  {stat.prefix}
+                  {stat.decimals > 0
+                    ? statValues[i].toFixed(stat.decimals)
+                    : Math.floor(statValues[i]).toLocaleString()}
+                  {stat.suffix}
+                </span>
+                <span
+                  className="text-sm"
+                  style={{ color: "#71717a", fontWeight: 400, letterSpacing: "0.02em" }}
+                >
+                  {stat.label}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
