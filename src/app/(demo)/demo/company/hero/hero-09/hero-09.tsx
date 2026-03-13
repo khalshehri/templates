@@ -1,275 +1,229 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Scale, ArrowRight } from "lucide-react";
-
-interface Hero09Props {
-  language: "en" | "ar";
-}
 
 const content = {
   en: {
-    est: "Est. 1987",
-    headingParts: ["Justice. Integrity.", ""],
+    badge: "EST. 1987",
+    heading: "Justice. Integrity.",
     accent: "Results.",
-    sub: "Riyadh\u2019s premier law firm with 35+ years of courtroom excellence.",
+    sub: "Riyadh's premier law firm — 35+ years of courtroom excellence.",
     cta: "Discuss Your Case",
-    areas: [
-      "Corporate Law",
-      "Litigation",
-      "Real Estate",
-      "Arbitration",
-      "IP Law",
-    ],
+    areas: ["Corporate Law", "Litigation", "Real Estate", "Arbitration", "IP Law"],
   },
   ar: {
-    est: "\u062a\u0623\u0633\u0633\u062a 1987",
-    headingParts: ["\u0639\u062f\u0627\u0644\u0629. \u0646\u0632\u0627\u0647\u0629.", ""],
-    accent: "\u0646\u062a\u0627\u0626\u062c.",
-    sub: "\u0634\u0631\u0643\u0629 \u0627\u0644\u0645\u062d\u0627\u0645\u0627\u0629 \u0627\u0644\u0631\u0627\u0626\u062f\u0629 \u0641\u064a \u0627\u0644\u0631\u064a\u0627\u0636 \u0628\u062e\u0628\u0631\u0629 \u062a\u0632\u064a\u062f \u0639\u0646 35 \u0639\u0627\u0645\u0627\u064b.",
-    cta: "\u0646\u0627\u0642\u0634 \u0642\u0636\u064a\u062a\u0643",
-    areas: [
-      "\u0642\u0627\u0646\u0648\u0646 \u0627\u0644\u0634\u0631\u0643\u0627\u062a",
-      "\u0627\u0644\u062a\u0642\u0627\u0636\u064a",
-      "\u0627\u0644\u0639\u0642\u0627\u0631\u0627\u062a",
-      "\u0627\u0644\u062a\u062d\u0643\u064a\u0645",
-      "\u0627\u0644\u0645\u0644\u0643\u064a\u0629 \u0627\u0644\u0641\u0643\u0631\u064a\u0629",
-    ],
+    badge: "تأسست 1987",
+    heading: "عدالة. نزاهة.",
+    accent: "نتائج.",
+    sub: "شركة المحاماة الرائدة في الرياض — خبرة تزيد عن 35 عاماً.",
+    cta: "ناقش قضيتك",
+    areas: ["قانون الشركات", "التقاضي", "العقارات", "التحكيم", "الملكية الفكرية"],
   },
 };
 
-export function Hero09({ language }: Hero09Props) {
-  const [isVisible, setIsVisible] = useState(false);
+export function Hero09({ language }: { language: "en" | "ar" }) {
+  const [mounted, setMounted] = useState(false);
   const t = content[language];
   const isAr = language === "ar";
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 100);
-    return () => clearTimeout(timer);
+    setMounted(true);
   }, []);
 
   return (
     <>
       <style>{`
         @keyframes hero09FadeUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(24px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-
+        @keyframes hero09UnderlineIn {
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
+        }
         @keyframes hero09LineExpand {
-          from {
-            transform: scaleX(0);
-          }
-          to {
-            transform: scaleX(1);
-          }
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
         }
-
-        @keyframes hero09Underline {
-          from {
-            transform: scaleX(0);
-          }
-          to {
-            transform: scaleX(1);
-          }
+        @keyframes hero09FadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
-
-        .hero09-fadeUp {
-          opacity: 0;
-          animation: hero09FadeUp 500ms ease-out forwards;
-        }
-
-        .hero09-line {
-          transform: scaleX(0);
-          transform-origin: center;
-          animation: hero09LineExpand 800ms ease-out forwards;
-          animation-delay: 400ms;
-        }
-
-        .hero09-underline {
-          transform: scaleX(0);
-          transform-origin: ${isAr ? "right" : "left"};
-          animation: hero09Underline 600ms ease-out forwards;
-          animation-delay: 600ms;
-        }
-
-        .hero09-delay-0 { animation-delay: 0ms; }
-        .hero09-delay-1 { animation-delay: 50ms; }
-        .hero09-delay-2 { animation-delay: 150ms; }
-        .hero09-delay-3 { animation-delay: 500ms; }
-        .hero09-delay-4 { animation-delay: 600ms; }
-        .hero09-delay-5 { animation-delay: 700ms; }
-
         @media (prefers-reduced-motion: reduce) {
-          .hero09-fadeUp {
-            animation: none;
-            opacity: 1;
-            transform: none;
-          }
-          .hero09-line {
-            animation: none;
-            transform: scaleX(1);
-          }
-          .hero09-underline {
-            animation: none;
-            transform: scaleX(1);
-          }
+          .hero09-animate { animation: none !important; opacity: 1 !important; transform: none !important; }
         }
       `}</style>
 
       <section
-        className="relative min-h-screen overflow-hidden flex items-center justify-center"
-        style={{
-          backgroundColor: "#1e293b",
-          fontFamily: isAr
-            ? "var(--font-almarai), sans-serif"
-            : "var(--font-inter), sans-serif",
-        }}
+        ref={sectionRef}
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        style={{ backgroundColor: "#111115" }}
       >
-        {/* Est. badge */}
-        {isVisible && (
+        {/* Subtle ambient glow */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "radial-gradient(ellipse 40% 35% at 50% 50%, rgba(226, 184, 87, 0.03) 0%, transparent 70%)",
+          }}
+        />
+
+        <div className="relative w-full max-w-6xl mx-auto px-6 py-24 sm:py-32 lg:py-40">
+          {/* Est badge — positioned top corner */}
           <div
-            className="hero09-fadeUp hero09-delay-0 absolute top-8 sm:top-12"
+            className={`hero09-animate absolute top-8 ${isAr ? "left-8" : "right-8"}`}
             style={{
-              right: isAr ? "auto" : "2rem",
-              left: isAr ? "2rem" : "auto",
+              animation: mounted ? "hero09FadeIn 600ms cubic-bezier(0.16,1,0.3,1) 200ms both" : "none",
+              opacity: mounted ? undefined : 0,
             }}
           >
-            <div className="flex items-center gap-2">
-              <Scale className="w-4 h-4" style={{ color: "#fbbf24" }} />
-              <span
-                className="text-xs sm:text-sm font-medium tracking-widest uppercase"
-                style={{ color: "#94a3b8" }}
-              >
-                {t.est}
-              </span>
-            </div>
+            <span
+              className={`text-xs tracking-[0.25em] font-light ${isAr ? "font-[family-name:var(--font-almarai)]" : "font-[family-name:var(--font-inter)]"}`}
+              style={{ color: "#6b6b6b", letterSpacing: isAr ? "0.08em" : "0.25em" }}
+            >
+              {t.badge}
+            </span>
           </div>
-        )}
 
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36 text-center">
-          {/* Heading */}
-          {isVisible && (
-            <h1 className="hero09-fadeUp hero09-delay-1 mb-0">
-              <span
-                className="block text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight tracking-tight"
-                style={{
-                  color: "#f1f5f9",
-                  fontFamily: isAr
-                    ? "var(--font-el-messiri), sans-serif"
-                    : "var(--font-inter), sans-serif",
-                }}
-              >
-                {t.headingParts[0]}
-              </span>
-              <span
-                className="relative inline-block text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight tracking-tight mt-2"
-                style={{
-                  color: "#f1f5f9",
-                  fontFamily: isAr
-                    ? "var(--font-el-messiri), sans-serif"
-                    : "var(--font-inter), sans-serif",
-                }}
-              >
-                {t.accent}
-                <span
-                  className="hero09-underline absolute bottom-1 sm:bottom-2 left-0 w-full h-[4px] sm:h-[6px]"
-                  style={{ backgroundColor: "#fbbf24" }}
-                  aria-hidden="true"
-                />
-              </span>
-            </h1>
-          )}
+          {/* Scale icon */}
+          <div
+            className="hero09-animate flex justify-center mb-10"
+            style={{
+              animation: mounted ? "hero09FadeUp 600ms cubic-bezier(0.16,1,0.3,1) forwards" : "none",
+              opacity: mounted ? undefined : 0,
+            }}
+          >
+            <Scale size={32} strokeWidth={1} style={{ color: "#e2b857" }} />
+          </div>
 
-          {/* Horizontal line */}
-          {isVisible && (
-            <div className="flex justify-center my-8 sm:my-12">
-              <div
-                className="hero09-line w-full max-w-md h-px"
-                style={{ backgroundColor: "#334155" }}
-                aria-hidden="true"
-              />
-            </div>
-          )}
-
-          {/* Subtitle */}
-          {isVisible && (
-            <p
-              className="hero09-fadeUp hero09-delay-3 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto mb-10 sm:mb-14"
+          {/* Main heading */}
+          <div className="text-center">
+            <h1
+              className="hero09-animate"
               style={{
-                color: "#94a3b8",
-                lineHeight: isAr ? "1.8" : "1.75",
-                fontFamily: isAr
-                  ? "var(--font-almarai), sans-serif"
-                  : "var(--font-inter), sans-serif",
+                animation: mounted ? "hero09FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 200ms both" : "none",
+                opacity: mounted ? undefined : 0,
+                fontSize: "clamp(2.5rem, 8vw, 7rem)",
+                fontWeight: 500,
+                lineHeight: 1.05,
+                letterSpacing: "-0.03em",
+                color: "#e8e8e8",
+                fontFamily: isAr ? "var(--font-el-messiri)" : "var(--font-inter)",
               }}
             >
-              {t.sub}
-            </p>
-          )}
+              {t.heading}
+            </h1>
 
-          {/* CTA - text style link */}
-          {isVisible && (
-            <div className="hero09-fadeUp hero09-delay-4 mb-16 sm:mb-20">
-              <a
-                href="#"
-                className="cursor-pointer inline-flex items-center gap-2 text-base sm:text-lg font-medium transition-opacity duration-200 hover:opacity-70"
+            {/* Accent word with gold underline */}
+            <h1
+              className="hero09-animate relative inline-block"
+              style={{
+                animation: mounted ? "hero09FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 400ms both" : "none",
+                opacity: mounted ? undefined : 0,
+                fontSize: "clamp(2.5rem, 8vw, 7rem)",
+                fontWeight: 500,
+                lineHeight: 1.05,
+                letterSpacing: "-0.03em",
+                color: "#e8e8e8",
+                fontFamily: isAr ? "var(--font-el-messiri)" : "var(--font-inter)",
+              }}
+            >
+              {t.accent}
+              {/* Gold underline */}
+              <span
+                className="hero09-animate absolute bottom-[0.05em] left-0 right-0 h-[3px]"
                 style={{
-                  color: "#f1f5f9",
-                  minHeight: "48px",
-                  textDecoration: "underline",
-                  textUnderlineOffset: "6px",
-                  textDecorationColor: "#475569",
+                  backgroundColor: "#e2b857",
+                  transformOrigin: isAr ? "right" : "left",
+                  animation: mounted
+                    ? "hero09UnderlineIn 600ms cubic-bezier(0.16,1,0.3,1) 800ms both"
+                    : "none",
+                  transform: mounted ? undefined : "scaleX(0)",
+                }}
+              />
+            </h1>
+          </div>
+
+          {/* Horizontal gold line */}
+          <div className="flex justify-center mt-12 mb-10">
+            <div
+              className="hero09-animate h-px w-32 sm:w-48"
+              style={{
+                backgroundColor: "rgba(226, 184, 87, 0.3)",
+                transformOrigin: "center",
+                animation: mounted
+                  ? "hero09LineExpand 1200ms cubic-bezier(0.16,1,0.3,1) 600ms both"
+                  : "none",
+                transform: mounted ? undefined : "scaleX(0)",
+              }}
+            />
+          </div>
+
+          {/* Subtitle */}
+          <p
+            className={`hero09-animate text-center max-w-2xl mx-auto mb-10 ${isAr ? "font-[family-name:var(--font-almarai)]" : "font-[family-name:var(--font-inter)]"}`}
+            style={{
+              animation: mounted ? "hero09FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 900ms both" : "none",
+              opacity: mounted ? undefined : 0,
+              fontSize: "clamp(1rem, 1.8vw, 1.25rem)",
+              fontWeight: 300,
+              lineHeight: 1.7,
+              color: "#6b6b6b",
+            }}
+          >
+            {t.sub}
+          </p>
+
+          {/* CTA — minimal text link */}
+          <div
+            className="hero09-animate flex justify-center mb-16"
+            style={{
+              animation: mounted ? "hero09FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 1100ms both" : "none",
+              opacity: mounted ? undefined : 0,
+            }}
+          >
+            <button
+              className={`cursor-pointer group flex items-center gap-3 text-base font-light transition-all duration-500 hover:opacity-70 ${isAr ? "font-[family-name:var(--font-almarai)]" : "font-[family-name:var(--font-inter)]"}`}
+              style={{ color: "#e2b857", minHeight: "44px", background: "none", border: "none" }}
+            >
+              <span>{t.cta}</span>
+              <ArrowRight
+                size={18}
+                strokeWidth={1.5}
+                className={`transition-transform duration-500 group-hover:translate-x-1 ${isAr ? "rotate-180 group-hover:-translate-x-1" : ""}`}
+              />
+            </button>
+          </div>
+
+          {/* Practice Areas */}
+          <div className="flex flex-wrap items-center justify-center gap-y-3">
+            {t.areas.map((area, i) => (
+              <div
+                key={area}
+                className="hero09-animate flex items-center"
+                style={{
+                  animation: mounted
+                    ? `hero09FadeIn 500ms cubic-bezier(0.16,1,0.3,1) ${1300 + i * 100}ms both`
+                    : "none",
+                  opacity: mounted ? undefined : 0,
                 }}
               >
-                {t.cta}
-                <ArrowRight
-                  className="w-5 h-5"
-                  style={{
-                    transform: isAr ? "scaleX(-1)" : "none",
-                  }}
-                />
-              </a>
-            </div>
-          )}
-
-          {/* Practice areas */}
-          {isVisible && (
-            <div className="hero09-fadeUp hero09-delay-5">
-              <div className="flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-4 gap-y-2">
-                {t.areas.map((area, index) => (
-                  <span key={index} className="flex items-center gap-3 sm:gap-4">
-                    <span
-                      className="text-xs sm:text-sm tracking-wider uppercase"
-                      style={{
-                        color: "#64748b",
-                        fontFamily: isAr
-                          ? "var(--font-almarai), sans-serif"
-                          : "var(--font-inter), sans-serif",
-                      }}
-                    >
-                      {area}
-                    </span>
-                    {index < t.areas.length - 1 && (
-                      <span
-                        className="text-xs sm:text-sm"
-                        style={{ color: "#334155" }}
-                        aria-hidden="true"
-                      >
-                        |
-                      </span>
-                    )}
-                  </span>
-                ))}
+                {i > 0 && (
+                  <span
+                    className="mx-4 sm:mx-6 inline-block w-1.5 h-1.5 rounded-full"
+                    style={{ backgroundColor: "#e2b857", opacity: 0.5 }}
+                  />
+                )}
+                <span
+                  className={`text-sm sm:text-base font-light whitespace-nowrap ${isAr ? "font-[family-name:var(--font-almarai)]" : "font-[family-name:var(--font-inter)]"}`}
+                  style={{ color: "#6b6b6b", letterSpacing: isAr ? "0" : "0.02em" }}
+                >
+                  {area}
+                </span>
               </div>
-            </div>
-          )}
+            ))}
+          </div>
         </div>
       </section>
     </>

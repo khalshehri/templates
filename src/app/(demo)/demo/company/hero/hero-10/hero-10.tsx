@@ -1,384 +1,307 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Zap, Medal, Users, Clock, ArrowRight } from "lucide-react";
-
-interface Hero10Props {
-  language: "en" | "ar";
-}
+import { Zap, ArrowRight, Dumbbell, Users, Clock } from "lucide-react";
 
 const content = {
   en: {
-    heading: "PUSH YOUR LIMITS.",
+    heading: "PUSH YOUR",
+    headingLine2: "LIMITS.",
     accent: "REDEFINE POSSIBLE.",
-    sub: "Join the movement. World-class trainers, cutting-edge facilities, and a community that pushes you to be your best \u2014 every single day.",
+    sub: "World-class trainers, cutting-edge facilities, and a community that pushes you to be your best.",
     cta1: "Join Now",
     cta2: "View Plans",
-    statValue: "10,000",
-    statPrefix: "",
-    statSuffix: "+",
-    statLabel: "Active Members",
+    counterLabel: "Active Members",
     badges: [
-      { icon: "medal" as const, label: "Olympic Equipment" },
-      { icon: "users" as const, label: "Expert Trainers" },
-      { icon: "clock" as const, label: "24/7 Access" },
+      { icon: Dumbbell, label: "Olympic Equipment" },
+      { icon: Users, label: "Expert Trainers" },
+      { icon: Clock, label: "24/7 Access" },
     ],
   },
   ar: {
-    heading: "\u062a\u062c\u0627\u0648\u0632 \u062d\u062f\u0648\u062f\u0643.",
-    accent: "\u0623\u0639\u062f \u062a\u0639\u0631\u064a\u0641 \u0627\u0644\u0645\u0645\u0643\u0646.",
-    sub: "\u0627\u0646\u0636\u0645 \u0644\u0644\u062d\u0631\u0643\u0629. \u0645\u062f\u0631\u0628\u0648\u0646 \u0639\u0627\u0644\u0645\u064a\u0648\u0646 \u0648\u0645\u0631\u0627\u0641\u0642 \u0645\u062a\u0637\u0648\u0631\u0629 \u0648\u0645\u062c\u062a\u0645\u0639 \u064a\u062f\u0641\u0639\u0643 \u0644\u062a\u0643\u0648\u0646 \u0627\u0644\u0623\u0641\u0636\u0644 \u2014 \u0643\u0644 \u064a\u0648\u0645.",
-    cta1: "\u0627\u0646\u0636\u0645 \u0627\u0644\u0622\u0646",
-    cta2: "\u0639\u0631\u0636 \u0627\u0644\u062e\u0637\u0637",
-    statValue: "10,000",
-    statPrefix: "+",
-    statSuffix: "",
-    statLabel: "\u0639\u0636\u0648 \u0646\u0634\u0637",
+    heading: "تجاوز",
+    headingLine2: "حدودك.",
+    accent: "أعد تعريف الممكن.",
+    sub: "مدربون عالميون ومرافق متطورة ومجتمع يدفعك لتكون الأفضل.",
+    cta1: "انضم الآن",
+    cta2: "عرض الخطط",
+    counterLabel: "عضو نشط",
     badges: [
-      { icon: "medal" as const, label: "\u0645\u0639\u062f\u0627\u062a \u0623\u0648\u0644\u0645\u0628\u064a\u0629" },
-      { icon: "users" as const, label: "\u0645\u062f\u0631\u0628\u0648\u0646 \u062e\u0628\u0631\u0627\u0621" },
-      { icon: "clock" as const, label: "\u062f\u062e\u0648\u0644 24/7" },
+      { icon: Dumbbell, label: "معدات أولمبية" },
+      { icon: Users, label: "مدربون خبراء" },
+      { icon: Clock, label: "دخول 24/7" },
     ],
   },
 };
 
-const badgeIcons = {
-  medal: Medal,
-  users: Users,
-  clock: Clock,
-};
-
-export function Hero10({ language }: Hero10Props) {
-  const [isVisible, setIsVisible] = useState(false);
+function useCountUp(target: number, duration: number, start: boolean): number {
   const [count, setCount] = useState(0);
-  const countRef = useRef<number | null>(null);
-  const t = content[language];
-  const isAr = language === "ar";
+  const frameRef = useRef<number>(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // CountUp animation
-  useEffect(() => {
-    if (!isVisible) return;
-
-    const target = 10000;
-    const duration = 2000;
+    if (!start) return;
+    setCount(0);
     const startTime = performance.now();
 
-    const animate = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
+    function tick() {
+      const elapsed = performance.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease-out cubic
-      const eased = 1 - Math.pow(1 - progress, 3);
+      // Ease out cubic
+      const eased = 1 - (1 - progress) * (1 - progress) * (1 - progress);
       setCount(Math.floor(eased * target));
-
       if (progress < 1) {
-        countRef.current = requestAnimationFrame(animate);
+        frameRef.current = requestAnimationFrame(tick);
       }
-    };
+    }
 
-    countRef.current = requestAnimationFrame(animate);
-    return () => {
-      if (countRef.current) cancelAnimationFrame(countRef.current);
-    };
-  }, [isVisible]);
+    frameRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameRef.current);
+  }, [target, duration, start]);
 
-  const formattedCount = count.toLocaleString();
+  return count;
+}
+
+export function Hero10({ language }: { language: "en" | "ar" }) {
+  const [mounted, setMounted] = useState(false);
+  const t = content[language];
+  const isAr = language === "ar";
+  const count = useCountUp(10000, 2000, mounted);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
       <style>{`
         @keyframes hero10FadeUp {
-          from {
-            opacity: 0;
-            transform: translateY(24px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(28px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes hero10StripeScroll {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(60px);
-          }
+        @keyframes hero10FadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
-
-        .hero10-fadeUp {
-          opacity: 0;
-          animation: hero10FadeUp 400ms ease-out forwards;
+        @keyframes hero10Stripes {
+          from { transform: translateX(0); }
+          to { transform: translateX(80px); }
         }
-
-        .hero10-delay-0 { animation-delay: 0ms; }
-        .hero10-delay-1 { animation-delay: 50ms; }
-        .hero10-delay-2 { animation-delay: 100ms; }
-        .hero10-delay-3 { animation-delay: 150ms; }
-        .hero10-delay-4 { animation-delay: 200ms; }
-        .hero10-delay-5 { animation-delay: 300ms; }
-        .hero10-delay-6 { animation-delay: 350ms; }
-        .hero10-delay-7 { animation-delay: 400ms; }
-
-        .hero10-stripes {
-          animation: hero10StripeScroll 30s linear infinite;
+        @keyframes hero10Pulse {
+          0%, 100% { opacity: 0.85; }
+          50% { opacity: 1; }
         }
-
         @media (prefers-reduced-motion: reduce) {
-          .hero10-fadeUp {
-            animation: none;
-            opacity: 1;
-            transform: none;
-          }
-          .hero10-stripes {
-            animation: none;
-          }
+          .hero10-animate { animation: none !important; opacity: 1 !important; transform: none !important; }
+          .hero10-stripes { animation: none !important; }
+          .hero10-pulse { animation: none !important; }
         }
       `}</style>
 
       <section
         className="relative min-h-screen overflow-hidden"
-        style={{
-          backgroundColor: "#0c0a09",
-          fontFamily: isAr
-            ? "var(--font-tajawal), sans-serif"
-            : "var(--font-inter), sans-serif",
-        }}
+        style={{ backgroundColor: "#0a0a0a" }}
       >
-        {/* Animated stripe background */}
+        {/* Animated diagonal stripes background */}
         <div
           className="hero10-stripes absolute inset-0 pointer-events-none"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(45deg, transparent, transparent 28px, rgba(255,255,255,0.04) 28px, rgba(255,255,255,0.04) 30px)",
-            backgroundSize: "60px 60px",
+              "repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 40px)",
+            backgroundSize: "56.57px 56.57px",
+            animation: mounted ? "hero10Stripes 20s linear infinite" : "none",
           }}
-          aria-hidden="true"
         />
 
-        <div className="relative z-10 min-h-screen flex flex-col">
-          <div className="flex-1 flex flex-col lg:flex-row">
-            {/* Left side - content (55%) */}
+        {/* Layout container */}
+        <div className="relative min-h-screen flex flex-col lg:flex-row">
+          {/* Left content — 55% */}
+          <div
+            className={`relative z-10 flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24 py-24 sm:py-32 lg:py-40 w-full lg:w-[55%] ${isAr ? "lg:order-2" : "lg:order-1"}`}
+          >
+            {/* Zap icon */}
             <div
-              className={`flex-1 lg:flex-none flex flex-col justify-center px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-28 ${isAr ? "lg:order-2" : ""}`}
-              style={{ flexBasis: "55%" }}
-            >
-              {/* Zap icon */}
-              {isVisible && (
-                <div className="hero10-fadeUp hero10-delay-0 mb-6">
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #ef4444, #f97316)",
-                    }}
-                  >
-                    <Zap className="w-6 h-6 text-white" />
-                  </div>
-                </div>
-              )}
-
-              {/* Heading */}
-              {isVisible && (
-                <h1 className="hero10-fadeUp hero10-delay-1 mb-6">
-                  <span
-                    className="block text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold uppercase leading-tight"
-                    style={{
-                      color: "#fafaf9",
-                      letterSpacing: "-0.02em",
-                      fontFamily: isAr
-                        ? "var(--font-changa), sans-serif"
-                        : "var(--font-inter), sans-serif",
-                    }}
-                  >
-                    {t.heading}
-                  </span>
-                  <span
-                    className="block text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold uppercase leading-tight"
-                    style={{
-                      letterSpacing: "-0.02em",
-                      background:
-                        "linear-gradient(135deg, #ef4444, #f97316)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                      fontFamily: isAr
-                        ? "var(--font-changa), sans-serif"
-                        : "var(--font-inter), sans-serif",
-                    }}
-                  >
-                    {t.accent}
-                  </span>
-                </h1>
-              )}
-
-              {/* Subtitle */}
-              {isVisible && (
-                <p
-                  className="hero10-fadeUp hero10-delay-2 text-base sm:text-lg max-w-lg mb-8"
-                  style={{
-                    color: "#a8a29e",
-                    lineHeight: isAr ? "1.8" : "1.75",
-                  }}
-                >
-                  {t.sub}
-                </p>
-              )}
-
-              {/* CTAs */}
-              {isVisible && (
-                <div className="hero10-fadeUp hero10-delay-3 flex flex-wrap items-center gap-4 mb-12">
-                  <button
-                    className="cursor-pointer inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-white font-semibold text-base transition-opacity duration-200 hover:opacity-90"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #ef4444, #f97316)",
-                      minHeight: "48px",
-                    }}
-                  >
-                    <Zap className="w-5 h-5" />
-                    {t.cta1}
-                  </button>
-                  <button
-                    className="cursor-pointer inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-base transition-opacity duration-200 hover:opacity-80"
-                    style={{
-                      color: "#fafaf9",
-                      border: "1.5px solid #44403c",
-                      backgroundColor: "transparent",
-                      minHeight: "48px",
-                    }}
-                  >
-                    {t.cta2}
-                    <ArrowRight
-                      className="w-5 h-5"
-                      style={{
-                        transform: isAr ? "scaleX(-1)" : "none",
-                      }}
-                    />
-                  </button>
-                </div>
-              )}
-
-              {/* Achievement badges */}
-              {isVisible && (
-                <div className="flex flex-wrap gap-4 sm:gap-6">
-                  {t.badges.map((badge, index) => {
-                    const IconComponent = badgeIcons[badge.icon];
-                    return (
-                      <div
-                        key={index}
-                        className={`hero10-fadeUp hero10-delay-${5 + index} flex items-center gap-2.5`}
-                      >
-                        <div
-                          className="w-10 h-10 rounded-lg flex items-center justify-center"
-                          style={{ backgroundColor: "#1c1917" }}
-                        >
-                          <IconComponent
-                            className="w-5 h-5"
-                            style={{ color: "#f97316" }}
-                          />
-                        </div>
-                        <span
-                          className="text-sm font-medium"
-                          style={{ color: "#d6d3d1" }}
-                        >
-                          {badge.label}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-
-            {/* Right side - gradient panel (45%) */}
-            <div
-              className={`relative flex-none hidden lg:flex items-center justify-center ${isAr ? "lg:order-1" : ""}`}
+              className="hero10-animate mb-8"
               style={{
-                flexBasis: "45%",
-                background: "linear-gradient(135deg, #ef4444, #f97316)",
-                clipPath: isAr
-                  ? "polygon(0 0, 85% 0, 100% 100%, 0 100%)"
-                  : "polygon(15% 0, 100% 0, 100% 100%, 0 100%)",
+                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) forwards" : "none",
+                opacity: mounted ? undefined : 0,
               }}
             >
-              {/* Large decorative number */}
-              <div
-                className="absolute inset-0 flex items-center justify-center overflow-hidden select-none pointer-events-none"
-                aria-hidden="true"
-              >
-                <span
-                  className="font-bold"
-                  style={{
-                    fontSize: "clamp(120px, 15vw, 220px)",
-                    color: "rgba(255, 255, 255, 0.15)",
-                    letterSpacing: "-0.02em",
-                    fontFamily: isAr
-                      ? "var(--font-changa), sans-serif"
-                      : "var(--font-inter), sans-serif",
-                  }}
-                >
-                  10K+
-                </span>
-              </div>
-
-              {/* CountUp stat */}
-              {isVisible && (
-                <div className="hero10-fadeUp hero10-delay-4 relative z-10 text-center">
-                  <div
-                    className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-3"
-                    style={{
-                      color: "#ffffff",
-                      fontFamily: isAr
-                        ? "var(--font-changa), sans-serif"
-                        : "var(--font-inter), sans-serif",
-                    }}
-                  >
-                    {t.statPrefix}{formattedCount}{t.statSuffix}
-                  </div>
-                  <div
-                    className="text-lg sm:text-xl font-medium"
-                    style={{ color: "rgba(255,255,255,0.85)" }}
-                  >
-                    {t.statLabel}
-                  </div>
-                </div>
-              )}
+              <Zap size={28} strokeWidth={1.5} style={{ color: "#ef4444" }} />
             </div>
 
-            {/* Mobile stat card */}
-            <div className="lg:hidden px-6 sm:px-10 pb-12">
-              {isVisible && (
+            {/* Heading */}
+            <h1
+              className={`hero10-animate ${isAr ? "font-[family-name:var(--font-changa)]" : "font-[family-name:var(--font-inter)]"}`}
+              style={{
+                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 150ms both" : "none",
+                opacity: mounted ? undefined : 0,
+                fontSize: "clamp(2.5rem, 6vw, 5.5rem)",
+                fontWeight: 800,
+                lineHeight: 1.0,
+                letterSpacing: "-0.03em",
+                color: "#fafafa",
+              }}
+            >
+              {t.heading}
+              <br />
+              {t.headingLine2}
+            </h1>
+
+            {/* Accent line with gradient */}
+            <h2
+              className={`hero10-animate mt-2 ${isAr ? "font-[family-name:var(--font-changa)]" : "font-[family-name:var(--font-inter)]"}`}
+              style={{
+                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 300ms both" : "none",
+                opacity: mounted ? undefined : 0,
+                fontSize: "clamp(2rem, 5vw, 4.5rem)",
+                fontWeight: 800,
+                lineHeight: 1.0,
+                letterSpacing: "-0.03em",
+                background: "linear-gradient(135deg, #ef4444, #f97316)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              {t.accent}
+            </h2>
+
+            {/* Subtitle */}
+            <p
+              className={`hero10-animate max-w-lg mt-6 mb-8 leading-relaxed ${isAr ? "font-[family-name:var(--font-tajawal)]" : "font-[family-name:var(--font-inter)]"}`}
+              style={{
+                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 450ms both" : "none",
+                opacity: mounted ? undefined : 0,
+                fontSize: "clamp(1rem, 1.5vw, 1.125rem)",
+                fontWeight: 300,
+                color: "#737373",
+              }}
+            >
+              {t.sub}
+            </p>
+
+            {/* CTAs */}
+            <div
+              className="hero10-animate flex flex-wrap items-center gap-4 mb-10"
+              style={{
+                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 600ms both" : "none",
+                opacity: mounted ? undefined : 0,
+              }}
+            >
+              {/* Primary CTA — gradient */}
+              <button
+                className={`cursor-pointer px-8 py-3.5 rounded-xl text-white text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20 hover:scale-[1.02] active:scale-[0.98] ${isAr ? "font-[family-name:var(--font-tajawal)]" : "font-[family-name:var(--font-inter)]"}`}
+                style={{
+                  background: "linear-gradient(135deg, #ef4444, #f97316)",
+                  minHeight: "44px",
+                }}
+              >
+                {t.cta1}
+              </button>
+
+              {/* Secondary CTA — ghost */}
+              <button
+                className={`cursor-pointer px-8 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-white/10 active:scale-[0.98] ${isAr ? "font-[family-name:var(--font-tajawal)]" : "font-[family-name:var(--font-inter)]"}`}
+                style={{
+                  border: "1px solid rgba(250, 250, 250, 0.15)",
+                  color: "#fafafa",
+                  minHeight: "44px",
+                  background: "transparent",
+                }}
+              >
+                {t.cta2}
+              </button>
+            </div>
+
+            {/* Achievement badges */}
+            <div
+              className="hero10-animate flex flex-wrap gap-3"
+              style={{
+                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 750ms both" : "none",
+                opacity: mounted ? undefined : 0,
+              }}
+            >
+              {t.badges.map((badge, i) => (
                 <div
-                  className="hero10-fadeUp hero10-delay-4 rounded-2xl p-8 text-center"
+                  key={i}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full"
                   style={{
-                    background: "linear-gradient(135deg, #ef4444, #f97316)",
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(255, 255, 255, 0.06)",
+                    backdropFilter: "blur(12px)",
+                    WebkitBackdropFilter: "blur(12px)",
                   }}
                 >
-                  <div
-                    className="text-4xl sm:text-5xl font-bold mb-2"
-                    style={{
-                      color: "#ffffff",
-                      fontFamily: isAr
-                        ? "var(--font-changa), sans-serif"
-                        : "var(--font-inter), sans-serif",
-                    }}
+                  <badge.icon size={14} strokeWidth={1.5} style={{ color: "#f97316" }} />
+                  <span
+                    className={`text-xs ${isAr ? "font-[family-name:var(--font-tajawal)]" : "font-[family-name:var(--font-inter)]"}`}
+                    style={{ color: "#a3a3a3" }}
                   >
-                    {t.statPrefix}{formattedCount}{t.statSuffix}
-                  </div>
-                  <div
-                    className="text-base font-medium"
-                    style={{ color: "rgba(255,255,255,0.85)" }}
-                  >
-                    {t.statLabel}
-                  </div>
+                    {badge.label}
+                  </span>
                 </div>
-              )}
+              ))}
+            </div>
+          </div>
+
+          {/* Right gradient panel — 45% with diagonal clip */}
+          <div
+            className={`hero10-pulse relative w-full lg:w-[45%] min-h-[300px] lg:min-h-full flex items-center justify-center ${isAr ? "lg:order-1" : "lg:order-2"}`}
+            style={{
+              background: "linear-gradient(135deg, #ef4444, #f97316)",
+              clipPath: isAr
+                ? "polygon(0 0, 80% 0, 100% 100%, 0 100%)"
+                : "polygon(20% 0, 100% 0, 100% 100%, 0 100%)",
+              animation: mounted ? "hero10Pulse 4s ease-in-out infinite" : "none",
+            }}
+          >
+            {/* Large decorative number */}
+            <div
+              className="hero10-animate absolute inset-0 flex items-center justify-center pointer-events-none select-none"
+              style={{
+                animation: mounted ? "hero10FadeIn 1000ms cubic-bezier(0.16,1,0.3,1) 500ms both" : "none",
+                opacity: mounted ? undefined : 0,
+              }}
+            >
+              <span
+                className="font-[family-name:var(--font-inter)]"
+                style={{
+                  fontSize: "clamp(6rem, 14vw, 14rem)",
+                  fontWeight: 900,
+                  color: "rgba(255, 255, 255, 0.08)",
+                  letterSpacing: "-0.04em",
+                }}
+              >
+                10K+
+              </span>
+            </div>
+
+            {/* CountUp content */}
+            <div
+              className="hero10-animate relative z-10 text-center px-8"
+              style={{
+                animation: mounted ? "hero10FadeUp 600ms cubic-bezier(0.16,1,0.3,1) 800ms both" : "none",
+                opacity: mounted ? undefined : 0,
+              }}
+            >
+              <div
+                className="font-[family-name:var(--font-inter)]"
+                style={{
+                  fontSize: "clamp(3rem, 7vw, 6rem)",
+                  fontWeight: 800,
+                  color: "#ffffff",
+                  letterSpacing: "-0.03em",
+                  lineHeight: 1,
+                  textShadow: "0 2px 20px rgba(0,0,0,0.15)",
+                }}
+              >
+                {count.toLocaleString()}+
+              </div>
+              <p
+                className={`mt-3 text-white/80 text-base sm:text-lg font-light ${isAr ? "font-[family-name:var(--font-tajawal)]" : "font-[family-name:var(--font-inter)]"}`}
+              >
+                {t.counterLabel}
+              </p>
             </div>
           </div>
         </div>
