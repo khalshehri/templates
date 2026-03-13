@@ -68,6 +68,13 @@ const TEMPLATES: Record<string, Record<string, { id: string; name: string }[]>> 
       { id: "hero-01", name: "Horizon (Bento Grid)" },
       { id: "hero-02", name: "Noir (Split Screen)" },
       { id: "hero-03", name: "Cosmos (Particle Field)" },
+      { id: "hero-04", name: "Ember (Warm Waves)" },
+      { id: "hero-05", name: "Forge (Blueprint Grid)" },
+      { id: "hero-06", name: "Serene (Organic Blobs)" },
+      { id: "hero-07", name: "Matrix (Terminal Hacker)" },
+      { id: "hero-08", name: "Ivory (Editorial Luxury)" },
+      { id: "hero-09", name: "Pulse (Gradient Mesh)" },
+      { id: "hero-10", name: "Bolt (Diagonal Clip)" },
     ],
   },
 };
