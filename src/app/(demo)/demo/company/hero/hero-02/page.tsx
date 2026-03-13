@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { Hero04 } from "./hero-04";
+import { Hero02 } from "./hero-02";
 
 export default function Page() {
   const [language, setLanguage] = useState<"en" | "ar">("en");
@@ -26,7 +26,7 @@ export default function Page() {
           </button>
         </div>
       </div>
-      <Hero04 language={language} />
+      <Hero02 language={language} />
     </div>
   );
 }

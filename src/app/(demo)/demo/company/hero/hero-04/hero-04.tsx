@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Shield, AlertTriangle, CheckCircle, Activity } from "lucide-react";
+import { Palette } from "lucide-react";
 
 interface Hero04Props {
   language: "en" | "ar";
@@ -9,548 +9,448 @@ interface Hero04Props {
 
 const content = {
   en: {
-    badge: "CYBERVAULT SECURITY",
-    heading: "YOUR DIGITAL",
-    accent: "FORTRESS",
-    sub: "Enterprise-grade cybersecurity protecting critical infrastructure across 45 countries. Zero breaches. Zero compromises.",
-    cta1: "Get Protected",
-    cta2: "Threat Assessment",
-    stats: [
-      { label: "Threats Blocked", value: 2400000, suffix: "", display: "2.4M" },
-      { label: "Uptime", value: 99.99, suffix: "%", display: "99.99%" },
-      { label: "Clients", value: 850, suffix: "+", display: "850+" },
-    ],
-    threatLevel: "THREAT LEVEL",
-    threatValue: "ELEVATED",
-    recentAlerts: "RECENT ALERTS",
-    alerts: [
-      "Blocked DDoS attempt — 14:32 UTC",
-      "Firewall rule updated — 14:28 UTC",
-      "Vulnerability scan complete — 14:15 UTC",
-    ],
-    systemStatus: "SYSTEM STATUS",
-    statusItems: ["Firewall", "IDS/IPS", "Encryption"],
+    heading: "We Create Brands That",
+    accent: "Move People",
+    sub: "Strategy. Design. Technology. We build digital experiences that captivate audiences and drive real business growth.",
+    cta1: "See Our Work",
+    cta2: "Let\u2019s Talk",
+    cards: ["Brand Identity", "Digital Platform", "Campaign Launch"],
   },
   ar: {
-    badge: "سايبر فولت للأمن",
-    heading: "حصنك",
-    accent: "الرقمي",
-    sub: "أمن سيبراني بمستوى المؤسسات يحمي البنية التحتية الحيوية في 45 دولة. صفر اختراقات. صفر تنازلات.",
-    cta1: "احصل على الحماية",
-    cta2: "تقييم التهديدات",
-    stats: [
-      { label: "التهديدات المحظورة", value: 2400000, suffix: "", display: "2.4M" },
-      { label: "وقت التشغيل", value: 99.99, suffix: "%", display: "99.99%" },
-      { label: "العملاء", value: 850, suffix: "+", display: "850+" },
-    ],
-    threatLevel: "مستوى التهديد",
-    threatValue: "مرتفع",
-    recentAlerts: "التنبيهات الأخيرة",
-    alerts: [
-      "تم صد هجوم DDoS — 14:32 UTC",
-      "تحديث قاعدة جدار الحماية — 14:28 UTC",
-      "اكتمل فحص الثغرات — 14:15 UTC",
-    ],
-    systemStatus: "حالة النظام",
-    statusItems: ["جدار الحماية", "كشف التسلل", "التشفير"],
+    heading: "\u0646\u0635\u0646\u0639 \u0639\u0644\u0627\u0645\u0627\u062a \u062a\u062c\u0627\u0631\u064a\u0629",
+    accent: "\u062a\u062d\u0631\u0651\u0643 \u0627\u0644\u0646\u0627\u0633",
+    sub: "\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629. \u062a\u0635\u0645\u064a\u0645. \u062a\u0643\u0646\u0648\u0644\u0648\u062c\u064a\u0627. \u0646\u0628\u0646\u064a \u062a\u062c\u0627\u0631\u0628 \u0631\u0642\u0645\u064a\u0629 \u062a\u0623\u0633\u0631 \u0627\u0644\u062c\u0645\u0647\u0648\u0631 \u0648\u062a\u062d\u0642\u0642 \u0646\u0645\u0648\u0627\u064b \u062d\u0642\u064a\u0642\u064a\u0627\u064b.",
+    cta1: "\u0634\u0627\u0647\u062f \u0623\u0639\u0645\u0627\u0644\u0646\u0627",
+    cta2: "\u0644\u0646\u062a\u062d\u062f\u062b",
+    cards: ["\u0647\u0648\u064a\u0629 \u0628\u0635\u0631\u064a\u0629", "\u0645\u0646\u0635\u0629 \u0631\u0642\u0645\u064a\u0629", "\u0625\u0637\u0644\u0627\u0642 \u062d\u0645\u0644\u0629"],
   },
 };
 
-function useCountUp(end: number, duration: number = 2000) {
-  const [count, setCount] = useState(0);
+const marqueeItems = ["ACME Corp", "TechFlow", "Zenith", "Lunar Inc", "Apex Digital", "NovaStar", "BluePeak"];
 
-  useEffect(() => {
-    let startTime: number | null = null;
-    let animationFrame: number;
+const cardGradients = [
+  "linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)",
+  "linear-gradient(135deg, #ec4899 0%, #f97316 100%)",
+  "linear-gradient(135deg, #f97316 0%, #8b5cf6 100%)",
+];
 
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(eased * end);
+const cardTransforms = [
+  { rotate: -6, translateY: 0 },
+  { rotate: 3, translateY: 40 },
+  { rotate: -3, translateY: 80 },
+];
 
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
-      }
-    };
-
-    animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [end, duration]);
-
-  return count;
-}
-
-function formatStat(value: number, index: number) {
-  if (index === 0) {
-    return (value / 1000000).toFixed(1) + "M";
-  }
-  if (index === 1) {
-    return value.toFixed(2);
-  }
-  return Math.floor(value).toString();
-}
+const blobs = [
+  { size: 400, x: "60%", y: "15%", gradient: "radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%)", duration: 15 },
+  { size: 350, x: "75%", y: "55%", gradient: "radial-gradient(circle, rgba(236, 72, 153, 0.25) 0%, transparent 70%)", duration: 20 },
+  { size: 300, x: "40%", y: "70%", gradient: "radial-gradient(circle, rgba(249, 115, 22, 0.25) 0%, transparent 70%)", duration: 25 },
+];
 
 export function Hero04({ language }: Hero04Props) {
-  const t = content[language];
   const isAr = language === "ar";
-  const fontFamily = isAr
-    ? "var(--font-ibm-plex-arabic)"
-    : "var(--font-inter)";
-
-  const stat0 = useCountUp(2400000, 2500);
-  const stat1 = useCountUp(99.99, 2000);
-  const stat2 = useCountUp(850, 2000);
-  const statValues = [stat0, stat1, stat2];
-
-  const [threatWidth, setThreatWidth] = useState(0);
+  const t = content[language];
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setThreatWidth(73), 500);
+    const timer = setTimeout(() => setMounted(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
-  // Generate columns for matrix rain
-  const columns = Array.from({ length: 20 }, (_, i) => i);
-
   return (
-    <section
-      style={{
-        fontFamily,
-        background: "#0a0f0a",
-        color: "#e0e0e0",
-        position: "relative",
-        overflow: "hidden",
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
+    <>
       <style>{`
-        @keyframes matrixFall0 { 0% { transform: translateY(-100%); opacity: 0; } 10% { opacity: 0.7; } 90% { opacity: 0.3; } 100% { transform: translateY(100vh); opacity: 0; } }
-        @keyframes matrixFall1 { 0% { transform: translateY(-100%); opacity: 0; } 15% { opacity: 0.5; } 85% { opacity: 0.2; } 100% { transform: translateY(100vh); opacity: 0; } }
-        @keyframes matrixFall2 { 0% { transform: translateY(-100%); opacity: 0; } 5% { opacity: 0.6; } 95% { opacity: 0.1; } 100% { transform: translateY(100vh); opacity: 0; } }
-        @keyframes scanLine {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(100vh); }
-        }
-        @keyframes threatPulse {
-          0%, 100% { box-shadow: 0 0 8px rgba(0, 255, 136, 0.3); }
-          50% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.6); }
-        }
-        @keyframes blinkDot {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.3; }
-        }
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
+        @keyframes fadeUp04 {
+          from { opacity: 0; transform: translateY(24px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .cv-fade-in { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; }
-        .cv-fade-in-1 { animation-delay: 0.1s; }
-        .cv-fade-in-2 { animation-delay: 0.3s; }
-        .cv-fade-in-3 { animation-delay: 0.5s; }
-        .cv-fade-in-4 { animation-delay: 0.7s; }
+        @keyframes blobDrift0 {
+          0%, 100% { transform: translate(0, 0); }
+          33% { transform: translate(40px, -30px); }
+          66% { transform: translate(-20px, 20px); }
+        }
+        @keyframes blobDrift1 {
+          0%, 100% { transform: translate(0, 0); }
+          33% { transform: translate(-30px, 40px); }
+          66% { transform: translate(25px, -15px); }
+        }
+        @keyframes blobDrift2 {
+          0%, 100% { transform: translate(0, 0); }
+          33% { transform: translate(20px, 30px); }
+          66% { transform: translate(-40px, -20px); }
+        }
+        @keyframes cardFloat0 {
+          0%, 100% { transform: rotate(-6deg) translateY(0px); }
+          50% { transform: rotate(-6deg) translateY(-10px); }
+        }
+        @keyframes cardFloat1 {
+          0%, 100% { transform: rotate(3deg) translateY(40px); }
+          50% { transform: rotate(3deg) translateY(30px); }
+        }
+        @keyframes cardFloat2 {
+          0%, 100% { transform: rotate(-3deg) translateY(80px); }
+          50% { transform: rotate(-3deg) translateY(70px); }
+        }
+        @keyframes marqueeScroll {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+        .hero04-fade-up {
+          opacity: 0;
+          animation: fadeUp04 0.6s ease-out forwards;
+        }
+        .hero04-card-0 { animation: cardFloat0 4s ease-in-out infinite; }
+        .hero04-card-1 { animation: cardFloat1 4s ease-in-out infinite; animation-delay: 0.5s; }
+        .hero04-card-2 { animation: cardFloat2 4s ease-in-out infinite; animation-delay: 1s; }
+        .hero04-blob-0 { animation: blobDrift0 15s ease-in-out infinite; }
+        .hero04-blob-1 { animation: blobDrift1 20s ease-in-out infinite; }
+        .hero04-blob-2 { animation: blobDrift2 25s ease-in-out infinite; }
+        .hero04-marquee-track {
+          animation: marqueeScroll 30s linear infinite;
+        }
+        .hero04-cards-container {
+          display: none;
+        }
+        @media (min-width: 1024px) {
+          .hero04-cards-container {
+            display: block !important;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hero04-fade-up {
+            animation: none;
+            opacity: 1;
+          }
+          .hero04-card-0,
+          .hero04-card-1,
+          .hero04-card-2 {
+            animation: none !important;
+          }
+          .hero04-card-0 { transform: rotate(-6deg) translateY(0px); }
+          .hero04-card-1 { transform: rotate(3deg) translateY(40px); }
+          .hero04-card-2 { transform: rotate(-3deg) translateY(80px); }
+          .hero04-blob-0,
+          .hero04-blob-1,
+          .hero04-blob-2 {
+            animation: none !important;
+          }
+          .hero04-marquee-track {
+            animation: none !important;
+          }
+        }
       `}</style>
 
-      {/* Matrix rain background */}
-      <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
-        {columns.map((col) => {
-          const leftPercent = (col * 5) + 2.5;
-          const animName = `matrixFall${col % 3}`;
-          const duration = 4 + (col % 5) * 1.2;
-          const delay = (col * 0.7) % 4;
-          const width = col % 3 === 0 ? 2 : 1;
-          const height = 60 + (col % 4) * 30;
-
-          return (
-            <div
-              key={col}
-              style={{
-                position: "absolute",
-                left: `${leftPercent}%`,
-                top: 0,
-                width: `${width}px`,
-                height: `${height}px`,
-                background: `linear-gradient(180deg, transparent 0%, #00ff8844 30%, #00ff8822 70%, transparent 100%)`,
-                animation: `${animName} ${duration}s linear ${delay}s infinite`,
-                borderRadius: "1px",
-              }}
-            />
-          );
-        })}
-
-        {/* Scan line overlay */}
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            height: "2px",
-            background: "linear-gradient(90deg, transparent, rgba(0,255,136,0.15), transparent)",
-            animation: "scanLine 6s linear infinite",
-          }}
-        />
-      </div>
-
-      {/* Content */}
-      <div
+      <section
         style={{
+          background: "#0f0720",
           position: "relative",
-          zIndex: 10,
-          width: "100%",
-          maxWidth: "1280px",
-          margin: "0 auto",
-          padding: "80px 24px",
+          overflow: "hidden",
+          minHeight: "100vh",
           display: "flex",
-          flexWrap: "wrap",
-          gap: "48px",
-          alignItems: "center",
-          direction: isAr ? "rtl" : "ltr",
+          flexDirection: "column",
+          fontFamily: isAr ? "var(--font-tajawal), sans-serif" : "var(--font-inter), sans-serif",
         }}
       >
-        {/* Left side — 55% */}
-        <div style={{ flex: "1 1 520px", minWidth: "320px" }}>
-          {/* Badge */}
-          <div className="cv-fade-in cv-fade-in-1" style={{ marginBottom: "24px" }}>
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "6px 16px",
-                background: "rgba(0,255,136,0.08)",
-                border: "1px solid rgba(0,255,136,0.25)",
-                borderRadius: "4px",
-                fontSize: "12px",
-                fontWeight: 600,
-                letterSpacing: "0.15em",
-                color: "#00ff88",
-                textTransform: "uppercase",
-                fontFamily: "monospace",
-              }}
-            >
-              <Shield size={14} />
-              {t.badge}
-            </span>
-          </div>
+        {/* Blurred gradient blobs */}
+        {blobs.map((blob, i) => (
+          <div
+            key={i}
+            className={`hero04-blob-${i}`}
+            style={{
+              position: "absolute",
+              left: blob.x,
+              top: blob.y,
+              width: `${blob.size}px`,
+              height: `${blob.size}px`,
+              background: blob.gradient,
+              filter: "blur(100px)",
+              pointerEvents: "none",
+              transform: "translate(-50%, -50%)",
+            }}
+          />
+        ))}
 
-          {/* Heading */}
-          <div className="cv-fade-in cv-fade-in-2">
+        {/* Main content */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 10,
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            maxWidth: "1280px",
+            width: "100%",
+            margin: "0 auto",
+            padding: "80px 24px 40px",
+            gap: "48px",
+            flexDirection: isAr ? "row-reverse" : "row",
+          }}
+        >
+          {/* Text side */}
+          <div
+            style={{
+              flex: "1 1 55%",
+              textAlign: isAr ? "right" : "left",
+            }}
+          >
+            {/* Badge */}
+            <div
+              className="hero04-fade-up"
+              style={{ animationDelay: "0ms", marginBottom: "24px" }}
+            >
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "6px 16px",
+                  borderRadius: "9999px",
+                  background: "rgba(139, 92, 246, 0.12)",
+                  color: "#c084fc",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  border: "1px solid rgba(139, 92, 246, 0.2)",
+                }}
+              >
+                <Palette size={16} />
+                {isAr ? "\u0648\u0643\u0627\u0644\u0629 \u0625\u0628\u062f\u0627\u0639\u064a\u0629" : "Creative Agency"}
+              </span>
+            </div>
+
+            {/* Heading */}
             <h1
+              className="hero04-fade-up"
               style={{
-                fontSize: "clamp(2.5rem, 5vw, 4rem)",
-                fontWeight: 800,
+                animationDelay: "30ms",
+                fontSize: "clamp(36px, 5.5vw, 68px)",
+                fontWeight: 700,
                 lineHeight: 1.1,
-                margin: "0 0 8px 0",
-                color: "#e8e8e8",
+                color: "#ffffff",
+                margin: "0 0 24px",
                 letterSpacing: isAr ? "0" : "-0.02em",
+                fontFamily: isAr ? "var(--font-changa), sans-serif" : "inherit",
               }}
             >
               {t.heading}
+              <br />
+              <span
+                style={{
+                  background: "linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                {t.accent}
+              </span>
             </h1>
-            <h1
+
+            {/* Subtitle */}
+            <p
+              className="hero04-fade-up"
               style={{
-                fontSize: "clamp(2.5rem, 5vw, 4rem)",
-                fontWeight: 800,
-                lineHeight: 1.1,
-                margin: "0 0 24px 0",
-                color: "#00ff88",
-                letterSpacing: isAr ? "0" : "-0.02em",
+                animationDelay: "60ms",
+                fontSize: "clamp(16px, 1.8vw, 20px)",
+                lineHeight: 1.7,
+                color: "rgba(255, 255, 255, 0.55)",
+                maxWidth: "520px",
+                margin: "0 0 36px",
+                marginLeft: isAr ? "auto" : undefined,
               }}
             >
-              {t.accent}
-            </h1>
+              {t.sub}
+            </p>
+
+            {/* CTAs */}
+            <div
+              className="hero04-fade-up"
+              style={{
+                animationDelay: "90ms",
+                display: "flex",
+                gap: "16px",
+                flexWrap: "wrap",
+                flexDirection: isAr ? "row-reverse" : "row",
+              }}
+            >
+              <button
+                style={{
+                  padding: "16px 32px",
+                  borderRadius: "12px",
+                  background: "linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)",
+                  color: "#ffffff",
+                  fontSize: "16px",
+                  fontWeight: 600,
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "transform 0.2s ease-out, box-shadow 0.2s ease-out",
+                  boxShadow: "0 0 30px rgba(139, 92, 246, 0.3)",
+                  fontFamily: "inherit",
+                  minHeight: "44px",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 0 40px rgba(139, 92, 246, 0.5)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 0 30px rgba(139, 92, 246, 0.3)";
+                }}
+              >
+                {t.cta1}
+              </button>
+              <button
+                style={{
+                  padding: "16px 32px",
+                  borderRadius: "12px",
+                  background: "transparent",
+                  color: "rgba(255, 255, 255, 0.8)",
+                  fontSize: "16px",
+                  fontWeight: 600,
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  cursor: "pointer",
+                  transition: "transform 0.2s ease-out, border-color 0.2s ease-out",
+                  fontFamily: "inherit",
+                  minHeight: "44px",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.5)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)";
+                }}
+              >
+                {t.cta2}
+              </button>
+            </div>
           </div>
 
-          {/* Subtitle */}
-          <p
-            className="cv-fade-in cv-fade-in-3"
-            style={{
-              fontSize: "1.1rem",
-              lineHeight: 1.7,
-              color: "#8a9a8a",
-              maxWidth: "540px",
-              margin: "0 0 32px 0",
-            }}
-          >
-            {t.sub}
-          </p>
-
-          {/* CTAs */}
+          {/* Floating cards side */}
           <div
-            className="cv-fade-in cv-fade-in-3"
+            className="hero04-cards-container"
             style={{
-              display: "flex",
-              gap: "16px",
-              flexWrap: "wrap",
-              marginBottom: "40px",
+              flex: "0 0 40%",
+              position: "relative",
+              height: "480px",
             }}
           >
-            <button
-              style={{
-                padding: "14px 32px",
-                background: "#00ff88",
-                color: "#0a0f0a",
-                border: "none",
-                borderRadius: "4px",
-                fontSize: "0.95rem",
-                fontWeight: 700,
-                fontFamily,
-                cursor: "pointer",
-                letterSpacing: "0.02em",
-              }}
-            >
-              {t.cta1}
-            </button>
-            <button
-              style={{
-                padding: "14px 32px",
-                background: "transparent",
-                color: "#00ff88",
-                border: "1px solid rgba(0,255,136,0.4)",
-                borderRadius: "4px",
-                fontSize: "0.95rem",
-                fontWeight: 600,
-                fontFamily,
-                cursor: "pointer",
-                letterSpacing: "0.02em",
-              }}
-            >
-              {t.cta2}
-            </button>
-          </div>
-
-          {/* Stats */}
-          <div
-            className="cv-fade-in cv-fade-in-4"
-            style={{
-              display: "flex",
-              gap: "40px",
-              flexWrap: "wrap",
-            }}
-          >
-            {t.stats.map((stat, i) => (
-              <div key={i} style={{ textAlign: isAr ? "right" : "left" }}>
-                <div
+            {t.cards.map((card, i) => (
+              <div
+                key={i}
+                className={`hero04-card-${i}`}
+                style={{
+                  position: "absolute",
+                  left: `${i * 30 + 20}px`,
+                  top: "40px",
+                  width: "260px",
+                  height: "160px",
+                  borderRadius: "16px",
+                  background: cardGradients[i],
+                  boxShadow: "0 20px 50px rgba(0, 0, 0, 0.4)",
+                  display: "flex",
+                  alignItems: "flex-end",
+                  padding: "20px",
+                  opacity: mounted ? 1 : 0,
+                  transition: "opacity 0.6s ease-out",
+                  transitionDelay: `${i * 0.15}s`,
+                }}
+              >
+                <span
                   style={{
-                    fontSize: "1.75rem",
-                    fontWeight: 800,
-                    color: "#00ff88",
-                    fontFamily: "monospace",
-                    lineHeight: 1.2,
+                    color: "#ffffff",
+                    fontSize: "16px",
+                    fontWeight: 600,
+                    textShadow: "0 2px 8px rgba(0, 0, 0, 0.3)",
                   }}
                 >
-                  {formatStat(statValues[i], i)}
-                  {stat.suffix}
-                </div>
-                <div
-                  style={{
-                    fontSize: "0.8rem",
-                    color: "#5a6a5a",
-                    marginTop: "4px",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.08em",
-                  }}
-                >
-                  {stat.label}
-                </div>
+                  {card}
+                </span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Right side — Dashboard panel */}
+        {/* Marquee ticker */}
         <div
-          className="cv-fade-in cv-fade-in-4"
+          className="hero04-fade-up"
           style={{
-            flex: "1 1 400px",
-            minWidth: "320px",
-            maxWidth: "480px",
-            background: "rgba(10, 20, 14, 0.85)",
-            border: "1px solid rgba(0,255,136,0.15)",
-            borderRadius: "8px",
-            padding: "24px",
-            backdropFilter: "blur(12px)",
+            animationDelay: "150ms",
+            position: "relative",
+            zIndex: 10,
+            borderTop: "1px solid rgba(255, 255, 255, 0.06)",
+            padding: "20px 0",
+            overflow: "hidden",
+            marginTop: "auto",
           }}
         >
-          {/* Threat Level */}
-          <div style={{ marginBottom: "24px" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0",
+              width: "max-content",
+            }}
+          >
             <div
+              className="hero04-marquee-track"
               style={{
                 display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "10px",
+                gap: "24px",
+                paddingRight: "24px",
               }}
             >
-              <span
-                style={{
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  letterSpacing: "0.15em",
-                  color: "#5a6a5a",
-                  textTransform: "uppercase",
-                  fontFamily: "monospace",
-                }}
-              >
-                {t.threatLevel}
-              </span>
-              <span
-                style={{
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  color: "#f59e0b",
-                  fontFamily: "monospace",
-                  letterSpacing: "0.1em",
-                }}
-              >
-                {t.threatValue}
-              </span>
-            </div>
-            <div
-              style={{
-                width: "100%",
-                height: "8px",
-                background: "#0d2818",
-                borderRadius: "4px",
-                overflow: "hidden",
-              }}
-            >
-              <div
-                style={{
-                  width: `${threatWidth}%`,
-                  height: "100%",
-                  background: "linear-gradient(90deg, #00ff88, #f59e0b)",
-                  borderRadius: "4px",
-                  transition: "width 1.5s cubic-bezier(0.4,0,0.2,1)",
-                  animation: "threatPulse 2s ease-in-out infinite",
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div style={{ height: "1px", background: "rgba(0,255,136,0.1)", margin: "0 0 20px 0" }} />
-
-          {/* Recent Alerts */}
-          <div style={{ marginBottom: "24px" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                marginBottom: "14px",
-              }}
-            >
-              <AlertTriangle size={13} color="#f59e0b" />
-              <span
-                style={{
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  letterSpacing: "0.15em",
-                  color: "#5a6a5a",
-                  textTransform: "uppercase",
-                  fontFamily: "monospace",
-                }}
-              >
-                {t.recentAlerts}
-              </span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {t.alerts.map((alert, i) => (
+              {[...marqueeItems, ...marqueeItems].map((item, i) => (
                 <div
                   key={i}
                   style={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    gap: "10px",
-                    padding: "8px 10px",
-                    background: "rgba(0,255,136,0.03)",
-                    borderRadius: "4px",
-                    borderLeft: isAr ? "none" : "2px solid",
-                    borderRight: isAr ? "2px solid" : "none",
-                    borderColor: i === 0 ? "#f59e0b" : i === 1 ? "#00ff88" : "#3b82f6",
+                    padding: "8px 24px",
+                    borderRadius: "8px",
+                    background: "rgba(255, 255, 255, 0.04)",
+                    border: "1px solid rgba(255, 255, 255, 0.06)",
+                    color: "rgba(255, 255, 255, 0.35)",
+                    fontSize: "13px",
+                    fontWeight: 500,
+                    whiteSpace: "nowrap",
+                    letterSpacing: "0.05em",
+                    textTransform: "uppercase",
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      color: "#8a9a8a",
-                      fontFamily: "monospace",
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {alert}
-                  </span>
+                  {item}
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Divider */}
-          <div style={{ height: "1px", background: "rgba(0,255,136,0.1)", margin: "0 0 20px 0" }} />
-
-          {/* System Status */}
-          <div>
             <div
+              className="hero04-marquee-track"
               style={{
                 display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                marginBottom: "14px",
+                gap: "24px",
+                paddingRight: "24px",
               }}
+              aria-hidden="true"
             >
-              <Activity size={13} color="#00ff88" />
-              <span
-                style={{
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  letterSpacing: "0.15em",
-                  color: "#5a6a5a",
-                  textTransform: "uppercase",
-                  fontFamily: "monospace",
-                }}
-              >
-                {t.systemStatus}
-              </span>
-            </div>
-            <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-              {t.statusItems.map((item, i) => (
+              {[...marqueeItems, ...marqueeItems].map((item, i) => (
                 <div
-                  key={i}
+                  key={`dup-${i}`}
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
+                    padding: "8px 24px",
+                    borderRadius: "8px",
+                    background: "rgba(255, 255, 255, 0.04)",
+                    border: "1px solid rgba(255, 255, 255, 0.06)",
+                    color: "rgba(255, 255, 255, 0.35)",
+                    fontSize: "13px",
+                    fontWeight: 500,
+                    whiteSpace: "nowrap",
+                    letterSpacing: "0.05em",
+                    textTransform: "uppercase",
                   }}
                 >
-                  <div
-                    style={{
-                      width: "8px",
-                      height: "8px",
-                      borderRadius: "50%",
-                      background: "#00ff88",
-                      animation: "blinkDot 2s ease-in-out infinite",
-                      animationDelay: `${i * 0.5}s`,
-                    }}
-                  />
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      color: "#8a9a8a",
-                      fontFamily: "monospace",
-                    }}
-                  >
-                    {item}
-                  </span>
-                  <CheckCircle size={12} color="#00ff88" style={{ opacity: 0.6 }} />
+                  {item}
                 </div>
               ))}
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
