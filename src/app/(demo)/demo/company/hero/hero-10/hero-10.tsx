@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Building } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Zap, Medal, Users, Clock, ArrowRight } from "lucide-react";
 
 interface Hero10Props {
   language: "en" | "ar";
@@ -9,399 +9,380 @@ interface Hero10Props {
 
 const content = {
   en: {
-    badge: "ZENITH PROPERTIES",
-    heading: "Discover Your",
-    accent: "Perfect Space",
-    sub: "Premier real estate firm specializing in luxury residential and commercial properties across the Middle East.",
-    cta1: "Browse Properties",
-    cta2: "Book Viewing",
-    tabs: ["Residential", "Commercial", "Luxury", "Industrial"],
-    properties: {
-      Residential: [
-        { name: "Marina Residence", location: "Dubai, UAE", price: "$1.2M", gradient: "linear-gradient(135deg, #0ea5e9, #38bdf8)" },
-        { name: "Palm Gardens", location: "Riyadh, KSA", price: "$890K", gradient: "linear-gradient(135deg, #059669, #34d399)" },
-        { name: "Coral Bay Villa", location: "Jeddah, KSA", price: "$2.1M", gradient: "linear-gradient(135deg, #f59e0b, #fbbf24)" },
-      ],
-      Commercial: [
-        { name: "Apex Business Tower", location: "DIFC, Dubai", price: "$4.5M", gradient: "linear-gradient(135deg, #1a1a2e, #4a4a6e)" },
-        { name: "Innovation Hub", location: "KAFD, Riyadh", price: "$3.8M", gradient: "linear-gradient(135deg, #6366f1, #818cf8)" },
-        { name: "Trade Center Office", location: "Doha, Qatar", price: "$2.9M", gradient: "linear-gradient(135deg, #0891b2, #67e8f9)" },
-      ],
-      Luxury: [
-        { name: "Royal Penthouse", location: "Palm Jumeirah", price: "$12M", gradient: "linear-gradient(135deg, #b45309, #d4a853)" },
-        { name: "The Crown Estate", location: "Al Olaya, Riyadh", price: "$8.5M", gradient: "linear-gradient(135deg, #7c3aed, #a78bfa)" },
-        { name: "Pearl Island Villa", location: "Bahrain", price: "$6.2M", gradient: "linear-gradient(135deg, #e11d48, #fb7185)" },
-      ],
-      Industrial: [
-        { name: "Logistics Park A", location: "Jebel Ali, Dubai", price: "$5.8M", gradient: "linear-gradient(135deg, #374151, #6b7280)" },
-        { name: "Manufacturing Hub", location: "Jubail, KSA", price: "$3.2M", gradient: "linear-gradient(135deg, #1e3a5f, #3b82f6)" },
-        { name: "Warehouse Complex", location: "Dammam, KSA", price: "$1.9M", gradient: "linear-gradient(135deg, #44403c, #78716c)" },
-      ],
-    },
+    heading: "PUSH YOUR LIMITS.",
+    accent: "REDEFINE POSSIBLE.",
+    sub: "Join the movement. World-class trainers, cutting-edge facilities, and a community that pushes you to be your best \u2014 every single day.",
+    cta1: "Join Now",
+    cta2: "View Plans",
+    statValue: "10,000",
+    statPrefix: "",
+    statSuffix: "+",
+    statLabel: "Active Members",
+    badges: [
+      { icon: "medal" as const, label: "Olympic Equipment" },
+      { icon: "users" as const, label: "Expert Trainers" },
+      { icon: "clock" as const, label: "24/7 Access" },
+    ],
   },
   ar: {
-    badge: "زينيث العقارية",
-    heading: "اكتشف",
-    accent: "مساحتك المثالية",
-    sub: "شركة عقارات رائدة متخصصة في العقارات السكنية والتجارية الفاخرة في جميع أنحاء الشرق الأوسط.",
-    cta1: "تصفح العقارات",
-    cta2: "احجز معاينة",
-    tabs: ["سكني", "تجاري", "فاخر", "صناعي"],
-    properties: {
-      "سكني": [
-        { name: "مارينا ريزيدنس", location: "دبي، الإمارات", price: "$1.2M", gradient: "linear-gradient(135deg, #0ea5e9, #38bdf8)" },
-        { name: "بالم غاردنز", location: "الرياض، السعودية", price: "$890K", gradient: "linear-gradient(135deg, #059669, #34d399)" },
-        { name: "فيلا كورال باي", location: "جدة، السعودية", price: "$2.1M", gradient: "linear-gradient(135deg, #f59e0b, #fbbf24)" },
-      ],
-      "تجاري": [
-        { name: "برج أبكس للأعمال", location: "مركز دبي المالي", price: "$4.5M", gradient: "linear-gradient(135deg, #1a1a2e, #4a4a6e)" },
-        { name: "مركز الابتكار", location: "كافد، الرياض", price: "$3.8M", gradient: "linear-gradient(135deg, #6366f1, #818cf8)" },
-        { name: "مكتب المركز التجاري", location: "الدوحة، قطر", price: "$2.9M", gradient: "linear-gradient(135deg, #0891b2, #67e8f9)" },
-      ],
-      "فاخر": [
-        { name: "البنتهاوس الملكي", location: "نخلة جميرا", price: "$12M", gradient: "linear-gradient(135deg, #b45309, #d4a853)" },
-        { name: "ذا كراون إستيت", location: "العليا، الرياض", price: "$8.5M", gradient: "linear-gradient(135deg, #7c3aed, #a78bfa)" },
-        { name: "فيلا جزيرة اللؤلؤ", location: "البحرين", price: "$6.2M", gradient: "linear-gradient(135deg, #e11d48, #fb7185)" },
-      ],
-      "صناعي": [
-        { name: "المنطقة اللوجستية أ", location: "جبل علي، دبي", price: "$5.8M", gradient: "linear-gradient(135deg, #374151, #6b7280)" },
-        { name: "مركز التصنيع", location: "الجبيل، السعودية", price: "$3.2M", gradient: "linear-gradient(135deg, #1e3a5f, #3b82f6)" },
-        { name: "مجمع المستودعات", location: "الدمام، السعودية", price: "$1.9M", gradient: "linear-gradient(135deg, #44403c, #78716c)" },
-      ],
-    },
+    heading: "\u062a\u062c\u0627\u0648\u0632 \u062d\u062f\u0648\u062f\u0643.",
+    accent: "\u0623\u0639\u062f \u062a\u0639\u0631\u064a\u0641 \u0627\u0644\u0645\u0645\u0643\u0646.",
+    sub: "\u0627\u0646\u0636\u0645 \u0644\u0644\u062d\u0631\u0643\u0629. \u0645\u062f\u0631\u0628\u0648\u0646 \u0639\u0627\u0644\u0645\u064a\u0648\u0646 \u0648\u0645\u0631\u0627\u0641\u0642 \u0645\u062a\u0637\u0648\u0631\u0629 \u0648\u0645\u062c\u062a\u0645\u0639 \u064a\u062f\u0641\u0639\u0643 \u0644\u062a\u0643\u0648\u0646 \u0627\u0644\u0623\u0641\u0636\u0644 \u2014 \u0643\u0644 \u064a\u0648\u0645.",
+    cta1: "\u0627\u0646\u0636\u0645 \u0627\u0644\u0622\u0646",
+    cta2: "\u0639\u0631\u0636 \u0627\u0644\u062e\u0637\u0637",
+    statValue: "10,000",
+    statPrefix: "+",
+    statSuffix: "",
+    statLabel: "\u0639\u0636\u0648 \u0646\u0634\u0637",
+    badges: [
+      { icon: "medal" as const, label: "\u0645\u0639\u062f\u0627\u062a \u0623\u0648\u0644\u0645\u0628\u064a\u0629" },
+      { icon: "users" as const, label: "\u0645\u062f\u0631\u0628\u0648\u0646 \u062e\u0628\u0631\u0627\u0621" },
+      { icon: "clock" as const, label: "\u062f\u062e\u0648\u0644 24/7" },
+    ],
   },
 };
 
+const badgeIcons = {
+  medal: Medal,
+  users: Users,
+  clock: Clock,
+};
+
 export function Hero10({ language }: Hero10Props) {
+  const [isVisible, setIsVisible] = useState(false);
+  const [count, setCount] = useState(0);
+  const countRef = useRef<number | null>(null);
   const t = content[language];
   const isAr = language === "ar";
-  const [activeTab, setActiveTab] = useState(0);
 
-  const currentTab = t.tabs[activeTab];
-  const currentProperties = t.properties[currentTab as keyof typeof t.properties] || [];
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // CountUp animation
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const target = 10000;
+    const duration = 2000;
+    const startTime = performance.now();
+
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(eased * target));
+
+      if (progress < 1) {
+        countRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    countRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (countRef.current) cancelAnimationFrame(countRef.current);
+    };
+  }, [isVisible]);
+
+  const formattedCount = count.toLocaleString();
 
   return (
-    <section
-      style={{
-        fontFamily: isAr ? "var(--font-almarai)" : "var(--font-readex-pro)",
-        minHeight: "100vh",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
+    <>
       <style>{`
         @keyframes hero10FadeUp {
-          from { opacity: 0; transform: translateY(24px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes hero10SlideIn {
-          from { opacity: 0; transform: translateX(20px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes hero10SlideInRtl {
-          from { opacity: 0; transform: translateX(-20px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        .hero10-fadeup { animation: hero10FadeUp 0.7s ease-out both; }
-        .hero10-fadeup-1 { animation-delay: 0.1s; }
-        .hero10-fadeup-2 { animation-delay: 0.2s; }
-        .hero10-fadeup-3 { animation-delay: 0.3s; }
-        .hero10-fadeup-4 { animation-delay: 0.4s; }
-        .hero10-fadeup-5 { animation-delay: 0.5s; }
-        .hero10-card-enter {
-          animation: hero10SlideIn 0.4s ease-out both;
-        }
-        .hero10-card-enter-rtl {
-          animation: hero10SlideInRtl 0.4s ease-out both;
-        }
-        .hero10-card-enter:nth-child(1), .hero10-card-enter-rtl:nth-child(1) { animation-delay: 0.05s; }
-        .hero10-card-enter:nth-child(2), .hero10-card-enter-rtl:nth-child(2) { animation-delay: 0.1s; }
-        .hero10-card-enter:nth-child(3), .hero10-card-enter-rtl:nth-child(3) { animation-delay: 0.15s; }
-        .hero10-prop-card {
-          transition: all 0.3s ease;
-        }
-        .hero10-prop-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-        }
-        .hero10-tab {
-          transition: all 0.3s ease;
-        }
-        @media (max-width: 768px) {
-          .hero10-split {
-            flex-direction: column !important;
+          from {
+            opacity: 0;
+            transform: translateY(24px);
           }
-          .hero10-left, .hero10-right {
-            width: 100% !important;
-            min-height: auto !important;
-            padding: 60px 24px !important;
+          to {
+            opacity: 1;
+            transform: translateY(0);
           }
-          .hero10-divider {
-            display: none !important;
+        }
+
+        @keyframes hero10StripeScroll {
+          from {
+            transform: translateX(0);
+          }
+          to {
+            transform: translateX(60px);
+          }
+        }
+
+        .hero10-fadeUp {
+          opacity: 0;
+          animation: hero10FadeUp 400ms ease-out forwards;
+        }
+
+        .hero10-delay-0 { animation-delay: 0ms; }
+        .hero10-delay-1 { animation-delay: 50ms; }
+        .hero10-delay-2 { animation-delay: 100ms; }
+        .hero10-delay-3 { animation-delay: 150ms; }
+        .hero10-delay-4 { animation-delay: 200ms; }
+        .hero10-delay-5 { animation-delay: 300ms; }
+        .hero10-delay-6 { animation-delay: 350ms; }
+        .hero10-delay-7 { animation-delay: 400ms; }
+
+        .hero10-stripes {
+          animation: hero10StripeScroll 30s linear infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .hero10-fadeUp {
+            animation: none;
+            opacity: 1;
+            transform: none;
+          }
+          .hero10-stripes {
+            animation: none;
           }
         }
       `}</style>
 
-      <div className="hero10-split" style={{ display: "flex", minHeight: "100vh", flexDirection: isAr ? "row-reverse" : "row" }}>
-        {/* Dark Side - Text Content */}
+      <section
+        className="relative min-h-screen overflow-hidden"
+        style={{
+          backgroundColor: "#0c0a09",
+          fontFamily: isAr
+            ? "var(--font-tajawal), sans-serif"
+            : "var(--font-inter), sans-serif",
+        }}
+      >
+        {/* Animated stripe background */}
         <div
-          className="hero10-left"
+          className="hero10-stripes absolute inset-0 pointer-events-none"
           style={{
-            width: "50%",
-            background: "#1a1a2e",
-            padding: "80px 48px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            position: "relative",
-            minHeight: "100vh",
+            backgroundImage:
+              "repeating-linear-gradient(45deg, transparent, transparent 28px, rgba(255,255,255,0.04) 28px, rgba(255,255,255,0.04) 30px)",
+            backgroundSize: "60px 60px",
           }}
-        >
-          {/* Badge */}
-          <div className="hero10-fadeup hero10-fadeup-1" style={{ marginBottom: "28px" }}>
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "8px 20px",
-                borderRadius: "9999px",
-                border: "1px solid rgba(14,165,233,0.3)",
-                background: "rgba(14,165,233,0.08)",
-                color: "#0ea5e9",
-                fontSize: "13px",
-                fontWeight: 600,
-                letterSpacing: isAr ? "0" : "0.1em",
-              }}
+          aria-hidden="true"
+        />
+
+        <div className="relative z-10 min-h-screen flex flex-col">
+          <div className="flex-1 flex flex-col lg:flex-row">
+            {/* Left side - content (55%) */}
+            <div
+              className={`flex-1 lg:flex-none flex flex-col justify-center px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-28 ${isAr ? "lg:order-2" : ""}`}
+              style={{ flexBasis: "55%" }}
             >
-              <Building size={16} />
-              {t.badge}
-            </span>
-          </div>
-
-          {/* Heading */}
-          <h1
-            className="hero10-fadeup hero10-fadeup-2"
-            style={{
-              fontSize: "clamp(36px, 4vw, 56px)",
-              fontWeight: 800,
-              lineHeight: 1.15,
-              color: "#ffffff",
-              marginBottom: "20px",
-            }}
-          >
-            {t.heading}
-            <br />
-            <span style={{ color: "#0ea5e9" }}>{t.accent}</span>
-          </h1>
-
-          {/* Sub */}
-          <p
-            className="hero10-fadeup hero10-fadeup-3"
-            style={{
-              fontSize: "17px",
-              lineHeight: 1.7,
-              color: "#94a3b8",
-              maxWidth: "480px",
-              marginBottom: "40px",
-            }}
-          >
-            {t.sub}
-          </p>
-
-          {/* CTAs */}
-          <div
-            className="hero10-fadeup hero10-fadeup-4"
-            style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}
-          >
-            <button
-              style={{
-                padding: "14px 32px",
-                borderRadius: "10px",
-                background: "#0ea5e9",
-                color: "#ffffff",
-                fontWeight: 600,
-                fontSize: "15px",
-                border: "none",
-                cursor: "pointer",
-                fontFamily: isAr ? "var(--font-almarai)" : "var(--font-readex-pro)",
-              }}
-            >
-              {t.cta1}
-            </button>
-            <button
-              style={{
-                padding: "14px 32px",
-                borderRadius: "10px",
-                background: "transparent",
-                color: "#0ea5e9",
-                fontWeight: 600,
-                fontSize: "15px",
-                border: "1px solid rgba(14,165,233,0.4)",
-                cursor: "pointer",
-                fontFamily: isAr ? "var(--font-almarai)" : "var(--font-readex-pro)",
-              }}
-            >
-              {t.cta2}
-            </button>
-          </div>
-        </div>
-
-        {/* Diagonal SVG Divider */}
-        <div
-          className="hero10-divider"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: isAr ? undefined : "50%",
-            right: isAr ? "50%" : undefined,
-            width: "80px",
-            height: "100%",
-            zIndex: 10,
-            transform: `translateX(${isAr ? "50%" : "-50%"})`,
-          }}
-        >
-          <svg
-            width="80"
-            height="100%"
-            viewBox="0 0 80 100"
-            preserveAspectRatio="none"
-            style={{ width: "100%", height: "100%", display: "block" }}
-          >
-            <polygon
-              points={isAr ? "80,0 0,0 80,100" : "0,0 80,0 0,100"}
-              fill="#f8f8f8"
-            />
-            <polygon
-              points={isAr ? "0,100 80,100 0,0" : "80,100 0,100 80,0"}
-              fill="#1a1a2e"
-            />
-          </svg>
-        </div>
-
-        {/* Light Side - Properties */}
-        <div
-          className="hero10-right"
-          style={{
-            width: "50%",
-            background: "#f8f8f8",
-            padding: "80px 48px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            position: "relative",
-            minHeight: "100vh",
-          }}
-        >
-          {/* Filter Tabs */}
-          <div
-            className="hero10-fadeup hero10-fadeup-3"
-            style={{
-              display: "flex",
-              gap: "8px",
-              marginBottom: "32px",
-              flexWrap: "wrap",
-            }}
-          >
-            {t.tabs.map((tab, i) => (
-              <button
-                key={tab}
-                className="hero10-tab"
-                onClick={() => setActiveTab(i)}
-                style={{
-                  padding: "8px 20px",
-                  borderRadius: "8px",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  border: "none",
-                  cursor: "pointer",
-                  background: activeTab === i ? "#0ea5e9" : "#e2e8f0",
-                  color: activeTab === i ? "#ffffff" : "#475569",
-                  fontFamily: isAr ? "var(--font-almarai)" : "var(--font-readex-pro)",
-                }}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-
-          {/* Property Cards */}
-          <div
-            key={activeTab}
-            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-          >
-            {currentProperties.map((prop, i) => (
-              <div
-                key={`${activeTab}-${i}`}
-                className={`hero10-prop-card ${isAr ? "hero10-card-enter-rtl" : "hero10-card-enter"}`}
-                style={{
-                  display: "flex",
-                  flexDirection: isAr ? "row-reverse" : "row",
-                  borderRadius: "14px",
-                  overflow: "hidden",
-                  background: "#ffffff",
-                  border: "1px solid #e2e8f0",
-                }}
-              >
-                {/* Gradient Image Placeholder */}
-                <div
-                  style={{
-                    width: "140px",
-                    minHeight: "120px",
-                    background: prop.gradient,
-                    flexShrink: 0,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Building size={28} color="rgba(255,255,255,0.5)" />
+              {/* Zap icon */}
+              {isVisible && (
+                <div className="hero10-fadeUp hero10-delay-0 mb-6">
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #ef4444, #f97316)",
+                    }}
+                  >
+                    <Zap className="w-6 h-6 text-white" />
+                  </div>
                 </div>
-                {/* Property Info */}
-                <div
-                  style={{
-                    padding: "16px 20px",
-                    flex: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                  }}
-                >
-                  <h4
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: 700,
-                      color: "#1a1a2e",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    {prop.name}
-                  </h4>
-                  <p
-                    style={{
-                      fontSize: "13px",
-                      color: "#64748b",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    {prop.location}
-                  </p>
+              )}
+
+              {/* Heading */}
+              {isVisible && (
+                <h1 className="hero10-fadeUp hero10-delay-1 mb-6">
                   <span
+                    className="block text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold uppercase leading-tight"
                     style={{
-                      fontSize: "18px",
-                      fontWeight: 700,
-                      color: "#0ea5e9",
-                      fontFamily: "var(--font-inter, var(--font-readex-pro))",
+                      color: "#fafaf9",
+                      letterSpacing: "-0.02em",
+                      fontFamily: isAr
+                        ? "var(--font-changa), sans-serif"
+                        : "var(--font-inter), sans-serif",
                     }}
                   >
-                    {prop.price}
+                    {t.heading}
                   </span>
+                  <span
+                    className="block text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold uppercase leading-tight"
+                    style={{
+                      letterSpacing: "-0.02em",
+                      background:
+                        "linear-gradient(135deg, #ef4444, #f97316)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                      fontFamily: isAr
+                        ? "var(--font-changa), sans-serif"
+                        : "var(--font-inter), sans-serif",
+                    }}
+                  >
+                    {t.accent}
+                  </span>
+                </h1>
+              )}
+
+              {/* Subtitle */}
+              {isVisible && (
+                <p
+                  className="hero10-fadeUp hero10-delay-2 text-base sm:text-lg max-w-lg mb-8"
+                  style={{
+                    color: "#a8a29e",
+                    lineHeight: isAr ? "1.8" : "1.75",
+                  }}
+                >
+                  {t.sub}
+                </p>
+              )}
+
+              {/* CTAs */}
+              {isVisible && (
+                <div className="hero10-fadeUp hero10-delay-3 flex flex-wrap items-center gap-4 mb-12">
+                  <button
+                    className="cursor-pointer inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-white font-semibold text-base transition-opacity duration-200 hover:opacity-90"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #ef4444, #f97316)",
+                      minHeight: "48px",
+                    }}
+                  >
+                    <Zap className="w-5 h-5" />
+                    {t.cta1}
+                  </button>
+                  <button
+                    className="cursor-pointer inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-base transition-opacity duration-200 hover:opacity-80"
+                    style={{
+                      color: "#fafaf9",
+                      border: "1.5px solid #44403c",
+                      backgroundColor: "transparent",
+                      minHeight: "48px",
+                    }}
+                  >
+                    {t.cta2}
+                    <ArrowRight
+                      className="w-5 h-5"
+                      style={{
+                        transform: isAr ? "scaleX(-1)" : "none",
+                      }}
+                    />
+                  </button>
                 </div>
+              )}
+
+              {/* Achievement badges */}
+              {isVisible && (
+                <div className="flex flex-wrap gap-4 sm:gap-6">
+                  {t.badges.map((badge, index) => {
+                    const IconComponent = badgeIcons[badge.icon];
+                    return (
+                      <div
+                        key={index}
+                        className={`hero10-fadeUp hero10-delay-${5 + index} flex items-center gap-2.5`}
+                      >
+                        <div
+                          className="w-10 h-10 rounded-lg flex items-center justify-center"
+                          style={{ backgroundColor: "#1c1917" }}
+                        >
+                          <IconComponent
+                            className="w-5 h-5"
+                            style={{ color: "#f97316" }}
+                          />
+                        </div>
+                        <span
+                          className="text-sm font-medium"
+                          style={{ color: "#d6d3d1" }}
+                        >
+                          {badge.label}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Right side - gradient panel (45%) */}
+            <div
+              className={`relative flex-none hidden lg:flex items-center justify-center ${isAr ? "lg:order-1" : ""}`}
+              style={{
+                flexBasis: "45%",
+                background: "linear-gradient(135deg, #ef4444, #f97316)",
+                clipPath: isAr
+                  ? "polygon(0 0, 85% 0, 100% 100%, 0 100%)"
+                  : "polygon(15% 0, 100% 0, 100% 100%, 0 100%)",
+              }}
+            >
+              {/* Large decorative number */}
+              <div
+                className="absolute inset-0 flex items-center justify-center overflow-hidden select-none pointer-events-none"
+                aria-hidden="true"
+              >
+                <span
+                  className="font-bold"
+                  style={{
+                    fontSize: "clamp(120px, 15vw, 220px)",
+                    color: "rgba(255, 255, 255, 0.15)",
+                    letterSpacing: "-0.02em",
+                    fontFamily: isAr
+                      ? "var(--font-changa), sans-serif"
+                      : "var(--font-inter), sans-serif",
+                  }}
+                >
+                  10K+
+                </span>
               </div>
-            ))}
+
+              {/* CountUp stat */}
+              {isVisible && (
+                <div className="hero10-fadeUp hero10-delay-4 relative z-10 text-center">
+                  <div
+                    className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-3"
+                    style={{
+                      color: "#ffffff",
+                      fontFamily: isAr
+                        ? "var(--font-changa), sans-serif"
+                        : "var(--font-inter), sans-serif",
+                    }}
+                  >
+                    {t.statPrefix}{formattedCount}{t.statSuffix}
+                  </div>
+                  <div
+                    className="text-lg sm:text-xl font-medium"
+                    style={{ color: "rgba(255,255,255,0.85)" }}
+                  >
+                    {t.statLabel}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Mobile stat card */}
+            <div className="lg:hidden px-6 sm:px-10 pb-12">
+              {isVisible && (
+                <div
+                  className="hero10-fadeUp hero10-delay-4 rounded-2xl p-8 text-center"
+                  style={{
+                    background: "linear-gradient(135deg, #ef4444, #f97316)",
+                  }}
+                >
+                  <div
+                    className="text-4xl sm:text-5xl font-bold mb-2"
+                    style={{
+                      color: "#ffffff",
+                      fontFamily: isAr
+                        ? "var(--font-changa), sans-serif"
+                        : "var(--font-inter), sans-serif",
+                    }}
+                  >
+                    {t.statPrefix}{formattedCount}{t.statSuffix}
+                  </div>
+                  <div
+                    className="text-base font-medium"
+                    style={{ color: "rgba(255,255,255,0.85)" }}
+                  >
+                    {t.statLabel}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

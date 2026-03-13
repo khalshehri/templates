@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Brain } from "lucide-react";
+import { Scale, ArrowRight } from "lucide-react";
 
 interface Hero09Props {
   language: "en" | "ar";
@@ -9,388 +9,269 @@ interface Hero09Props {
 
 const content = {
   en: {
-    badge: "QUANTUM LABS",
-    heading: "Pushing the Boundaries of",
-    accent: "Artificial Intelligence",
-    sub: "Pioneering research lab at the frontier of machine learning, quantum computing, and neural architecture design.",
-    cta1: "Explore Research",
-    cta2: "Join Our Team",
-    stats: [
-      { label: "Papers Published", value: 340, suffix: "+" },
-      { label: "Patents Filed", value: 89, suffix: "" },
-      { label: "Model Accuracy", value: 99.4, suffix: "%", decimals: 1 },
-      { label: "Researchers", value: 200, suffix: "+" },
+    est: "Est. 1987",
+    headingParts: ["Justice. Integrity.", ""],
+    accent: "Results.",
+    sub: "Riyadh\u2019s premier law firm with 35+ years of courtroom excellence.",
+    cta: "Discuss Your Case",
+    areas: [
+      "Corporate Law",
+      "Litigation",
+      "Real Estate",
+      "Arbitration",
+      "IP Law",
     ],
   },
   ar: {
-    badge: "كوانتم لابز",
-    heading: "ندفع حدود",
-    accent: "الذكاء الاصطناعي",
-    sub: "مختبر أبحاث رائد في طليعة التعلم الآلي والحوسبة الكمية وتصميم البنية العصبية.",
-    cta1: "استكشف الأبحاث",
-    cta2: "انضم لفريقنا",
-    stats: [
-      { label: "الأبحاث المنشورة", value: 340, suffix: "+" },
-      { label: "براءات الاختراع", value: 89, suffix: "" },
-      { label: "دقة النماذج", value: 99.4, suffix: "%", decimals: 1 },
-      { label: "الباحثون", value: 200, suffix: "+" },
+    est: "\u062a\u0623\u0633\u0633\u062a 1987",
+    headingParts: ["\u0639\u062f\u0627\u0644\u0629. \u0646\u0632\u0627\u0647\u0629.", ""],
+    accent: "\u0646\u062a\u0627\u0626\u062c.",
+    sub: "\u0634\u0631\u0643\u0629 \u0627\u0644\u0645\u062d\u0627\u0645\u0627\u0629 \u0627\u0644\u0631\u0627\u0626\u062f\u0629 \u0641\u064a \u0627\u0644\u0631\u064a\u0627\u0636 \u0628\u062e\u0628\u0631\u0629 \u062a\u0632\u064a\u062f \u0639\u0646 35 \u0639\u0627\u0645\u0627\u064b.",
+    cta: "\u0646\u0627\u0642\u0634 \u0642\u0636\u064a\u062a\u0643",
+    areas: [
+      "\u0642\u0627\u0646\u0648\u0646 \u0627\u0644\u0634\u0631\u0643\u0627\u062a",
+      "\u0627\u0644\u062a\u0642\u0627\u0636\u064a",
+      "\u0627\u0644\u0639\u0642\u0627\u0631\u0627\u062a",
+      "\u0627\u0644\u062a\u062d\u0643\u064a\u0645",
+      "\u0627\u0644\u0645\u0644\u0643\u064a\u0629 \u0627\u0644\u0641\u0643\u0631\u064a\u0629",
     ],
   },
 };
 
-function useCountUp(target: number, decimals: number = 0, duration: number = 2000) {
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    const startTime = performance.now();
-    const step = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(eased * target);
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [target, duration]);
-  return decimals > 0 ? value.toFixed(decimals) : Math.floor(value).toString();
-}
-
-// Deterministic constellation dots based on index
-function getConstellationDots() {
-  const dots: { x: number; y: number; size: number; delay: number; opacity: number }[] = [];
-  for (let i = 0; i < 20; i++) {
-    const angle = (i * 137.508) % 360; // golden angle distribution
-    const radius = 15 + (i * 3.7) % 35;
-    dots.push({
-      x: 50 + radius * Math.cos((angle * Math.PI) / 180) * (i % 2 === 0 ? 0.8 : 1.2),
-      y: 50 + radius * Math.sin((angle * Math.PI) / 180) * (i % 2 === 0 ? 1.1 : 0.7),
-      size: 1.5 + (i % 4) * 0.5,
-      delay: (i * 0.3) % 6,
-      opacity: 0.2 + (i % 5) * 0.1,
-    });
-  }
-  return dots;
-}
-
-const constellationDots = getConstellationDots();
-
 export function Hero09({ language }: Hero09Props) {
+  const [isVisible, setIsVisible] = useState(false);
   const t = content[language];
   const isAr = language === "ar";
 
-  const stat0 = useCountUp(t.stats[0].value);
-  const stat1 = useCountUp(t.stats[1].value);
-  const stat2 = useCountUp(t.stats[2].value, 1);
-  const stat3 = useCountUp(t.stats[3].value);
-  const statValues = [stat0, stat1, stat2, stat3];
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <section
-      style={{
-        background: "#080414",
-        fontFamily: isAr ? "var(--font-ibm-plex-arabic)" : "var(--font-inter)",
-        minHeight: "100vh",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
+    <>
       <style>{`
         @keyframes hero09FadeUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
-        @keyframes hero09Drift {
-          0%, 100% { transform: translate(0, 0); }
-          25% { transform: translate(3px, -3px); }
-          50% { transform: translate(-2px, 4px); }
-          75% { transform: translate(4px, 2px); }
+
+        @keyframes hero09LineExpand {
+          from {
+            transform: scaleX(0);
+          }
+          to {
+            transform: scaleX(1);
+          }
         }
-        @keyframes hero09OrbitCW {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(360deg); }
+
+        @keyframes hero09Underline {
+          from {
+            transform: scaleX(0);
+          }
+          to {
+            transform: scaleX(1);
+          }
         }
-        @keyframes hero09OrbitCCW {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(-360deg); }
+
+        .hero09-fadeUp {
+          opacity: 0;
+          animation: hero09FadeUp 500ms ease-out forwards;
         }
-        @keyframes hero09OrbitTilt {
-          from { transform: translate(-50%, -50%) rotateX(60deg) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotateX(60deg) rotate(360deg); }
+
+        .hero09-line {
+          transform: scaleX(0);
+          transform-origin: center;
+          animation: hero09LineExpand 800ms ease-out forwards;
+          animation-delay: 400ms;
         }
-        @keyframes hero09GlowPulse {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 0.6; }
+
+        .hero09-underline {
+          transform: scaleX(0);
+          transform-origin: ${isAr ? "right" : "left"};
+          animation: hero09Underline 600ms ease-out forwards;
+          animation-delay: 600ms;
         }
-        @keyframes hero09GradientShift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .hero09-fadeup { animation: hero09FadeUp 0.8s ease-out both; }
-        .hero09-fadeup-1 { animation-delay: 0.15s; }
-        .hero09-fadeup-2 { animation-delay: 0.3s; }
-        .hero09-fadeup-3 { animation-delay: 0.45s; }
-        .hero09-fadeup-4 { animation-delay: 0.6s; }
-        .hero09-fadeup-5 { animation-delay: 0.75s; }
-        .hero09-dot {
-          animation: hero09Drift 8s ease-in-out infinite;
-        }
-        .hero09-orbit-1 {
-          animation: hero09OrbitCW 30s linear infinite;
-        }
-        .hero09-orbit-2 {
-          animation: hero09OrbitCCW 40s linear infinite;
-        }
-        .hero09-orbit-3 {
-          animation: hero09OrbitTilt 25s linear infinite;
-        }
-        .hero09-glow {
-          animation: hero09GlowPulse 4s ease-in-out infinite;
-        }
-        .hero09-accent-text {
-          background: linear-gradient(135deg, #8b5cf6, #06b6d4, #8b5cf6);
-          background-size: 200% 200%;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: hero09GradientShift 4s ease infinite;
-        }
-        .hero09-stat-card {
-          transition: all 0.3s ease;
-        }
-        .hero09-stat-card:hover {
-          transform: translateY(-4px);
-          border-color: rgba(139,92,246,0.4);
+
+        .hero09-delay-0 { animation-delay: 0ms; }
+        .hero09-delay-1 { animation-delay: 50ms; }
+        .hero09-delay-2 { animation-delay: 150ms; }
+        .hero09-delay-3 { animation-delay: 500ms; }
+        .hero09-delay-4 { animation-delay: 600ms; }
+        .hero09-delay-5 { animation-delay: 700ms; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .hero09-fadeUp {
+            animation: none;
+            opacity: 1;
+            transform: none;
+          }
+          .hero09-line {
+            animation: none;
+            transform: scaleX(1);
+          }
+          .hero09-underline {
+            animation: none;
+            transform: scaleX(1);
+          }
         }
       `}</style>
 
-      {/* Background Elements */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-        {/* Radial glow behind center */}
-        <div
-          className="hero09-glow"
-          style={{
-            position: "absolute",
-            top: "35%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "600px",
-            height: "600px",
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(139,92,246,0.15) 0%, rgba(6,182,212,0.05) 40%, transparent 70%)",
-          }}
-        />
-
-        {/* Orbital Ring 1 - CW */}
-        <div
-          className="hero09-orbit-1"
-          style={{
-            position: "absolute",
-            top: "40%",
-            left: "50%",
-            width: "500px",
-            height: "500px",
-            borderRadius: "50%",
-            border: "1px solid rgba(139,92,246,0.12)",
-          }}
-        />
-
-        {/* Orbital Ring 2 - CCW */}
-        <div
-          className="hero09-orbit-2"
-          style={{
-            position: "absolute",
-            top: "40%",
-            left: "50%",
-            width: "380px",
-            height: "380px",
-            borderRadius: "50%",
-            border: "1px solid rgba(6,182,212,0.1)",
-          }}
-        />
-
-        {/* Orbital Ring 3 - Tilted */}
-        <div
-          className="hero09-orbit-3"
-          style={{
-            position: "absolute",
-            top: "40%",
-            left: "50%",
-            width: "450px",
-            height: "450px",
-            borderRadius: "50%",
-            border: "1px solid rgba(139,92,246,0.08)",
-            perspective: "800px",
-          }}
-        />
-
-        {/* Constellation Dots */}
-        {constellationDots.map((dot, i) => (
+      <section
+        className="relative min-h-screen overflow-hidden flex items-center justify-center"
+        style={{
+          backgroundColor: "#1e293b",
+          fontFamily: isAr
+            ? "var(--font-almarai), sans-serif"
+            : "var(--font-inter), sans-serif",
+        }}
+      >
+        {/* Est. badge */}
+        {isVisible && (
           <div
-            key={i}
-            className="hero09-dot"
+            className="hero09-fadeUp hero09-delay-0 absolute top-8 sm:top-12"
             style={{
-              position: "absolute",
-              left: `${dot.x}%`,
-              top: `${dot.y}%`,
-              width: `${dot.size}px`,
-              height: `${dot.size}px`,
-              borderRadius: "50%",
-              background: i % 3 === 0 ? "#8b5cf6" : i % 3 === 1 ? "#06b6d4" : "#a78bfa",
-              opacity: dot.opacity,
-              animationDelay: `${dot.delay}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Content */}
-      <div style={{ position: "relative", zIndex: 10, maxWidth: "1100px", margin: "0 auto", padding: "100px 24px 60px" }}>
-        {/* Badge */}
-        <div className="hero09-fadeup hero09-fadeup-1" style={{ textAlign: "center", marginBottom: "28px" }}>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "8px 20px",
-              borderRadius: "9999px",
-              border: "1px solid rgba(139,92,246,0.3)",
-              background: "rgba(139,92,246,0.08)",
-              color: "#a78bfa",
-              fontSize: "13px",
-              fontWeight: 600,
-              letterSpacing: isAr ? "0" : "0.1em",
+              right: isAr ? "auto" : "2rem",
+              left: isAr ? "2rem" : "auto",
             }}
           >
-            <Brain size={16} />
-            {t.badge}
-          </span>
-        </div>
+            <div className="flex items-center gap-2">
+              <Scale className="w-4 h-4" style={{ color: "#fbbf24" }} />
+              <span
+                className="text-xs sm:text-sm font-medium tracking-widest uppercase"
+                style={{ color: "#94a3b8" }}
+              >
+                {t.est}
+              </span>
+            </div>
+          </div>
+        )}
 
-        {/* Heading */}
-        <h1
-          className="hero09-fadeup hero09-fadeup-2"
-          style={{
-            textAlign: "center",
-            fontSize: "clamp(36px, 5.5vw, 72px)",
-            fontWeight: 800,
-            lineHeight: 1.1,
-            color: "#ffffff",
-            marginBottom: "24px",
-          }}
-        >
-          {t.heading}
-          <br />
-          <span className="hero09-accent-text">{t.accent}</span>
-        </h1>
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36 text-center">
+          {/* Heading */}
+          {isVisible && (
+            <h1 className="hero09-fadeUp hero09-delay-1 mb-0">
+              <span
+                className="block text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight tracking-tight"
+                style={{
+                  color: "#f1f5f9",
+                  fontFamily: isAr
+                    ? "var(--font-el-messiri), sans-serif"
+                    : "var(--font-inter), sans-serif",
+                }}
+              >
+                {t.headingParts[0]}
+              </span>
+              <span
+                className="relative inline-block text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight tracking-tight mt-2"
+                style={{
+                  color: "#f1f5f9",
+                  fontFamily: isAr
+                    ? "var(--font-el-messiri), sans-serif"
+                    : "var(--font-inter), sans-serif",
+                }}
+              >
+                {t.accent}
+                <span
+                  className="hero09-underline absolute bottom-1 sm:bottom-2 left-0 w-full h-[4px] sm:h-[6px]"
+                  style={{ backgroundColor: "#fbbf24" }}
+                  aria-hidden="true"
+                />
+              </span>
+            </h1>
+          )}
 
-        {/* Subheading */}
-        <p
-          className="hero09-fadeup hero09-fadeup-3"
-          style={{
-            textAlign: "center",
-            fontSize: "18px",
-            lineHeight: 1.7,
-            color: "#94a3b8",
-            maxWidth: "620px",
-            margin: "0 auto 48px",
-          }}
-        >
-          {t.sub}
-        </p>
+          {/* Horizontal line */}
+          {isVisible && (
+            <div className="flex justify-center my-8 sm:my-12">
+              <div
+                className="hero09-line w-full max-w-md h-px"
+                style={{ backgroundColor: "#334155" }}
+                aria-hidden="true"
+              />
+            </div>
+          )}
 
-        {/* CTAs */}
-        <div
-          className="hero09-fadeup hero09-fadeup-4"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "16px",
-            marginBottom: "80px",
-            flexWrap: "wrap",
-          }}
-        >
-          <button
-            style={{
-              padding: "14px 32px",
-              borderRadius: "12px",
-              background: "linear-gradient(135deg, #8b5cf6, #06b6d4)",
-              color: "#ffffff",
-              fontWeight: 600,
-              fontSize: "15px",
-              border: "none",
-              cursor: "pointer",
-              fontFamily: isAr ? "var(--font-ibm-plex-arabic)" : "var(--font-inter)",
-            }}
-          >
-            {t.cta1}
-          </button>
-          <button
-            style={{
-              padding: "14px 32px",
-              borderRadius: "12px",
-              background: "transparent",
-              color: "#a78bfa",
-              fontWeight: 600,
-              fontSize: "15px",
-              border: "1px solid rgba(139,92,246,0.4)",
-              cursor: "pointer",
-              fontFamily: isAr ? "var(--font-ibm-plex-arabic)" : "var(--font-inter)",
-            }}
-          >
-            {t.cta2}
-          </button>
-        </div>
-
-        {/* Stats Row */}
-        <div
-          className="hero09-fadeup hero09-fadeup-5"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "20px",
-          }}
-        >
-          {t.stats.map((stat, i) => (
-            <div
-              key={i}
-              className="hero09-stat-card"
+          {/* Subtitle */}
+          {isVisible && (
+            <p
+              className="hero09-fadeUp hero09-delay-3 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto mb-10 sm:mb-14"
               style={{
-                textAlign: "center",
-                padding: "28px 20px",
-                borderRadius: "16px",
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.06)",
-                backdropFilter: "blur(10px)",
+                color: "#94a3b8",
+                lineHeight: isAr ? "1.8" : "1.75",
+                fontFamily: isAr
+                  ? "var(--font-almarai), sans-serif"
+                  : "var(--font-inter), sans-serif",
               }}
             >
-              <div
+              {t.sub}
+            </p>
+          )}
+
+          {/* CTA - text style link */}
+          {isVisible && (
+            <div className="hero09-fadeUp hero09-delay-4 mb-16 sm:mb-20">
+              <a
+                href="#"
+                className="cursor-pointer inline-flex items-center gap-2 text-base sm:text-lg font-medium transition-opacity duration-200 hover:opacity-70"
                 style={{
-                  fontSize: "36px",
-                  fontWeight: 800,
-                  fontFamily: "var(--font-inter)",
-                  marginBottom: "8px",
-                  background: "linear-gradient(135deg, #8b5cf6, #06b6d4)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
+                  color: "#f1f5f9",
+                  minHeight: "48px",
+                  textDecoration: "underline",
+                  textUnderlineOffset: "6px",
+                  textDecorationColor: "#475569",
                 }}
               >
-                {statValues[i]}{stat.suffix}
-              </div>
-              <div
-                style={{
-                  fontSize: "14px",
-                  color: "#64748b",
-                  fontWeight: 500,
-                }}
-              >
-                {stat.label}
+                {t.cta}
+                <ArrowRight
+                  className="w-5 h-5"
+                  style={{
+                    transform: isAr ? "scaleX(-1)" : "none",
+                  }}
+                />
+              </a>
+            </div>
+          )}
+
+          {/* Practice areas */}
+          {isVisible && (
+            <div className="hero09-fadeUp hero09-delay-5">
+              <div className="flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-4 gap-y-2">
+                {t.areas.map((area, index) => (
+                  <span key={index} className="flex items-center gap-3 sm:gap-4">
+                    <span
+                      className="text-xs sm:text-sm tracking-wider uppercase"
+                      style={{
+                        color: "#64748b",
+                        fontFamily: isAr
+                          ? "var(--font-almarai), sans-serif"
+                          : "var(--font-inter), sans-serif",
+                      }}
+                    >
+                      {area}
+                    </span>
+                    {index < t.areas.length - 1 && (
+                      <span
+                        className="text-xs sm:text-sm"
+                        style={{ color: "#334155" }}
+                        aria-hidden="true"
+                      >
+                        |
+                      </span>
+                    )}
+                  </span>
+                ))}
               </div>
             </div>
-          ))}
+          )}
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
