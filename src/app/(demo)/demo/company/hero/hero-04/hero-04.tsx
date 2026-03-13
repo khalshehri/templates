@@ -1,6 +1,14 @@
 "use client";
 
-import { Palette, ArrowRight, ExternalLink } from "lucide-react";
+import { useState, useEffect } from "react";
+import {
+  Hotel,
+  Star,
+  Wifi,
+  UtensilsCrossed,
+  Car,
+  Sparkles,
+} from "lucide-react";
 
 interface Hero04Props {
   language: "en" | "ar";
@@ -8,261 +16,294 @@ interface Hero04Props {
 
 const content = {
   en: {
-    label: "CREATIVE STUDIO",
-    heading: "WE MAKE BRANDS",
-    accent: "UNFORGETTABLE",
-    sub: "Strategy, design, and technology fused into experiences that demand attention.",
-    cta1: "View Our Work",
-    cta2: "Start a Project",
-    cards: [
-      { label: "Brand Identity", gradient: "linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)" },
-      { label: "Digital Platform", gradient: "linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)" },
-      { label: "Campaign", gradient: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)" },
-    ],
+    location: "RIYADH \u00b7 DUBAI \u00b7 LONDON",
+    rating: "4.9 \u00b7 2,400+ Reviews",
+    heading: "Where every moment becomes a memory",
+    sub: "World-class hospitality in extraordinary settings. Luxurious rooms, exquisite dining, and experiences that linger long after you leave.",
+    cta1: "Reserve Your Stay",
+    cta2: "Virtual Tour \u2192",
+    amenities: ["Free WiFi", "Fine Dining", "Valet Parking", "Luxury Spa"],
   },
   ar: {
-    label: "استوديو إبداعي",
-    heading: "نجعل العلامات التجارية",
-    accent: "لا تُنسى",
-    sub: "استراتيجية وتصميم وتكنولوجيا مدمجة في تجارب تستحوذ على الانتباه.",
-    cta1: "شاهد أعمالنا",
-    cta2: "ابدأ مشروعاً",
-    cards: [
-      { label: "هوية العلامة", gradient: "linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)" },
-      { label: "منصة رقمية", gradient: "linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)" },
-      { label: "حملة إعلانية", gradient: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)" },
-    ],
+    location: "\u0627\u0644\u0631\u064a\u0627\u0636 \u00b7 \u062f\u0628\u064a \u00b7 \u0644\u0646\u062f\u0646",
+    rating: "4.9 \u00b7 +2,400 \u062a\u0642\u064a\u064a\u0645",
+    heading: "\u062d\u064a\u062b \u062a\u0635\u0628\u062d \u0643\u0644 \u0644\u062d\u0638\u0629 \u0630\u0643\u0631\u0649",
+    sub: "\u0636\u064a\u0627\u0641\u0629 \u0639\u0627\u0644\u0645\u064a\u0629 \u0641\u064a \u0623\u0645\u0627\u0643\u0646 \u0627\u0633\u062a\u062b\u0646\u0627\u0626\u064a\u0629. \u063a\u0631\u0641 \u0641\u0627\u062e\u0631\u0629 \u0648\u0645\u0637\u0627\u0639\u0645 \u0631\u0627\u0642\u064a\u0629 \u0648\u062a\u062c\u0627\u0631\u0628 \u062a\u0628\u0642\u0649 \u0637\u0648\u064a\u0644\u0627\u064b \u0628\u0639\u062f \u0627\u0644\u0645\u063a\u0627\u062f\u0631\u0629.",
+    cta1: "\u0627\u062d\u062c\u0632 \u0625\u0642\u0627\u0645\u062a\u0643",
+    cta2: "\u062c\u0648\u0644\u0629 \u0627\u0641\u062a\u0631\u0627\u0636\u064a\u0629 \u2192",
+    amenities: ["\u0648\u0627\u064a \u0641\u0627\u064a", "\u0645\u0637\u0627\u0639\u0645 \u0631\u0627\u0642\u064a\u0629", "\u0635\u0641 \u0627\u0644\u0633\u064a\u0627\u0631\u0627\u062a", "\u0633\u0628\u0627 \u0641\u0627\u062e\u0631"],
   },
 };
 
-const cardTransforms = [
-  { rotate: -8, translateX: 20, translateY: 0 },
-  { rotate: 4, translateX: -15, translateY: -30 },
-  { rotate: -2, translateX: 10, translateY: -60 },
-];
-
-const cardFloatDurations = [4, 5, 6];
+const amenityIcons = [Wifi, UtensilsCrossed, Car, Sparkles];
 
 export function Hero04({ language }: Hero04Props) {
+  const [mounted, setMounted] = useState(false);
   const t = content[language];
   const isAr = language === "ar";
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
       <style>{`
-        @keyframes prism-fadeSlideRight {
-          from { opacity: 0; transform: translateX(-40px); }
-          to { opacity: 1; transform: translateX(0); }
+        @keyframes ember-wave-shift-1 {
+          0% { transform: translateX(0); }
+          50% { transform: translateX(-30px); }
+          100% { transform: translateX(0); }
         }
-        @keyframes prism-fadeSlideLeft {
-          from { opacity: 0; transform: translateX(40px); }
-          to { opacity: 1; transform: translateX(0); }
+        @keyframes ember-wave-shift-2 {
+          0% { transform: translateX(0); }
+          50% { transform: translateX(40px); }
+          100% { transform: translateX(0); }
         }
-        @keyframes prism-fadeSlideRightRTL {
-          from { opacity: 0; transform: translateX(40px); }
-          to { opacity: 1; transform: translateX(0); }
+        @keyframes ember-wave-shift-3 {
+          0% { transform: translateX(0); }
+          50% { transform: translateX(-50px); }
+          100% { transform: translateX(0); }
         }
-        @keyframes prism-fadeSlideLeftRTL {
-          from { opacity: 0; transform: translateX(-40px); }
-          to { opacity: 1; transform: translateX(0); }
+        @keyframes ember-star-twinkle {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.6; }
         }
-        @keyframes prism-float0 {
-          0%, 100% { transform: rotate(-8deg) translate(20px, 0); }
-          50% { transform: rotate(-8deg) translate(20px, -8px); }
+        @keyframes ember-fade-up {
+          0% { opacity: 0; transform: translateY(24px); }
+          100% { opacity: 1; transform: translateY(0); }
         }
-        @keyframes prism-float1 {
-          0%, 100% { transform: rotate(4deg) translate(-15px, -30px); }
-          50% { transform: rotate(4deg) translate(-15px, -38px); }
+        @keyframes ember-scale-in {
+          0% { opacity: 0; transform: scale(0.8); }
+          100% { opacity: 1; transform: scale(1); }
         }
-        @keyframes prism-float2 {
-          0%, 100% { transform: rotate(-2deg) translate(10px, -60px); }
-          50% { transform: rotate(-2deg) translate(10px, -68px); }
-        }
-        @keyframes prism-gradientLine {
-          0% { background-position: 0% 0%; }
-          100% { background-position: 200% 0%; }
-        }
-        .prism-slideRight {
-          animation: prism-fadeSlideRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        .ember-fade-up {
           opacity: 0;
+          animation: ember-fade-up 800ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
-        .prism-slideLeft {
-          animation: prism-fadeSlideLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        .ember-scale-in {
           opacity: 0;
+          animation: ember-scale-in 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
-        [dir="rtl"] .prism-slideRight {
-          animation-name: prism-fadeSlideRightRTL;
-        }
-        [dir="rtl"] .prism-slideLeft {
-          animation-name: prism-fadeSlideLeftRTL;
-        }
-        .prism-d1 { animation-delay: 0.1s; }
-        .prism-d2 { animation-delay: 0.2s; }
-        .prism-d3 { animation-delay: 0.35s; }
-        .prism-d4 { animation-delay: 0.5s; }
-        .prism-d5 { animation-delay: 0.3s; }
-        .prism-d6 { animation-delay: 0.45s; }
-        .prism-d7 { animation-delay: 0.6s; }
         @media (prefers-reduced-motion: reduce) {
-          .prism-slideRight, .prism-slideLeft { animation: none; opacity: 1; }
-          .prism-card { animation: none !important; }
+          .ember-fade-up,
+          .ember-scale-in {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
+          .ember-wave {
+            animation: none !important;
+          }
+          .ember-star {
+            animation: none !important;
+          }
         }
       `}</style>
 
       <section
-        className="relative min-h-screen overflow-hidden"
+        className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center"
         style={{
-          background: "#0a0a0a",
-          fontFamily: isAr ? "var(--font-tajawal)" : "var(--font-inter)",
+          background: "linear-gradient(180deg, #1a0505 0%, #2d1810 50%, #0f0805 100%)",
+          fontFamily: isAr ? "var(--font-almarai)" : "var(--font-inter)",
         }}
       >
-        {/* Diagonal Gradient Line */}
-        <div
-          className="absolute pointer-events-none"
+        {/* SVG Waves at bottom */}
+        <svg
+          className="ember-wave absolute bottom-0 left-0 w-full"
           style={{
-            width: "150%",
-            height: "2px",
-            top: "55%",
-            left: "-25%",
-            transform: "rotate(-15deg)",
-            background: "linear-gradient(90deg, transparent 0%, #f43f5e 25%, #a855f7 50%, #3b82f6 75%, transparent 100%)",
-            backgroundSize: "200% 100%",
-            animation: "prism-gradientLine 4s linear infinite",
-            opacity: 0.3,
+            height: "200px",
+            animation: "ember-wave-shift-1 25s ease-in-out infinite",
           }}
-        />
+          viewBox="0 0 1440 200"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M0,120 C240,180 480,60 720,120 C960,180 1200,60 1440,120 L1440,200 L0,200 Z"
+            fill="#d97706"
+            fillOpacity="0.12"
+          />
+        </svg>
+        <svg
+          className="ember-wave absolute bottom-0 left-0 w-full"
+          style={{
+            height: "180px",
+            animation: "ember-wave-shift-2 20s ease-in-out infinite",
+          }}
+          viewBox="0 0 1440 180"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M0,100 C360,160 720,40 1080,100 C1260,140 1380,80 1440,100 L1440,180 L0,180 Z"
+            fill="#ea580c"
+            fillOpacity="0.10"
+          />
+        </svg>
+        <svg
+          className="ember-wave absolute bottom-0 left-0 w-full"
+          style={{
+            height: "160px",
+            animation: "ember-wave-shift-3 30s ease-in-out infinite",
+          }}
+          viewBox="0 0 1440 160"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M0,80 C180,140 540,20 900,80 C1080,120 1320,40 1440,80 L1440,160 L0,160 Z"
+            fill="#e11d48"
+            fillOpacity="0.08"
+          />
+        </svg>
 
-        {/* Main Layout */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-24 sm:py-32 lg:py-40 flex flex-col lg:flex-row items-center gap-16 lg:gap-8">
-          {/* Left Content — 55% */}
-          <div className="w-full lg:w-[55%] flex flex-col items-start">
-            {/* Label */}
-            <div className="prism-slideRight prism-d1 inline-flex items-center gap-2 mb-8">
-              <Palette className="w-4 h-4" style={{ color: "#f43f5e" }} />
+        {/* Content */}
+        <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-3xl mx-auto pb-24">
+          {/* Location strip */}
+          {mounted && (
+            <p
+              className="ember-fade-up text-xs tracking-[0.3em] uppercase mb-6"
+              style={{
+                color: "#92400e",
+                animationDelay: "100ms",
+                fontFamily: "var(--font-inter)",
+                letterSpacing: "0.3em",
+              }}
+            >
+              {t.location}
+            </p>
+          )}
+
+          {/* Stars */}
+          {mounted && (
+            <div
+              className="ember-fade-up flex items-center gap-1.5 mb-4"
+              style={{ animationDelay: "200ms" }}
+            >
+              {[0, 1, 2, 3, 4].map((i) => (
+                <Star
+                  key={i}
+                  className="ember-star"
+                  size={16}
+                  fill="#f59e0b"
+                  color="#f59e0b"
+                  style={{
+                    animation: `ember-star-twinkle 2.5s ease-in-out infinite`,
+                    animationDelay: `${i * 300}ms`,
+                  }}
+                />
+              ))}
               <span
-                className="text-xs tracking-widest uppercase font-medium"
-                style={{ color: "#a3a3a3", letterSpacing: "0.2em" }}
+                className="text-sm ml-2"
+                style={{
+                  color: "rgba(253, 230, 138, 0.7)",
+                  fontFamily: "var(--font-inter)",
+                }}
               >
-                {t.label}
+                {t.rating}
               </span>
             </div>
+          )}
 
-            {/* Heading */}
+          {/* Heading */}
+          {mounted && (
             <h1
-              className="prism-slideRight prism-d2"
+              className="ember-fade-up mb-6"
               style={{
-                fontSize: "clamp(3rem, 8vw, 6rem)",
-                fontWeight: 800,
-                letterSpacing: "-0.04em",
-                lineHeight: 0.95,
-                color: "#fafafa",
-                textTransform: isAr ? "none" : "uppercase",
-                fontFamily: isAr ? "var(--font-changa)" : "var(--font-inter)",
+                fontFamily: "var(--font-el-messiri)",
+                fontWeight: 400,
+                fontSize: "clamp(2.5rem, 6vw, 4rem)",
+                letterSpacing: "0.02em",
+                lineHeight: 1.2,
+                color: "#fef3c7",
+                animationDelay: "350ms",
               }}
             >
               {t.heading}
-              <br />
-              <span
-                style={{
-                  background: "linear-gradient(135deg, #f43f5e 0%, #a855f7 50%, #3b82f6 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                {t.accent}
-              </span>
             </h1>
+          )}
 
-            {/* Subtitle */}
+          {/* Subtitle */}
+          {mounted && (
             <p
-              className="prism-slideRight prism-d3 mt-7 max-w-md text-lg"
-              style={{ color: "#a3a3a3", fontWeight: 300, lineHeight: 1.7 }}
+              className="ember-fade-up max-w-xl mb-10"
+              style={{
+                fontWeight: 300,
+                fontSize: "clamp(1rem, 2vw, 1.15rem)",
+                lineHeight: 1.8,
+                color: "rgba(253, 230, 138, 0.7)",
+                animationDelay: "500ms",
+                fontFamily: isAr ? "var(--font-almarai)" : "var(--font-inter)",
+              }}
             >
               {t.sub}
             </p>
+          )}
 
-            {/* CTAs */}
-            <div className="prism-slideRight prism-d4 flex flex-wrap items-center gap-4 mt-10">
+          {/* CTAs */}
+          {mounted && (
+            <div
+              className="ember-fade-up flex flex-col items-center gap-4 mb-16"
+              style={{ animationDelay: "650ms" }}
+            >
               <button
-                className="cursor-pointer inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-white font-semibold text-sm transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98]"
+                className="cursor-pointer px-8 py-3.5 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg"
                 style={{
-                  background: "linear-gradient(135deg, #f43f5e 0%, #a855f7 60%, #3b82f6 100%)",
-                  boxShadow: "0 0 30px rgba(244,63,94,0.25), 0 0 60px rgba(168,85,247,0.15)",
+                  backgroundColor: "rgba(245, 158, 11, 0.9)",
+                  color: "#1a0505",
+                  fontFamily: isAr ? "var(--font-almarai)" : "var(--font-inter)",
                 }}
               >
                 {t.cta1}
-                <ArrowRight className="w-4 h-4" />
               </button>
               <button
-                className="cursor-pointer inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-sm font-medium transition-all hover:bg-white/[0.08] active:scale-[0.98]"
+                className="cursor-pointer text-sm transition-colors duration-300 hover:opacity-80"
                 style={{
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  color: "#d4d4d4",
+                  color: "#f59e0b",
+                  fontFamily: isAr ? "var(--font-almarai)" : "var(--font-inter)",
+                  background: "none",
+                  border: "none",
                 }}
               >
                 {t.cta2}
-                <ExternalLink className="w-4 h-4" />
               </button>
             </div>
-          </div>
+          )}
 
-          {/* Right Cards — 45% */}
-          <div className="w-full lg:w-[45%] flex items-center justify-center">
-            <div className="relative" style={{ width: "280px", height: "380px" }}>
-              {t.cards.map((card, i) => (
+          {/* Amenities */}
+          {mounted && (
+            <div className="flex flex-wrap justify-center gap-6">
+              {amenityIcons.map((Icon, i) => (
                 <div
                   key={i}
-                  className={`prism-card prism-slideLeft prism-d${i + 5} absolute rounded-2xl overflow-hidden`}
-                  style={{
-                    width: "180px",
-                    height: "240px",
-                    left: "50%",
-                    top: "50%",
-                    marginLeft: "-90px",
-                    marginTop: "-120px",
-                    background: card.gradient,
-                    animation: `prism-float${i} ${cardFloatDurations[i]}s ease-in-out infinite`,
-                    boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                  }}
+                  className="ember-scale-in flex flex-col items-center gap-2"
+                  style={{ animationDelay: `${800 + i * 120}ms` }}
                 >
-                  {/* Card overlay content */}
                   <div
-                    className="absolute inset-0 flex flex-col justify-end p-5"
+                    className="flex items-center justify-center rounded-full"
                     style={{
-                      background: "linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.5) 100%)",
+                      width: 52,
+                      height: 52,
+                      background: "rgba(245, 158, 11, 0.08)",
+                      border: "1px solid rgba(245, 158, 11, 0.15)",
+                      backdropFilter: "blur(8px)",
                     }}
                   >
-                    <span
-                      className="text-xs font-medium uppercase tracking-wider"
-                      style={{ color: "rgba(255,255,255,0.7)", letterSpacing: "0.1em" }}
-                    >
-                      {isAr ? "مشروع" : "Project"}
-                    </span>
-                    <span className="text-sm font-semibold text-white mt-1">
-                      {card.label}
-                    </span>
+                    <Icon size={20} style={{ color: "#f59e0b" }} />
                   </div>
-
-                  {/* Decorative elements */}
-                  <div
-                    className="absolute top-4 right-4 w-8 h-8 rounded-full"
-                    style={{ background: "rgba(255,255,255,0.15)", backdropFilter: "blur(10px)" }}
-                  />
-                  <div
-                    className="absolute top-5 left-5 w-12 h-1 rounded-full"
-                    style={{ background: "rgba(255,255,255,0.2)" }}
-                  />
-                  <div
-                    className="absolute top-9 left-5 w-8 h-1 rounded-full"
-                    style={{ background: "rgba(255,255,255,0.12)" }}
-                  />
+                  <span
+                    className="text-xs"
+                    style={{
+                      color: "#92400e",
+                      fontFamily: isAr ? "var(--font-almarai)" : "var(--font-inter)",
+                    }}
+                  >
+                    {t.amenities[i]}
+                  </span>
                 </div>
               ))}
             </div>
-          </div>
+          )}
         </div>
       </section>
     </>

@@ -2,22 +2,23 @@
 
 import { useState, useEffect } from "react";
 import {
-  Clock,
-  Phone,
+  HeartPulse,
   Stethoscope,
   Baby,
-  HeartPulse,
+  Phone,
 } from "lucide-react";
+
+interface Hero06Props {
+  language: "en" | "ar";
+}
 
 const content = {
   en: {
     badge: "Open 24/7",
-    headingLine1: "Compassionate care,",
-    headingAccent: "advanced medicine",
-    sub: "Expert physicians, cutting-edge facilities, and personalized treatment plans — 24 hours, 7 days a week.",
+    heading: "Compassionate care, advanced medicine",
+    sub: "Expert physicians and cutting-edge facilities dedicated to your family\u2019s health and well-being.",
     cta1: "Book Appointment",
     cta2: "Emergency: 920-XXX-XXX",
-    specialists: "50+ Specialists",
     services: [
       {
         icon: "stethoscope",
@@ -27,50 +28,79 @@ const content = {
       {
         icon: "baby",
         title: "Pediatrics",
-        desc: "Specialized care for children and adolescents",
+        desc: "Specialized children\u2019s healthcare",
       },
       {
-        icon: "heart",
+        icon: "heartpulse",
         title: "Cardiology",
-        desc: "Advanced cardiac diagnostics and treatment",
+        desc: "Advanced cardiac diagnostics",
       },
     ],
   },
   ar: {
-    badge: "مفتوح 24/7",
-    headingLine1: "رعاية حانية،",
-    headingAccent: "طب متقدم",
-    sub: "أطباء خبراء ومرافق متطورة وخطط علاج مخصصة — 24 ساعة، 7 أيام في الأسبوع.",
-    cta1: "احجز موعداً",
-    cta2: "طوارئ: 920-XXX-XXX",
-    specialists: "+50 متخصص",
+    badge: "\u0645\u0641\u062a\u0648\u062d 24/7",
+    heading: "\u0631\u0639\u0627\u064a\u0629 \u062d\u0627\u0646\u064a\u0629\u060c \u0637\u0628 \u0645\u062a\u0642\u062f\u0645",
+    sub: "\u0623\u0637\u0628\u0627\u0621 \u062e\u0628\u0631\u0627\u0621 \u0648\u0645\u0631\u0627\u0641\u0642 \u0645\u062a\u0637\u0648\u0631\u0629 \u0645\u062e\u0635\u0635\u0629 \u0644\u0635\u062d\u0629 \u0639\u0627\u0626\u0644\u062a\u0643 \u0648\u0631\u0641\u0627\u0647\u064a\u062a\u0647\u0627.",
+    cta1: "\u0627\u062d\u062c\u0632 \u0645\u0648\u0639\u062f\u0627\u064b",
+    cta2: "\u0637\u0648\u0627\u0631\u0626: 920-XXX-XXX",
     services: [
       {
         icon: "stethoscope",
-        title: "الطب العام",
-        desc: "رعاية أولية شاملة لجميع الأعمار",
+        title: "\u0627\u0644\u0637\u0628 \u0627\u0644\u0639\u0627\u0645",
+        desc: "\u0631\u0639\u0627\u064a\u0629 \u0623\u0648\u0644\u064a\u0629 \u0634\u0627\u0645\u0644\u0629 \u0644\u062c\u0645\u064a\u0639 \u0627\u0644\u0623\u0639\u0645\u0627\u0631",
       },
       {
         icon: "baby",
-        title: "طب الأطفال",
-        desc: "رعاية متخصصة للأطفال والمراهقين",
+        title: "\u0637\u0628 \u0627\u0644\u0623\u0637\u0641\u0627\u0644",
+        desc: "\u0631\u0639\u0627\u064a\u0629 \u0635\u062d\u064a\u0629 \u0645\u062a\u062e\u0635\u0635\u0629 \u0644\u0644\u0623\u0637\u0641\u0627\u0644",
       },
       {
-        icon: "heart",
-        title: "طب القلب",
-        desc: "تشخيص وعلاج القلب المتقدم",
+        icon: "heartpulse",
+        title: "\u0637\u0628 \u0627\u0644\u0642\u0644\u0628",
+        desc: "\u062a\u0634\u062e\u064a\u0635\u0627\u062a \u0642\u0644\u0628\u064a\u0629 \u0645\u062a\u0642\u062f\u0645\u0629",
       },
     ],
   },
 };
 
-const iconMap = {
+const iconMap: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties }>> = {
   stethoscope: Stethoscope,
   baby: Baby,
-  heart: HeartPulse,
+  heartpulse: HeartPulse,
 };
 
-export function Hero06({ language }: { language: "en" | "ar" }) {
+const blobConfigs = [
+  {
+    color: "#ddd6fe",
+    size: 380,
+    top: "-5%",
+    left: "-8%",
+    duration: "15s",
+  },
+  {
+    color: "#a5f3fc",
+    size: 320,
+    top: "10%",
+    right: "-5%",
+    duration: "18s",
+  },
+  {
+    color: "#bbf7d0",
+    size: 350,
+    bottom: "5%",
+    left: "15%",
+    duration: "22s",
+  },
+  {
+    color: "#fecdd3",
+    size: 300,
+    bottom: "-8%",
+    right: "10%",
+    duration: "25s",
+  },
+];
+
+export function Hero06({ language }: Hero06Props) {
   const [mounted, setMounted] = useState(false);
   const t = content[language];
   const isAr = language === "ar";
@@ -80,296 +110,231 @@ export function Hero06({ language }: { language: "en" | "ar" }) {
   }, []);
 
   return (
-    <section
-      className="relative min-h-screen overflow-hidden"
-      style={{
-        background: "linear-gradient(180deg, #f0f4ff 0%, #ffffff 50%, #f0fdf4 100%)",
-        fontFamily: isAr
-          ? "var(--font-noto-sans-arabic), sans-serif"
-          : "var(--font-rubik), sans-serif",
-      }}
-    >
+    <>
       <style>{`
-        @keyframes hero06FadeUp {
-          from { opacity: 0; transform: translateY(28px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes serene-morph-0 {
+          0% { border-radius: 40% 60% 60% 40% / 60% 30% 70% 40%; }
+          50% { border-radius: 60% 40% 30% 70% / 40% 60% 70% 30%; }
+          100% { border-radius: 40% 60% 60% 40% / 60% 30% 70% 40%; }
         }
-        @keyframes hero06SlideIn {
-          from { opacity: 0; transform: translateX(40px); }
-          to { opacity: 1; transform: translateX(0); }
+        @keyframes serene-morph-1 {
+          0% { border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; }
+          50% { border-radius: 40% 60% 60% 40% / 60% 40% 40% 60%; }
+          100% { border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; }
         }
-        @keyframes hero06SlideInRtl {
-          from { opacity: 0; transform: translateX(-40px); }
-          to { opacity: 1; transform: translateX(0); }
+        @keyframes serene-morph-2 {
+          0% { border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%; }
+          50% { border-radius: 50% 50% 60% 40% / 40% 60% 50% 50%; }
+          100% { border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%; }
         }
-        @keyframes hero06Float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-4px); }
+        @keyframes serene-morph-3 {
+          0% { border-radius: 45% 55% 55% 45% / 55% 45% 55% 45%; }
+          50% { border-radius: 55% 45% 45% 55% / 45% 55% 45% 55%; }
+          100% { border-radius: 45% 55% 55% 45% / 55% 45% 55% 45%; }
         }
-        @keyframes hero06PulseDot {
-          0%, 100% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.3); opacity: 0.7; }
+        @keyframes serene-pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(0.85); }
         }
-        @keyframes hero06BlobPulse {
-          0%, 100% { opacity: 0.08; transform: scale(1); }
-          50% { opacity: 0.12; transform: scale(1.05); }
+        @keyframes serene-fade-up {
+          0% { opacity: 0; transform: translateY(20px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .serene-fade-up {
+          opacity: 0;
+          animation: serene-fade-up 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .serene-card {
+          transition: transform 300ms ease, box-shadow 300ms ease;
+        }
+        .serene-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
         }
         @media (prefers-reduced-motion: reduce) {
-          .hero06-animated { animation: none !important; opacity: 1 !important; transform: none !important; }
-          .hero06-float { animation: none !important; }
-          .hero06-pulse { animation: none !important; }
+          .serene-fade-up {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
+          .serene-blob {
+            animation: none !important;
+          }
+          .serene-pulse-dot {
+            animation: none !important;
+          }
+          .serene-card:hover {
+            transform: none;
+          }
         }
       `}</style>
 
-      {/* Decorative blobs */}
-      <div
-        className="absolute top-20 right-1/4 w-[300px] h-[300px] rounded-full pointer-events-none"
+      <section
+        className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center px-6 py-20"
         style={{
-          background: "radial-gradient(circle, #2563eb 0%, transparent 70%)",
-          opacity: 0.08,
-          filter: "blur(80px)",
-          animation: "hero06BlobPulse 6s ease-in-out infinite",
+          backgroundColor: "#faf8ff",
+          fontFamily: isAr
+            ? "var(--font-noto-sans-arabic)"
+            : "var(--font-rubik)",
         }}
-      />
-      <div
-        className="absolute bottom-20 right-1/3 w-[250px] h-[250px] rounded-full pointer-events-none"
-        style={{
-          background: "radial-gradient(circle, #10b981 0%, transparent 70%)",
-          opacity: 0.06,
-          filter: "blur(80px)",
-          animation: "hero06BlobPulse 6s ease-in-out 3s infinite",
-        }}
-      />
+      >
+        {/* Floating blobs */}
+        {blobConfigs.map((blob, i) => (
+          <div
+            key={i}
+            className="serene-blob absolute"
+            aria-hidden="true"
+            style={{
+              width: blob.size,
+              height: blob.size,
+              backgroundColor: blob.color,
+              opacity: 0.4,
+              filter: "blur(60px)",
+              animation: `serene-morph-${i} ${blob.duration} ease-in-out infinite`,
+              top: blob.top,
+              left: blob.left,
+              right: blob.right,
+              bottom: blob.bottom,
+            }}
+          />
+        ))}
 
-      <div className="relative max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-24 sm:py-32 lg:py-40">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
-          {/* Left content */}
-          <div>
-            {/* Badge */}
+        {/* Content */}
+        <div className="relative z-10 flex flex-col items-center text-center max-w-3xl mx-auto">
+          {/* Badge */}
+          {mounted && (
             <div
-              className="hero06-animated inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
+              className="serene-fade-up inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8"
               style={{
-                backgroundColor: "rgba(16, 185, 129, 0.1)",
-                border: "1px solid rgba(16, 185, 129, 0.2)",
-                animation: mounted
-                  ? "hero06FadeUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards"
-                  : "none",
-                opacity: mounted ? undefined : 0,
+                backgroundColor: "rgba(34, 197, 94, 0.1)",
+                border: "1px solid rgba(34, 197, 94, 0.2)",
+                animationDelay: "100ms",
               }}
             >
               <span
-                className="hero06-pulse relative flex h-2.5 w-2.5"
-              >
-                <span
-                  className="absolute inline-flex h-full w-full rounded-full"
-                  style={{
-                    backgroundColor: "#10b981",
-                    animation: "hero06PulseDot 2s ease-in-out infinite",
-                  }}
-                />
-                <span
-                  className="relative inline-flex rounded-full h-2.5 w-2.5"
-                  style={{ backgroundColor: "#10b981" }}
-                />
-              </span>
-              <Clock size={14} style={{ color: "#10b981" }} />
+                className="serene-pulse-dot inline-block rounded-full"
+                style={{
+                  width: 8,
+                  height: 8,
+                  backgroundColor: "#22c55e",
+                  animation: "serene-pulse 2s ease-in-out infinite",
+                }}
+              />
               <span
                 className="text-sm font-medium"
-                style={{ color: "#065f46" }}
+                style={{ color: "#15803d" }}
               >
                 {t.badge}
               </span>
             </div>
+          )}
 
-            {/* Heading */}
+          {/* Heading */}
+          {mounted && (
             <h1
-              className="hero06-animated"
+              className="serene-fade-up mb-5"
               style={{
-                fontSize: "clamp(2.25rem, 5vw, 3.75rem)",
-                lineHeight: 1.1,
-                fontWeight: 700,
-                color: "#0f172a",
-                animation: mounted
-                  ? "hero06FadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s forwards"
-                  : "none",
-                opacity: mounted ? undefined : 0,
+                fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                fontWeight: 600,
+                lineHeight: 1.2,
+                color: "#1e1b4b",
+                animationDelay: "200ms",
               }}
             >
-              {t.headingLine1}
-              <br />
-              <span
-                style={{
-                  background: "linear-gradient(135deg, #2563eb, #10b981)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                {t.headingAccent}
-              </span>
+              {t.heading}
             </h1>
+          )}
 
-            {/* Subtitle */}
+          {/* Subtitle */}
+          {mounted && (
             <p
-              className="hero06-animated mt-6 max-w-lg"
+              className="serene-fade-up max-w-xl mb-10"
               style={{
-                color: "#475569",
-                fontSize: "clamp(1rem, 1.5vw, 1.125rem)",
-                lineHeight: 1.7,
-                fontWeight: 300,
-                animation: mounted
-                  ? "hero06FadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.25s forwards"
-                  : "none",
-                opacity: mounted ? undefined : 0,
+                fontSize: "clamp(1rem, 1.8vw, 1.15rem)",
+                lineHeight: 1.8,
+                color: "#6b7280",
+                animationDelay: "300ms",
               }}
             >
               {t.sub}
             </p>
+          )}
 
-            {/* CTAs */}
+          {/* CTAs */}
+          {mounted && (
             <div
-              className="hero06-animated flex flex-wrap items-center gap-4 mt-8"
-              style={{
-                animation: mounted
-                  ? "hero06FadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.4s forwards"
-                  : "none",
-                opacity: mounted ? undefined : 0,
-              }}
+              className="serene-fade-up flex flex-col sm:flex-row items-center gap-4 mb-14"
+              style={{ animationDelay: "400ms" }}
             >
               <button
-                className="cursor-pointer px-7 py-3.5 rounded-xl text-white font-medium text-sm transition-all duration-300 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+                className="cursor-pointer px-8 py-3.5 text-sm font-semibold rounded-2xl transition-all duration-300 hover:scale-105"
                 style={{
-                  background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
-                  boxShadow: "0 4px 20px rgba(37, 99, 235, 0.3)",
-                  minHeight: "48px",
+                  backgroundColor: "#7c3aed",
+                  color: "#ffffff",
+                  boxShadow: "0 4px 20px rgba(124, 58, 237, 0.3)",
                 }}
               >
                 {t.cta1}
               </button>
               <button
-                className="cursor-pointer inline-flex items-center gap-2 px-5 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-gray-100"
+                className="cursor-pointer flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-2xl transition-all duration-300 hover:bg-violet-50"
                 style={{
-                  color: "#0f172a",
-                  border: "1px solid #e2e8f0",
-                  backgroundColor: "white",
-                  minHeight: "48px",
+                  backgroundColor: "transparent",
+                  color: "#7c3aed",
+                  border: "1.5px solid rgba(124, 58, 237, 0.3)",
                 }}
               >
-                <Phone size={16} style={{ color: "#2563eb" }} />
+                <Phone size={16} />
                 {t.cta2}
               </button>
             </div>
+          )}
 
-            {/* Specialists count */}
-            <div
-              className="hero06-animated mt-8 flex items-center gap-3"
-              style={{
-                animation: mounted
-                  ? "hero06FadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.55s forwards"
-                  : "none",
-                opacity: mounted ? undefined : 0,
-              }}
-            >
-              <div className="flex -space-x-2 rtl:space-x-reverse">
-                {[0, 1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className="w-8 h-8 rounded-full border-2 border-white"
-                    style={{
-                      background: [
-                        "linear-gradient(135deg, #93c5fd, #2563eb)",
-                        "linear-gradient(135deg, #6ee7b7, #10b981)",
-                        "linear-gradient(135deg, #fbbf24, #f59e0b)",
-                        "linear-gradient(135deg, #c4b5fd, #8b5cf6)",
-                      ][i],
-                    }}
-                  />
-                ))}
-              </div>
-              <span
-                className="text-sm font-medium"
-                style={{ color: "#0f172a" }}
-              >
-                {t.specialists}
-              </span>
-            </div>
-          </div>
-
-          {/* Right — service cards */}
-          <div className="relative h-[420px] sm:h-[460px]">
-            {t.services.map((service, index) => {
-              const Icon = iconMap[service.icon as keyof typeof iconMap];
-              const slideAnim = isAr ? "hero06SlideInRtl" : "hero06SlideIn";
-              const offsets = [
-                { top: 0, insetInlineStart: 0 },
-                { top: 80, insetInlineStart: 40 },
-                { top: 160, insetInlineStart: 80 },
-              ];
-
-              return (
+          {/* Service cards */}
+          <div className="w-full max-w-2xl flex flex-col gap-4">
+            {t.services.map((service, i) => {
+              const IconComp = iconMap[service.icon];
+              return mounted ? (
                 <div
-                  key={`${language}-${index}`}
-                  className="hero06-animated hero06-float absolute w-[300px] sm:w-[340px]"
+                  key={i}
+                  className="serene-fade-up serene-card flex items-center gap-5 px-6 py-5 rounded-2xl text-start"
                   style={{
-                    top: offsets[index].top,
-                    insetInlineStart: offsets[index].insetInlineStart,
-                    animation: mounted
-                      ? `${slideAnim} 0.7s cubic-bezier(0.16,1,0.3,1) ${0.3 + index * 0.12}s forwards, hero06Float 5s ease-in-out ${index * 0.8}s infinite`
-                      : "none",
-                    opacity: mounted ? undefined : 0,
-                    zIndex: 3 - index,
+                    backgroundColor: "rgba(255, 255, 255, 0.9)",
+                    border: "1px solid rgba(0, 0, 0, 0.06)",
+                    boxShadow: "0 1px 4px rgba(0, 0, 0, 0.04)",
+                    animationDelay: `${550 + i * 120}ms`,
+                    backdropFilter: "blur(10px)",
                   }}
                 >
                   <div
-                    className="p-6 rounded-2xl backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+                    className="flex-shrink-0 flex items-center justify-center rounded-xl"
                     style={{
-                      backgroundColor: "rgba(255, 255, 255, 0.85)",
-                      border: "1px solid rgba(255, 255, 255, 0.6)",
-                      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04)",
+                      width: 48,
+                      height: 48,
+                      backgroundColor: "rgba(124, 58, 237, 0.08)",
                     }}
                   >
-                    <div
-                      className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
-                      style={{
-                        background:
-                          index === 0
-                            ? "linear-gradient(135deg, #dbeafe, #bfdbfe)"
-                            : index === 1
-                            ? "linear-gradient(135deg, #d1fae5, #a7f3d0)"
-                            : "linear-gradient(135deg, #fce7f3, #fbcfe8)",
-                      }}
-                    >
-                      <Icon
-                        size={20}
-                        style={{
-                          color:
-                            index === 0
-                              ? "#2563eb"
-                              : index === 1
-                              ? "#10b981"
-                              : "#ec4899",
-                        }}
-                      />
-                    </div>
+                    {IconComp && (
+                      <IconComp size={22} style={{ color: "#7c3aed" }} />
+                    )}
+                  </div>
+                  <div>
                     <h3
-                      className="font-semibold text-base mb-1.5"
-                      style={{ color: "#0f172a" }}
+                      className="text-sm font-semibold mb-0.5"
+                      style={{ color: "#1e1b4b" }}
                     >
                       {service.title}
                     </h3>
-                    <p
-                      className="text-sm leading-relaxed"
-                      style={{ color: "#64748b", fontWeight: 300 }}
-                    >
+                    <p className="text-sm" style={{ color: "#6b7280" }}>
                       {service.desc}
                     </p>
                   </div>
                 </div>
-              );
+              ) : null;
             })}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
