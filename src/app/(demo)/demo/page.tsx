@@ -62,7 +62,13 @@ const CATEGORIES = [
 ] as const;
 
 /* ── Known templates registry (add here as you build them) ── */
-const TEMPLATES: Record<string, Record<string, { id: string; name: string }[]>> = {};
+const TEMPLATES: Record<string, Record<string, { id: string; name: string }[]>> = {
+  hero: {
+    company: [
+      { id: "hero-01", name: "Aurora Drift (Animated Aurora)" },
+    ],
+  },
+};
 
 /* ── Color utilities ───────────────────────────────────────── */
 const borderColors: Record<string, string> = {
