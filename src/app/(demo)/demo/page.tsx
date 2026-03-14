@@ -65,7 +65,8 @@ const CATEGORIES = [
 const TEMPLATES: Record<string, Record<string, { id: string; name: string }[]>> = {
   hero: {
     company: [
-      { id: "hero-01", name: "Nexus" },
+      { id: "hero-01", name: "Nexus (Dark)" },
+      { id: "hero-02", name: "Nexus (Light)" },
     ],
   },
 };
