@@ -1,6 +1,12 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
+import { useRef, useCallback, useState } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { type Engine } from "@tsparticles/engine";
 
 const content = {
   en: {
@@ -43,24 +49,44 @@ function MarqueeStrip({
 }: {
   children: React.ReactNode;
   direction: "left" | "right";
-  speed: string;
+  speed: number;
   className?: string;
   rotate: string;
 }) {
-  const animName =
-    direction === "left" ? "hero16MarqueeLeft" : "hero16MarqueeRight";
+  const stripRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      if (!stripRef.current) return;
+      const inner = stripRef.current.querySelector(".hero16-marquee-inner");
+      if (!inner) return;
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      const startX = direction === "left" ? 0 : -50;
+      const endX = direction === "left" ? -50 : 0;
+
+      gsap.fromTo(
+        inner,
+        { xPercent: startX },
+        {
+          xPercent: endX,
+          duration: speed,
+          ease: "none",
+          repeat: -1,
+        }
+      );
+    },
+    { scope: stripRef }
+  );
 
   return (
     <div
+      ref={stripRef}
       className={`w-[120%] -ml-[10%] overflow-hidden ${className ?? ""}`}
       style={{ transform: `rotate(${rotate})` }}
     >
-      <div
-        className="flex whitespace-nowrap"
-        style={{
-          animation: `${animName} ${speed} linear infinite`,
-        }}
-      >
+      <div className="hero16-marquee-inner flex whitespace-nowrap">
         <div className="flex-shrink-0">{children}</div>
         <div className="flex-shrink-0">{children}</div>
       </div>
@@ -74,56 +100,103 @@ export function Hero16({ language }: { language: "en" | "ar" }) {
   const fontHeading = isAr ? "var(--font-changa)" : "var(--font-inter)";
   const fontBody = isAr ? "var(--font-tajawal)" : "var(--font-inter)";
   const rotation = isAr ? "3deg" : "-3deg";
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [particlesReady, setParticlesReady] = useState(false);
+
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+    setParticlesReady(true);
+  }, []);
 
   // Repeat content enough times to fill the strip
   const repeat = (text: string, times: number) =>
     Array.from({ length: times }, () => text).join("");
 
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      // Card pop animation
+      gsap.from(".hero16-card", {
+        scale: 0.9,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+      });
+
+      // Dot pulse animation
+      gsap.to(".hero16-dot", {
+        scale: 1.4,
+        duration: 1,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
+    },
+    { scope: containerRef }
+  );
+
   return (
     <section
+      ref={containerRef}
       className="relative min-h-screen bg-black overflow-hidden flex items-center justify-center"
       style={{ fontFamily: fontBody }}
     >
       <style>{`
-        @keyframes hero16MarqueeLeft {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes hero16MarqueeRight {
-          0% { transform: translateX(-50%); }
-          100% { transform: translateX(0); }
-        }
-        @keyframes hero16CardPop {
-          0% { transform: scale(0.9); opacity: 0; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes hero16DotPulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.4); }
-        }
         .hero16-outline-text {
           -webkit-text-stroke: 2px white;
           color: transparent;
         }
-        @media (prefers-reduced-motion: reduce) {
-          .hero16-marquee-strip > div {
-            animation-play-state: paused !important;
-          }
-          .hero16-card {
-            animation: none !important;
-            opacity: 1 !important;
-          }
-          .hero16-dot {
-            animation: none !important;
-          }
-        }
       `}</style>
 
+      {/* Particles Background */}
+      <Particles
+        id="hero16-particles"
+        className="absolute inset-0 z-0"
+        init={particlesInit}
+        options={{
+          fullScreen: { enable: false },
+          fpsLimit: 60,
+          particles: {
+            number: { value: 50, density: { enable: true } },
+            color: {
+              value: ["#f43f5e", "#ec4899", "#d946ef", "#f472b6"],
+            },
+            opacity: {
+              value: { min: 0.15, max: 0.45 },
+              animation: { enable: true, speed: 1, sync: false },
+            },
+            size: {
+              value: { min: 1.5, max: 4 },
+              animation: { enable: true, speed: 2, sync: false },
+            },
+            move: {
+              enable: true,
+              speed: 1.2,
+              direction: "none" as const,
+              outModes: { default: "out" as const },
+              path: {
+                enable: false,
+              },
+            },
+            links: {
+              enable: true,
+              distance: 100,
+              color: "#f43f5e",
+              opacity: 0.12,
+              width: 1,
+            },
+            shape: { type: "circle" },
+          },
+          detectRetina: true,
+        }}
+      />
+
       {/* Strip 1 — Top, small, zinc-900, scrolls left */}
-      <div className="absolute top-[10%] left-0 right-0">
+      <div className="absolute top-[10%] left-0 right-0 z-[1]">
         <MarqueeStrip
           direction="left"
-          speed="30s"
+          speed={30}
           rotate={rotation}
           className="hero16-marquee-strip"
         >
@@ -137,10 +210,10 @@ export function Hero16({ language }: { language: "en" | "ar" }) {
       </div>
 
       {/* Strip 2 — Upper-center, LARGE, outline text, scrolls right */}
-      <div className="absolute top-[25%] left-0 right-0">
+      <div className="absolute top-[25%] left-0 right-0 z-[1]">
         <MarqueeStrip
           direction="right"
-          speed="20s"
+          speed={20}
           rotate={rotation}
           className="hero16-marquee-strip"
         >
@@ -154,10 +227,10 @@ export function Hero16({ language }: { language: "en" | "ar" }) {
       </div>
 
       {/* Strip 3 — Center, medium, rose-500, scrolls left */}
-      <div className="absolute top-[46%] left-0 right-0">
+      <div className="absolute top-[46%] left-0 right-0 z-[1]">
         <MarqueeStrip
           direction="left"
-          speed="25s"
+          speed={25}
           rotate={rotation}
           className="hero16-marquee-strip"
         >
@@ -171,10 +244,10 @@ export function Hero16({ language }: { language: "en" | "ar" }) {
       </div>
 
       {/* Strip 4 — Lower-center, LARGE, white filled, scrolls left */}
-      <div className="absolute top-[62%] left-0 right-0">
+      <div className="absolute top-[62%] left-0 right-0 z-[1]">
         <MarqueeStrip
           direction="left"
-          speed="22s"
+          speed={22}
           rotate={rotation}
           className="hero16-marquee-strip"
         >
@@ -188,10 +261,10 @@ export function Hero16({ language }: { language: "en" | "ar" }) {
       </div>
 
       {/* Strip 5 — Bottom, small, zinc-900, gray text, scrolls right */}
-      <div className="absolute top-[82%] left-0 right-0">
+      <div className="absolute top-[82%] left-0 right-0 z-[1]">
         <MarqueeStrip
           direction="right"
-          speed="35s"
+          speed={35}
           rotate={rotation}
           className="hero16-marquee-strip"
         >
@@ -207,17 +280,11 @@ export function Hero16({ language }: { language: "en" | "ar" }) {
       {/* Center Content Overlay */}
       <div
         className="hero16-card relative z-10 max-w-sm w-full mx-4 bg-white/[0.06] backdrop-blur-xl border border-white/[0.1] rounded-2xl p-6 text-center"
-        style={{
-          animation: "hero16CardPop 0.6s ease-out forwards",
-          fontFamily: fontBody,
-        }}
+        style={{ fontFamily: fontBody }}
       >
         {/* Badge */}
         <div className="flex items-center justify-center gap-2 mb-5">
-          <span
-            className="hero16-dot w-2.5 h-2.5 rounded-full bg-green-400 inline-block"
-            style={{ animation: "hero16DotPulse 2s ease-in-out infinite" }}
-          />
+          <span className="hero16-dot w-2.5 h-2.5 rounded-full bg-green-400 inline-block" />
           <span className="text-sm text-white/70">{t.badge}</span>
         </div>
 

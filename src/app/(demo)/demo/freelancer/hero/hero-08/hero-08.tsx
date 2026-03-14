@@ -1,6 +1,12 @@
 "use client";
 
+import { useRef, useCallback, useState } from "react";
 import { ArrowRight, Star, Quote } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { type Engine } from "@tsparticles/engine";
 
 const content = {
   en: {
@@ -189,66 +195,138 @@ export function Hero08({ language }: { language: "en" | "ar" }) {
   const isAr = language === "ar";
   const fontHeading = isAr ? "var(--font-changa)" : "var(--font-inter)";
   const fontBody = isAr ? "var(--font-tajawal)" : "var(--font-inter)";
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [particlesReady, setParticlesReady] = useState(false);
+
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+    setParticlesReady(true);
+  }, []);
+
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      // Panel fade in
+      gsap.from(".hero08-panel", {
+        scale: 0.95,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out",
+      });
+
+      // Star pop animations
+      gsap.from(".hero08-star", {
+        scale: 0,
+        duration: 0.4,
+        ease: "back.out(1.7)",
+        stagger: 0.1,
+        delay: 0.3,
+      });
+
+      // Quote glow pulsing
+      gsap.to(".hero08-quote-glow", {
+        opacity: 0.3,
+        duration: 1.5,
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
+
+      // Floating testimonial cards - drift up and down
+      const cards = containerRef.current?.querySelectorAll(".hero08-card");
+      if (cards) {
+        const driftAmounts = [-60, -45, -55, -40, -50];
+        cards.forEach((card, i) => {
+          const cardEl = card as HTMLElement;
+          const rot = cardEl.style.getPropertyValue("--card-rot") || "0deg";
+          const driftY = driftAmounts[i % 5];
+          const duration = testimonials[i].duration;
+          const delay = testimonials[i].delay;
+
+          gsap.to(card, {
+            y: driftY,
+            duration: duration / 2,
+            ease: "power1.inOut",
+            repeat: -1,
+            yoyo: true,
+            delay: delay,
+          });
+        });
+      }
+    },
+    { scope: containerRef }
+  );
 
   return (
     <section
+      ref={containerRef}
       className="min-h-screen relative overflow-hidden flex items-center justify-center"
       style={{ backgroundColor: "#0c0c0c", fontFamily: fontBody }}
       dir={isAr ? "rtl" : "ltr"}
     >
-      <style>{`
-        @keyframes driftUp0 { 0%, 100% { transform: translateY(0) rotate(var(--card-rot)); } 50% { transform: translateY(-60px) rotate(var(--card-rot)); } }
-        @keyframes driftUp1 { 0%, 100% { transform: translateY(0) rotate(var(--card-rot)); } 50% { transform: translateY(-45px) rotate(var(--card-rot)); } }
-        @keyframes driftUp2 { 0%, 100% { transform: translateY(0) rotate(var(--card-rot)); } 50% { transform: translateY(-55px) rotate(var(--card-rot)); } }
-        @keyframes driftUp3 { 0%, 100% { transform: translateY(0) rotate(var(--card-rot)); } 50% { transform: translateY(-40px) rotate(var(--card-rot)); } }
-        @keyframes driftUp4 { 0%, 100% { transform: translateY(0) rotate(var(--card-rot)); } 50% { transform: translateY(-50px) rotate(var(--card-rot)); } }
-        @keyframes panelFadeIn {
-          0% { opacity: 0; transform: scale(0.95); }
-          100% { opacity: 1; transform: scale(1); }
-        }
-        @keyframes starPop {
-          0% { transform: scale(0); }
-          60% { transform: scale(1.2); }
-          100% { transform: scale(1); }
-        }
-        @keyframes quoteGlow {
-          0%, 100% { opacity: 0.15; }
-          50% { opacity: 0.3; }
-        }
-        .hero08-panel {
-          animation: panelFadeIn 0.8s ease-out both;
-        }
-        .hero08-star {
-          animation: starPop 0.4s ease-out both;
-        }
-        .hero08-quote-glow {
-          animation: quoteGlow 3s ease-in-out infinite;
-        }
-        .hero08-card {
-          animation-timing-function: ease-in-out;
-          animation-iteration-count: infinite;
-        }
-        .hero08-card-0 { animation-name: driftUp0; }
-        .hero08-card-1 { animation-name: driftUp1; }
-        .hero08-card-2 { animation-name: driftUp2; }
-        .hero08-card-3 { animation-name: driftUp3; }
-        .hero08-card-4 { animation-name: driftUp4; }
-        @media (prefers-reduced-motion: reduce) {
-          .hero08-panel,
-          .hero08-star,
-          .hero08-quote-glow,
-          .hero08-card {
-            animation: none !important;
-          }
-          .hero08-panel {
-            opacity: 1;
-            transform: scale(1);
-          }
-          .hero08-star {
-            transform: scale(1);
-          }
-        }
-      `}</style>
+      {/* Particles background */}
+      <Particles
+        id="hero08-particles"
+        init={particlesInit}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+        options={{
+          fullScreen: { enable: false },
+          fpsLimit: 60,
+          particles: {
+            number: { value: 30, density: { enable: true } },
+            color: { value: ["#f43f5e", "#fb7185", "#fda4af"] },
+            shape: {
+              type: "star",
+              options: {
+                star: { sides: 5 },
+              },
+            },
+            opacity: {
+              value: { min: 0.1, max: 0.4 },
+              animation: {
+                enable: true,
+                speed: 0.8,
+                sync: false,
+              },
+            },
+            size: {
+              value: { min: 2, max: 6 },
+            },
+            move: {
+              enable: true,
+              speed: 0.4,
+              direction: "none",
+              outModes: { default: "out" },
+            },
+            rotate: {
+              value: { min: 0, max: 360 },
+              direction: "random",
+              animation: {
+                enable: true,
+                speed: 2,
+              },
+            },
+            twinkle: {
+              particles: {
+                enable: true,
+                frequency: 0.08,
+                color: { value: "#fda4af" },
+                opacity: { value: 0.6 },
+              },
+            },
+          },
+          detectRetina: true,
+        }}
+      />
 
       {/* Background gradient overlay */}
       <div
@@ -263,7 +341,7 @@ export function Hero08({ language }: { language: "en" | "ar" }) {
       {testimonials.map((card, i) => (
         <div
           key={i}
-          className={`hero08-card hero08-card-${i % 5} absolute rounded-xl ${
+          className={`hero08-card absolute rounded-xl ${
             card.mobileVisible ? "block" : "hidden lg:block"
           }`}
           style={{
@@ -273,8 +351,6 @@ export function Hero08({ language }: { language: "en" | "ar" }) {
             opacity: card.opacity,
             ["--card-rot" as string]: `${card.rotation}deg`,
             transform: `rotate(${card.rotation}deg)`,
-            animationDuration: `${card.duration}s`,
-            animationDelay: `${card.delay}s`,
             background:
               card.opacity > 0.4
                 ? "rgba(255,255,255,0.08)"
@@ -358,7 +434,6 @@ export function Hero08({ language }: { language: "en" | "ar" }) {
                 fill="#fbbf24"
                 stroke="#fbbf24"
                 strokeWidth={0}
-                style={{ animationDelay: `${0.3 + s * 0.1}s` }}
               />
             ))}
           </div>

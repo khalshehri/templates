@@ -1,6 +1,12 @@
 "use client";
 
+import { useRef, useCallback, useState } from "react";
 import { Search, PenTool, Code2, Rocket, ArrowRight } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { type Engine } from "@tsparticles/engine";
 
 const content = {
   en: {
@@ -100,547 +106,601 @@ export function Hero07({ language }: { language: "en" | "ar" }) {
   const t = content[language];
   const fontHeading = isAr ? "var(--font-changa)" : "var(--font-inter)";
   const fontBody = isAr ? "var(--font-tajawal)" : "var(--font-inter)";
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [particlesReady, setParticlesReady] = useState(false);
+
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+    setParticlesReady(true);
+  }, []);
+
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      // Content fade in
+      gsap.from(".hero07-content", {
+        y: 20,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power2.out",
+        delay: 0.1,
+      });
+
+      // Cards slide up with stagger
+      gsap.from(".hero07-card", {
+        y: 30,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        stagger: 0.2,
+        delay: 0.2,
+      });
+
+      // Number reveals with stagger
+      gsap.from(".hero07-number", {
+        scale: 0.5,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.out",
+        stagger: 0.2,
+        delay: 0.4,
+      });
+
+      // Horizontal connector lines grow
+      const linesH = containerRef.current?.querySelectorAll(".hero07-line-h");
+      if (linesH) {
+        gsap.from(linesH, {
+          scaleX: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          stagger: 0.2,
+          delay: 0.6,
+          transformOrigin: isAr ? "right center" : "left center",
+        });
+      }
+
+      // Vertical connector lines grow
+      gsap.from(".hero07-line-v", {
+        scaleY: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        stagger: 0.2,
+        delay: 0.6,
+        transformOrigin: "top center",
+      });
+
+      // Traveling dots - horizontal
+      const dotsH = containerRef.current?.querySelectorAll(".hero07-dot-h");
+      if (dotsH) {
+        dotsH.forEach((dot, i) => {
+          const xVal = isAr ? "-100%" : "100%";
+          gsap.fromTo(
+            dot,
+            { x: "0%" },
+            {
+              x: xVal,
+              duration: 2,
+              ease: "power1.inOut",
+              repeat: -1,
+              delay: 1.0 + i * 0.4,
+            }
+          );
+        });
+      }
+
+      // Traveling dots - vertical
+      const dotsV = containerRef.current?.querySelectorAll(".hero07-dot-v");
+      if (dotsV) {
+        dotsV.forEach((dot, i) => {
+          gsap.fromTo(
+            dot,
+            { y: "0%" },
+            {
+              y: "100%",
+              duration: 2,
+              ease: "power1.inOut",
+              repeat: -1,
+              delay: 1.0 + i * 0.4,
+            }
+          );
+        });
+      }
+
+      // Bottom section fade
+      gsap.from(".hero07-bottom", {
+        y: 20,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power2.out",
+        delay: 1.2,
+      });
+    },
+    { scope: containerRef }
+  );
 
   return (
-    <>
-      <style>{`
-        @keyframes cardSlideUp {
-          from { transform: translateY(30px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes travelDot {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(100%); }
-        }
-        @keyframes travelDotRtl {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-100%); }
-        }
-        @keyframes travelDotVertical {
-          0% { transform: translateY(0); }
-          100% { transform: translateY(100%); }
-        }
-        @keyframes numberReveal {
-          from { transform: scale(0.5); opacity: 0; }
-          to { transform: scale(1); opacity: 1; }
-        }
-        @keyframes lineGrow {
-          from { transform: scaleX(0); }
-          to { transform: scaleX(1); }
-        }
-        @keyframes lineGrowVertical {
-          from { transform: scaleY(0); }
-          to { transform: scaleY(1); }
-        }
-        @keyframes contentFade {
-          from { transform: translateY(20px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-
-        .hero07-card { animation: cardSlideUp 0.6s ease-out both; }
-        .hero07-card-0 { animation-delay: 0.2s; }
-        .hero07-card-1 { animation-delay: 0.4s; }
-        .hero07-card-2 { animation-delay: 0.6s; }
-        .hero07-card-3 { animation-delay: 0.8s; }
-
-        .hero07-number { animation: numberReveal 0.5s ease-out both; }
-        .hero07-number-0 { animation-delay: 0.4s; }
-        .hero07-number-1 { animation-delay: 0.6s; }
-        .hero07-number-2 { animation-delay: 0.8s; }
-        .hero07-number-3 { animation-delay: 1.0s; }
-
-        .hero07-line { animation: lineGrow 0.6s ease-out both; transform-origin: left center; }
-        .hero07-line-rtl { animation: lineGrow 0.6s ease-out both; transform-origin: right center; }
-        .hero07-line-0 { animation-delay: 0.6s; }
-        .hero07-line-1 { animation-delay: 0.8s; }
-        .hero07-line-2 { animation-delay: 1.0s; }
-
-        .hero07-line-v { animation: lineGrowVertical 0.6s ease-out both; transform-origin: top center; }
-        .hero07-line-v-0 { animation-delay: 0.6s; }
-        .hero07-line-v-1 { animation-delay: 0.8s; }
-        .hero07-line-v-2 { animation-delay: 1.0s; }
-
-        .hero07-dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: #f43f5e;
-          position: absolute;
-          top: 50%;
-          margin-top: -4px;
-          box-shadow: 0 0 8px #f43f5e88;
-        }
-        .hero07-dot-ltr {
-          left: 0;
-          animation: travelDot 2s ease-in-out infinite;
-        }
-        .hero07-dot-rtl {
-          right: 0;
-          animation: travelDotRtl 2s ease-in-out infinite;
-        }
-        .hero07-dot-0 { animation-delay: 1.0s; }
-        .hero07-dot-1 { animation-delay: 1.4s; }
-        .hero07-dot-2 { animation-delay: 1.8s; }
-
-        .hero07-dot-v {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: #f43f5e;
-          position: absolute;
-          left: 50%;
-          margin-left: -4px;
-          top: 0;
-          box-shadow: 0 0 8px #f43f5e88;
-          animation: travelDotVertical 2s ease-in-out infinite;
-        }
-        .hero07-dot-v-0 { animation-delay: 1.0s; }
-        .hero07-dot-v-1 { animation-delay: 1.4s; }
-        .hero07-dot-v-2 { animation-delay: 1.8s; }
-
-        .hero07-content { animation: contentFade 0.7s ease-out 0.1s both; }
-        .hero07-bottom { animation: contentFade 0.7s ease-out 1.2s both; }
-
-        @media (prefers-reduced-motion: reduce) {
-          .hero07-card,
-          .hero07-number,
-          .hero07-line,
-          .hero07-line-rtl,
-          .hero07-line-v,
-          .hero07-content,
-          .hero07-bottom {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-          }
-          .hero07-dot,
-          .hero07-dot-ltr,
-          .hero07-dot-rtl,
-          .hero07-dot-v {
-            animation: none !important;
-            display: none !important;
-          }
-        }
-      `}</style>
-
-      <section
+    <section
+      ref={containerRef}
+      style={{
+        background: "#09090b",
+        fontFamily: fontBody,
+      }}
+      className="min-h-screen relative overflow-hidden"
+      dir={isAr ? "rtl" : "ltr"}
+    >
+      {/* Particles background */}
+      <Particles
+        id="hero07-particles"
+        init={particlesInit}
         style={{
-          background: "#09090b",
-          fontFamily: fontBody,
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 0,
+          pointerEvents: "none",
         }}
-        className="min-h-screen relative overflow-hidden"
-        dir={isAr ? "rtl" : "ltr"}
-      >
-        {/* Subtle grid background */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-          }}
-        />
+        options={{
+          fullScreen: { enable: false },
+          fpsLimit: 60,
+          particles: {
+            number: { value: 35, density: { enable: true } },
+            color: { value: ["#6366f1", "#818cf8", "#4f46e5"] },
+            shape: { type: "square" },
+            opacity: {
+              value: { min: 0.1, max: 0.3 },
+            },
+            size: {
+              value: { min: 3, max: 8 },
+            },
+            move: {
+              enable: true,
+              speed: 0.6,
+              direction: "none",
+              outModes: { default: "out" },
+            },
+            rotate: {
+              value: { min: 0, max: 360 },
+              direction: "clockwise",
+              animation: {
+                enable: true,
+                speed: 3,
+              },
+            },
+          },
+          detectRetina: true,
+        }}
+      />
 
-        <div className="relative z-10 max-w-6xl mx-auto px-6 py-24 lg:py-32">
-          {/* Top Section */}
-          <div className="text-center hero07-content">
-            {/* Badge */}
-            <div className="inline-flex items-center mb-6">
-              <span
-                style={{
-                  background: "rgba(244, 63, 94, 0.1)",
-                  border: "1px solid rgba(244, 63, 94, 0.2)",
-                  color: "#f43f5e",
-                  fontFamily: fontBody,
-                }}
-                className="px-4 py-1.5 rounded-full text-sm font-medium"
-              >
-                {t.badge}
-              </span>
-            </div>
+      {/* Subtle grid background */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+          pointerEvents: "none",
+        }}
+      />
 
-            {/* Heading */}
-            <h1
-              style={{ fontFamily: fontHeading }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-2 leading-tight"
-            >
-              {t.headingLine1}
-            </h1>
-            <h1
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-24 lg:py-32">
+        {/* Top Section */}
+        <div className="text-center hero07-content">
+          {/* Badge */}
+          <div className="inline-flex items-center mb-6">
+            <span
               style={{
-                fontFamily: fontHeading,
-                backgroundImage: "linear-gradient(135deg, #f43f5e, #f97316)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
+                background: "rgba(244, 63, 94, 0.1)",
+                border: "1px solid rgba(244, 63, 94, 0.2)",
+                color: "#f43f5e",
+                fontFamily: fontBody,
               }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-5 leading-tight"
+              className="px-4 py-1.5 rounded-full text-sm font-medium"
             >
-              {t.headingLine2}
-            </h1>
-
-            {/* Subtitle */}
-            <p
-              style={{ color: "#a1a1aa", fontFamily: fontBody }}
-              className="text-lg max-w-xl mx-auto mb-3"
-            >
-              {t.sub}
-            </p>
-            <p
-              style={{ color: "#52525b", fontFamily: fontBody }}
-              className="text-sm mb-16"
-            >
-              {t.framework}
-            </p>
+              {t.badge}
+            </span>
           </div>
 
-          {/* Process Steps */}
-          {/* Desktop: horizontal */}
-          <div className="hidden lg:flex items-start justify-center gap-0 mb-20">
-            {t.steps.map((step, i) => {
-              const Icon = icons[i];
-              return (
-                <div key={i} className="flex items-start">
-                  {/* Card */}
+          {/* Heading */}
+          <h1
+            style={{ fontFamily: fontHeading }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-2 leading-tight"
+          >
+            {t.headingLine1}
+          </h1>
+          <h1
+            style={{
+              fontFamily: fontHeading,
+              backgroundImage: "linear-gradient(135deg, #f43f5e, #f97316)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-5 leading-tight"
+          >
+            {t.headingLine2}
+          </h1>
+
+          {/* Subtitle */}
+          <p
+            style={{ color: "#a1a1aa", fontFamily: fontBody }}
+            className="text-lg max-w-xl mx-auto mb-3"
+          >
+            {t.sub}
+          </p>
+          <p
+            style={{ color: "#52525b", fontFamily: fontBody }}
+            className="text-sm mb-16"
+          >
+            {t.framework}
+          </p>
+        </div>
+
+        {/* Process Steps */}
+        {/* Desktop: horizontal */}
+        <div className="hidden lg:flex items-start justify-center gap-0 mb-20">
+          {t.steps.map((step, i) => {
+            const Icon = icons[i];
+            return (
+              <div key={i} className="flex items-start">
+                {/* Card */}
+                <div
+                  className="hero07-card"
+                  style={{
+                    width: 250,
+                    background: "#18181b",
+                    border: "1px solid #27272a",
+                    borderRadius: 16,
+                    padding: 24,
+                  }}
+                >
+                  {/* Step number */}
                   <div
-                    className={`hero07-card hero07-card-${i}`}
+                    className="hero07-number"
                     style={{
-                      width: 250,
-                      background: "#18181b",
-                      border: "1px solid #27272a",
-                      borderRadius: 16,
-                      padding: 24,
-                      opacity: 0,
+                      fontFamily: fontHeading,
+                      fontSize: 36,
+                      fontWeight: 800,
+                      backgroundImage:
+                        "linear-gradient(135deg, #f43f5e, #f97316)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                      lineHeight: 1,
+                      marginBottom: 16,
                     }}
                   >
-                    {/* Step number */}
-                    <div
-                      className={`hero07-number hero07-number-${i}`}
-                      style={{
-                        fontFamily: fontHeading,
-                        fontSize: 36,
-                        fontWeight: 800,
-                        backgroundImage:
-                          "linear-gradient(135deg, #f43f5e, #f97316)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
-                        lineHeight: 1,
-                        marginBottom: 16,
-                        opacity: 0,
-                      }}
-                    >
-                      {step.number}
-                    </div>
-
-                    {/* Icon */}
-                    <div
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 10,
-                        background: "rgba(244, 63, 94, 0.1)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginBottom: 16,
-                      }}
-                    >
-                      <Icon size={22} color="#f43f5e" />
-                    </div>
-
-                    {/* Title */}
-                    <h3
-                      style={{
-                        fontFamily: fontHeading,
-                        color: "#ffffff",
-                        fontSize: 18,
-                        fontWeight: 700,
-                        marginBottom: 8,
-                      }}
-                    >
-                      {step.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p
-                      style={{
-                        fontFamily: fontBody,
-                        color: "#a1a1aa",
-                        fontSize: 14,
-                        lineHeight: 1.6,
-                        marginBottom: 16,
-                      }}
-                    >
-                      {step.description}
-                    </p>
-
-                    {/* Time tag */}
-                    <span
-                      style={{
-                        display: "inline-block",
-                        background: "rgba(244, 63, 94, 0.08)",
-                        color: "#f43f5e",
-                        fontSize: 12,
-                        fontFamily: fontBody,
-                        padding: "4px 10px",
-                        borderRadius: 6,
-                      }}
-                    >
-                      {step.time}
-                    </span>
+                    {step.number}
                   </div>
 
-                  {/* Connector line (between cards, not after last) */}
-                  {i < 3 && (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        alignSelf: "center",
-                        width: 48,
-                        position: "relative",
-                        height: 2,
-                        marginTop: 80,
-                      }}
-                    >
-                      <div
-                        className={`${isAr ? "hero07-line-rtl" : "hero07-line"} hero07-line-${i}`}
-                        style={{
-                          width: "100%",
-                          height: 2,
-                          borderTop: "2px dashed #3f3f46",
-                          position: "relative",
-                          overflow: "hidden",
-                        }}
-                      >
-                        <div
-                          className={`hero07-dot ${isAr ? "hero07-dot-rtl" : "hero07-dot-ltr"} hero07-dot-${i}`}
-                        />
-                      </div>
-                    </div>
-                  )}
+                  {/* Icon */}
+                  <div
+                    style={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: 10,
+                      background: "rgba(244, 63, 94, 0.1)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginBottom: 16,
+                    }}
+                  >
+                    <Icon size={22} color="#f43f5e" />
+                  </div>
+
+                  {/* Title */}
+                  <h3
+                    style={{
+                      fontFamily: fontHeading,
+                      color: "#ffffff",
+                      fontSize: 18,
+                      fontWeight: 700,
+                      marginBottom: 8,
+                    }}
+                  >
+                    {step.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p
+                    style={{
+                      fontFamily: fontBody,
+                      color: "#a1a1aa",
+                      fontSize: 14,
+                      lineHeight: 1.6,
+                      marginBottom: 16,
+                    }}
+                  >
+                    {step.description}
+                  </p>
+
+                  {/* Time tag */}
+                  <span
+                    style={{
+                      display: "inline-block",
+                      background: "rgba(244, 63, 94, 0.08)",
+                      color: "#f43f5e",
+                      fontSize: 12,
+                      fontFamily: fontBody,
+                      padding: "4px 10px",
+                      borderRadius: 6,
+                    }}
+                  >
+                    {step.time}
+                  </span>
                 </div>
-              );
-            })}
-          </div>
 
-          {/* Mobile: vertical */}
-          <div className="flex lg:hidden flex-col items-center gap-0 mb-16">
-            {t.steps.map((step, i) => {
-              const Icon = icons[i];
-              return (
-                <div key={i} className="flex flex-col items-center">
-                  {/* Card */}
+                {/* Connector line (between cards, not after last) */}
+                {i < 3 && (
                   <div
-                    className={`hero07-card hero07-card-${i}`}
                     style={{
-                      width: "100%",
-                      maxWidth: 320,
-                      background: "#18181b",
-                      border: "1px solid #27272a",
-                      borderRadius: 16,
-                      padding: 24,
-                      opacity: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      alignSelf: "center",
+                      width: 48,
+                      position: "relative",
+                      height: 2,
+                      marginTop: 80,
                     }}
                   >
-                    <div className="flex items-start gap-4">
-                      <div>
-                        {/* Step number */}
-                        <div
-                          className={`hero07-number hero07-number-${i}`}
-                          style={{
-                            fontFamily: fontHeading,
-                            fontSize: 32,
-                            fontWeight: 800,
-                            backgroundImage:
-                              "linear-gradient(135deg, #f43f5e, #f97316)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                            backgroundClip: "text",
-                            lineHeight: 1,
-                            marginBottom: 12,
-                            opacity: 0,
-                          }}
-                        >
-                          {step.number}
-                        </div>
-
-                        {/* Icon */}
-                        <div
-                          style={{
-                            width: 40,
-                            height: 40,
-                            borderRadius: 10,
-                            background: "rgba(244, 63, 94, 0.1)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            marginBottom: 12,
-                          }}
-                        >
-                          <Icon size={20} color="#f43f5e" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <h3
-                      style={{
-                        fontFamily: fontHeading,
-                        color: "#ffffff",
-                        fontSize: 17,
-                        fontWeight: 700,
-                        marginBottom: 6,
-                      }}
-                    >
-                      {step.title}
-                    </h3>
-
-                    <p
-                      style={{
-                        fontFamily: fontBody,
-                        color: "#a1a1aa",
-                        fontSize: 14,
-                        lineHeight: 1.6,
-                        marginBottom: 14,
-                      }}
-                    >
-                      {step.description}
-                    </p>
-
-                    <span
-                      style={{
-                        display: "inline-block",
-                        background: "rgba(244, 63, 94, 0.08)",
-                        color: "#f43f5e",
-                        fontSize: 12,
-                        fontFamily: fontBody,
-                        padding: "4px 10px",
-                        borderRadius: 6,
-                      }}
-                    >
-                      {step.time}
-                    </span>
-                  </div>
-
-                  {/* Vertical connector */}
-                  {i < 3 && (
                     <div
+                      className="hero07-line-h"
                       style={{
-                        width: 2,
-                        height: 40,
+                        width: "100%",
+                        height: 2,
+                        borderTop: "2px dashed #3f3f46",
                         position: "relative",
                         overflow: "hidden",
                       }}
                     >
                       <div
-                        className={`hero07-line-v hero07-line-v-${i}`}
+                        className="hero07-dot-h"
                         style={{
-                          width: 2,
-                          height: "100%",
-                          borderLeft: "2px dashed #3f3f46",
-                          position: "relative",
+                          width: 8,
+                          height: 8,
+                          borderRadius: "50%",
+                          background: "#f43f5e",
+                          position: "absolute",
+                          top: "50%",
+                          marginTop: -4,
+                          boxShadow: "0 0 8px #f43f5e88",
+                          [isAr ? "right" : "left"]: 0,
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Mobile: vertical */}
+        <div className="flex lg:hidden flex-col items-center gap-0 mb-16">
+          {t.steps.map((step, i) => {
+            const Icon = icons[i];
+            return (
+              <div key={i} className="flex flex-col items-center">
+                {/* Card */}
+                <div
+                  className="hero07-card"
+                  style={{
+                    width: "100%",
+                    maxWidth: 320,
+                    background: "#18181b",
+                    border: "1px solid #27272a",
+                    borderRadius: 16,
+                    padding: 24,
+                  }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div>
+                      {/* Step number */}
+                      <div
+                        className="hero07-number"
+                        style={{
+                          fontFamily: fontHeading,
+                          fontSize: 32,
+                          fontWeight: 800,
+                          backgroundImage:
+                            "linear-gradient(135deg, #f43f5e, #f97316)",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                          backgroundClip: "text",
+                          lineHeight: 1,
+                          marginBottom: 12,
                         }}
                       >
-                        <div
-                          className={`hero07-dot-v hero07-dot-v-${i}`}
-                        />
+                        {step.number}
+                      </div>
+
+                      {/* Icon */}
+                      <div
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 10,
+                          background: "rgba(244, 63, 94, 0.1)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginBottom: 12,
+                        }}
+                      >
+                        <Icon size={20} color="#f43f5e" />
                       </div>
                     </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                  </div>
 
-          {/* Bottom Section */}
-          <div className="hero07-bottom text-center" style={{ opacity: 0 }}>
-            {/* CTAs */}
-            <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
-              <button
-                className="cursor-pointer"
-                style={{
-                  background: "linear-gradient(135deg, #f43f5e, #f97316)",
-                  color: "#ffffff",
-                  fontFamily: fontHeading,
-                  fontWeight: 600,
-                  fontSize: 15,
-                  padding: "12px 28px",
-                  borderRadius: 12,
-                  border: "none",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  transition: "opacity 0.3s",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.opacity = "0.9")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.opacity = "1")
-                }
-              >
-                {t.cta1}
-                <ArrowRight size={16} />
-              </button>
-              <button
-                className="cursor-pointer"
-                style={{
-                  background: "transparent",
-                  color: "#a1a1aa",
-                  fontFamily: fontHeading,
-                  fontWeight: 600,
-                  fontSize: 15,
-                  padding: "12px 28px",
-                  borderRadius: 12,
-                  border: "1px solid #27272a",
-                  transition: "all 0.3s",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "#3f3f46";
-                  e.currentTarget.style.color = "#ffffff";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "#27272a";
-                  e.currentTarget.style.color = "#a1a1aa";
-                }}
-              >
-                {t.cta2}
-              </button>
-            </div>
-
-            {/* Stats */}
-            <div className="flex items-center justify-center gap-8 sm:gap-12">
-              {t.stats.map((stat, i) => (
-                <div key={i} className="text-center">
-                  <div
+                  <h3
                     style={{
                       fontFamily: fontHeading,
                       color: "#ffffff",
-                      fontSize: 24,
+                      fontSize: 17,
                       fontWeight: 700,
+                      marginBottom: 6,
                     }}
                   >
-                    {stat.value}
-                  </div>
-                  <div
+                    {step.title}
+                  </h3>
+
+                  <p
                     style={{
                       fontFamily: fontBody,
-                      color: "#52525b",
-                      fontSize: 13,
-                      marginTop: 2,
+                      color: "#a1a1aa",
+                      fontSize: 14,
+                      lineHeight: 1.6,
+                      marginBottom: 14,
                     }}
                   >
-                    {stat.label}
-                  </div>
+                    {step.description}
+                  </p>
+
+                  <span
+                    style={{
+                      display: "inline-block",
+                      background: "rgba(244, 63, 94, 0.08)",
+                      color: "#f43f5e",
+                      fontSize: 12,
+                      fontFamily: fontBody,
+                      padding: "4px 10px",
+                      borderRadius: 6,
+                    }}
+                  >
+                    {step.time}
+                  </span>
                 </div>
-              ))}
-            </div>
+
+                {/* Vertical connector */}
+                {i < 3 && (
+                  <div
+                    style={{
+                      width: 2,
+                      height: 40,
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div
+                      className="hero07-line-v"
+                      style={{
+                        width: 2,
+                        height: "100%",
+                        borderLeft: "2px dashed #3f3f46",
+                        position: "relative",
+                      }}
+                    >
+                      <div
+                        className="hero07-dot-v"
+                        style={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: "50%",
+                          background: "#f43f5e",
+                          position: "absolute",
+                          left: "50%",
+                          marginLeft: -4,
+                          top: 0,
+                          boxShadow: "0 0 8px #f43f5e88",
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom Section */}
+        <div className="hero07-bottom text-center">
+          {/* CTAs */}
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
+            <button
+              className="cursor-pointer"
+              style={{
+                background: "linear-gradient(135deg, #f43f5e, #f97316)",
+                color: "#ffffff",
+                fontFamily: fontHeading,
+                fontWeight: 600,
+                fontSize: 15,
+                padding: "12px 28px",
+                borderRadius: 12,
+                border: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                transition: "opacity 0.3s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.opacity = "0.9")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.opacity = "1")
+              }
+            >
+              {t.cta1}
+              <ArrowRight size={16} />
+            </button>
+            <button
+              className="cursor-pointer"
+              style={{
+                background: "transparent",
+                color: "#a1a1aa",
+                fontFamily: fontHeading,
+                fontWeight: 600,
+                fontSize: 15,
+                padding: "12px 28px",
+                borderRadius: 12,
+                border: "1px solid #27272a",
+                transition: "all 0.3s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#3f3f46";
+                e.currentTarget.style.color = "#ffffff";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#27272a";
+                e.currentTarget.style.color = "#a1a1aa";
+              }}
+            >
+              {t.cta2}
+            </button>
+          </div>
+
+          {/* Stats */}
+          <div className="flex items-center justify-center gap-8 sm:gap-12">
+            {t.stats.map((stat, i) => (
+              <div key={i} className="text-center">
+                <div
+                  style={{
+                    fontFamily: fontHeading,
+                    color: "#ffffff",
+                    fontSize: 24,
+                    fontWeight: 700,
+                  }}
+                >
+                  {stat.value}
+                </div>
+                <div
+                  style={{
+                    fontFamily: fontBody,
+                    color: "#52525b",
+                    fontSize: 13,
+                    marginTop: 2,
+                  }}
+                >
+                  {stat.label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

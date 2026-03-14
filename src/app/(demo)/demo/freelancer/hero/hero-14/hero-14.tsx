@@ -1,6 +1,12 @@
 "use client";
 
+import { useRef, useCallback, useState } from "react";
 import { ArrowRight, Newspaper } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { type Engine } from "@tsparticles/engine";
 
 const content = {
   en: {
@@ -62,10 +68,88 @@ export function Hero14({ language }: { language: "en" | "ar" }) {
   const isAr = language === "ar";
   const fontHeading = isAr ? "var(--font-changa)" : "var(--font-inter)";
   const fontBody = isAr ? "var(--font-tajawal)" : "var(--font-inter)";
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const [particlesReady, setParticlesReady] = useState(false);
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+    setParticlesReady(true);
+  }, []);
+
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      // Unfold animation for the main wrapper
+      gsap.from(".hero14-unfold", {
+        scaleY: 0.5,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        transformOrigin: "top center",
+      });
+
+      // Print press shake on masthead
+      const tl = gsap.timeline({ delay: 0.2 });
+      tl.to(".hero14-print", { y: -2, duration: 0.06, ease: "power1.out" })
+        .to(".hero14-print", { y: 1, duration: 0.06, ease: "power1.out" })
+        .to(".hero14-print", { y: -1, duration: 0.06, ease: "power1.out" })
+        .to(".hero14-print", { y: 0.5, duration: 0.06, ease: "power1.out" })
+        .to(".hero14-print", { y: 0, duration: 0.06, ease: "power1.out" });
+
+      // Headline reveal with clip-path
+      const clipFrom = isAr ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)";
+      gsap.fromTo(
+        ".hero14-headline-reveal",
+        { clipPath: clipFrom },
+        {
+          clipPath: "inset(0 0 0 0)",
+          duration: 1,
+          ease: "power3.out",
+          delay: 0.4,
+        }
+      );
+
+      // Staggered fade-in for content sections
+      gsap.from(".hero14-fade-1", {
+        y: 12,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        delay: 0.6,
+      });
+
+      gsap.from(".hero14-fade-2", {
+        y: 12,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        delay: 0.8,
+      });
+
+      gsap.from(".hero14-fade-3", {
+        y: 12,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        delay: 1.0,
+      });
+
+      gsap.from(".hero14-fade-4", {
+        y: 12,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        delay: 1.2,
+      });
+    },
+    { scope: containerRef }
+  );
 
   return (
     <section
-      className="min-h-screen"
+      ref={containerRef}
+      className="relative min-h-screen"
       dir={isAr ? "rtl" : "ltr"}
       style={{
         background: "#f5f0e6",
@@ -73,89 +157,40 @@ export function Hero14({ language }: { language: "en" | "ar" }) {
         fontFamily: fontBody,
       }}
     >
+      {/* Particles background */}
+      <Particles
+        id="hero14-particles"
+        className="absolute inset-0 pointer-events-none"
+        style={{ position: "absolute", zIndex: 0 }}
+        init={particlesInit}
+        options={{
+          fullScreen: { enable: false },
+          fpsLimit: 60,
+          particles: {
+            number: { value: 30, density: { enable: true } },
+            color: { value: ["#1a1a1a", "#2a2a2a", "#444444", "#666666"] },
+            shape: { type: "circle" },
+            opacity: {
+              value: { min: 0.03, max: 0.1 },
+              animation: { enable: true, speed: 0.3, sync: false },
+            },
+            size: {
+              value: { min: 1, max: 3 },
+              animation: { enable: true, speed: 0.5, sync: false },
+            },
+            move: {
+              enable: true,
+              speed: 0.2,
+              direction: "none" as const,
+              outModes: { default: "out" as const },
+              drift: 0.1,
+            },
+          },
+          detectRetina: true,
+        }}
+      />
+
       <style>{`
-        @keyframes unfold {
-          0% {
-            transform: scaleY(0.5);
-            opacity: 0;
-          }
-          100% {
-            transform: scaleY(1);
-            opacity: 1;
-          }
-        }
-
-        @keyframes headlineReveal {
-          0% {
-            clip-path: inset(0 100% 0 0);
-          }
-          100% {
-            clip-path: inset(0 0 0 0);
-          }
-        }
-
-        [dir="rtl"] .hero14-headline-reveal {
-          animation-name: headlineRevealRtl;
-        }
-
-        @keyframes headlineRevealRtl {
-          0% {
-            clip-path: inset(0 0 0 100%);
-          }
-          100% {
-            clip-path: inset(0 0 0 0);
-          }
-        }
-
-        @keyframes fadeIn {
-          0% {
-            opacity: 0;
-            transform: translateY(12px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes printPress {
-          0% { transform: translateY(0); }
-          20% { transform: translateY(-2px); }
-          40% { transform: translateY(1px); }
-          60% { transform: translateY(-1px); }
-          80% { transform: translateY(0.5px); }
-          100% { transform: translateY(0); }
-        }
-
-        .hero14-unfold {
-          animation: unfold 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-          transform-origin: top center;
-        }
-
-        .hero14-headline-reveal {
-          animation: headlineReveal 1s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
-        }
-
-        .hero14-fade-1 {
-          animation: fadeIn 0.6s ease-out 0.6s both;
-        }
-
-        .hero14-fade-2 {
-          animation: fadeIn 0.6s ease-out 0.8s both;
-        }
-
-        .hero14-fade-3 {
-          animation: fadeIn 0.6s ease-out 1.0s both;
-        }
-
-        .hero14-fade-4 {
-          animation: fadeIn 0.6s ease-out 1.2s both;
-        }
-
-        .hero14-print {
-          animation: printPress 0.3s ease-out 0.2s both;
-        }
-
         .hero14-cta:hover {
           background: #1a1a1a !important;
           color: #f5f0e6 !important;
@@ -165,29 +200,15 @@ export function Hero14({ language }: { language: "en" | "ar" }) {
           background: #2a2a2a !important;
           color: #f5f0e6 !important;
         }
-
-        @media (prefers-reduced-motion: reduce) {
-          .hero14-unfold,
-          .hero14-headline-reveal,
-          .hero14-fade-1,
-          .hero14-fade-2,
-          .hero14-fade-3,
-          .hero14-fade-4,
-          .hero14-print {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-            clip-path: none !important;
-          }
-        }
       `}</style>
 
       <div
-        className="hero14-unfold"
+        className="hero14-unfold relative"
         style={{
           maxWidth: "1000px",
           margin: "0 auto",
           padding: "40px 24px 32px",
+          zIndex: 1,
         }}
       >
         {/* === MASTHEAD === */}

@@ -1,6 +1,12 @@
 "use client";
 
+import { useRef, useCallback, useState } from "react";
 import { ArrowRight, Gamepad2, Trophy, Swords, Heart, Shield } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { type Engine } from "@tsparticles/engine";
 
 const content = {
   en: {
@@ -102,9 +108,104 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
   const fontHeading = isAr ? "var(--font-changa)" : "var(--font-inter)";
   const fontBody = isAr ? "var(--font-tajawal)" : "var(--font-inter)";
   const dir = isAr ? "rtl" : "ltr";
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [particlesReady, setParticlesReady] = useState(false);
+
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+    setParticlesReady(true);
+  }, []);
+
+  useGSAP(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    // XP bar fill
+    gsap.fromTo(".retro-xp-bar",
+      { width: "0%" },
+      { width: "75%", duration: 1.5, ease: "power2.out" }
+    );
+
+    // Stat bars fill with stagger
+    const statValues = [85, 75, 80, 65, 95];
+    statValues.forEach((val, i) => {
+      gsap.fromTo(`.retro-stat-bar-${i}`,
+        { width: "0%" },
+        { width: `${val}%`, duration: 1, ease: "power2.out", delay: 0.8 + i * 0.2 }
+      );
+    });
+
+    // Insert coin blink
+    gsap.to(".retro-insert-coin", {
+      opacity: 0,
+      duration: 0.6,
+      repeat: -1,
+      yoyo: true,
+      ease: "steps(1)",
+    });
+
+    // Achievement pop-in
+    gsap.from(".retro-achievement", {
+      scale: 0,
+      opacity: 0,
+      duration: 0.6,
+      ease: "back.out(1.4)",
+      stagger: 0.15,
+      delay: 1.5,
+    });
+
+    // Scanline sweep
+    gsap.fromTo(".retro-scanline",
+      { top: "-4px" },
+      { top: "100%", duration: 4, repeat: -1, ease: "none" }
+    );
+
+    // Pixel fade-in for sections
+    gsap.from(".retro-pixel-fade-section", {
+      opacity: 0,
+      duration: 0.01,
+      stagger: 0.3,
+      ease: "steps(1)",
+    });
+
+    // Pixel art character cells fade
+    gsap.from(".retro-pixel-cell", {
+      opacity: 0,
+      duration: 0.01,
+      stagger: 0.02,
+      delay: 0.5,
+      ease: "steps(1)",
+    });
+
+    // Stats title fade
+    gsap.from(".retro-stats-title", {
+      opacity: 0,
+      duration: 0.01,
+      delay: 0.6,
+      ease: "steps(1)",
+    });
+
+    // Bottom section fade
+    gsap.from(".retro-bottom-section", {
+      opacity: 0,
+      duration: 0.01,
+      delay: 2,
+      ease: "steps(1)",
+    });
+
+    // Glow pulse on achievements
+    gsap.to(".retro-glow", {
+      boxShadow: "0 0 20px rgba(0, 255, 65, 0.6)",
+      duration: 1,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      stagger: 0.5,
+    });
+  }, { scope: containerRef });
 
   return (
     <section
+      ref={containerRef}
       dir={dir}
       className="min-h-screen relative overflow-hidden"
       style={{
@@ -112,87 +213,45 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
         fontFamily: fontBody,
       }}
     >
-      <style>{`
-        @keyframes xpFill {
-          from { width: 0%; }
-          to { width: 75%; }
-        }
-        @keyframes statBar0 {
-          from { width: 0%; }
-          to { width: 85%; }
-        }
-        @keyframes statBar1 {
-          from { width: 0%; }
-          to { width: 75%; }
-        }
-        @keyframes statBar2 {
-          from { width: 0%; }
-          to { width: 80%; }
-        }
-        @keyframes statBar3 {
-          from { width: 0%; }
-          to { width: 65%; }
-        }
-        @keyframes statBar4 {
-          from { width: 0%; }
-          to { width: 95%; }
-        }
-        @keyframes insertCoin {
-          0%, 49% { opacity: 1; }
-          50%, 100% { opacity: 0; }
-        }
-        @keyframes achievementPop0 {
-          0% { transform: scale(0); opacity: 0; }
-          70% { transform: scale(1.1); opacity: 1; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes achievementPop1 {
-          0%, 15% { transform: scale(0); opacity: 0; }
-          70% { transform: scale(1.1); opacity: 1; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes achievementPop2 {
-          0%, 30% { transform: scale(0); opacity: 0; }
-          70% { transform: scale(1.1); opacity: 1; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes achievementPop3 {
-          0%, 45% { transform: scale(0); opacity: 0; }
-          70% { transform: scale(1.1); opacity: 1; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes scanline {
-          0% { top: -4px; }
-          100% { top: 100%; }
-        }
-        @keyframes pixelFade {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes glowPulse {
-          0%, 100% { box-shadow: 0 0 8px rgba(0, 255, 65, 0.3); }
-          50% { box-shadow: 0 0 20px rgba(0, 255, 65, 0.6); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .retro-xp-bar,
-          .retro-stat-bar,
-          .retro-insert-coin,
-          .retro-achievement,
-          .retro-scanline,
-          .retro-pixel-fade,
-          .retro-glow {
-            animation: none !important;
-          }
-          .retro-xp-bar { width: 75% !important; }
-          .retro-stat-bar-0 { width: 85% !important; }
-          .retro-stat-bar-1 { width: 75% !important; }
-          .retro-stat-bar-2 { width: 80% !important; }
-          .retro-stat-bar-3 { width: 65% !important; }
-          .retro-stat-bar-4 { width: 95% !important; }
-          .retro-insert-coin { opacity: 1 !important; }
-          .retro-achievement { transform: scale(1) !important; opacity: 1 !important; }
-        }
-      `}</style>
+      {/* Particles Background */}
+      <Particles
+        id="hero20-particles"
+        className="absolute inset-0 z-0"
+        init={particlesInit}
+        options={{
+          fullScreen: { enable: false },
+          fpsLimit: 60,
+          particles: {
+            number: { value: 40, density: { enable: true, width: 1920, height: 1080 } },
+            color: {
+              value: ["#00ff41", "#f59e0b"],
+            },
+            shape: { type: "square" },
+            opacity: {
+              value: { min: 0.15, max: 0.5 },
+              animation: { enable: true, speed: 0.5, sync: false },
+            },
+            size: {
+              value: { min: 2, max: 6 },
+              animation: { enable: true, speed: 1, sync: false },
+            },
+            move: {
+              enable: true,
+              speed: 0.5,
+              direction: "none" as const,
+              outModes: { default: "out" as const },
+              straight: true,
+              gravity: { enable: false },
+            },
+            wobble: {
+              enable: true,
+              distance: 3,
+              speed: 2,
+            },
+          },
+          detectRetina: true,
+        }}
+      />
 
       {/* Pixel Grid Background */}
       <div
@@ -201,6 +260,7 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
           backgroundImage:
             "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
           backgroundSize: "24px 24px",
+          zIndex: 1,
         }}
       />
 
@@ -213,7 +273,6 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
           height: "4px",
           background:
             "linear-gradient(180deg, transparent, rgba(0,255,65,0.06), transparent)",
-          animation: "scanline 4s linear infinite",
           zIndex: 1,
         }}
       />
@@ -221,7 +280,7 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-8">
         {/* ===== TOP HUD BAR ===== */}
         <div
-          className="retro-pixel-fade"
+          className="retro-pixel-fade-section"
           style={{
             border: "2px solid #00ff41",
             background: "rgba(22, 33, 62, 0.8)",
@@ -233,7 +292,6 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
             gap: "12px",
             boxShadow:
               "4px 0 0 #00ff41, -4px 0 0 #00ff41, 0 4px 0 #00ff41, 0 -4px 0 #00ff41, 0 0 20px rgba(0,255,65,0.15)",
-            animation: "pixelFade 0.6s steps(1) forwards",
             fontFamily: "monospace",
           }}
         >
@@ -309,7 +367,6 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
                   height: "100%",
                   background:
                     "linear-gradient(90deg, #00ff41, #22c55e)",
-                  animation: "xpFill 1.5s ease-out forwards",
                   width: 0,
                 }}
               />
@@ -319,7 +376,7 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
 
         {/* ===== MAIN CONTENT — CHARACTER SELECT ===== */}
         <div
-          className="retro-pixel-fade"
+          className="retro-pixel-fade-section"
           style={{
             marginTop: "24px",
             border: "2px solid #16213e",
@@ -328,7 +385,6 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
             display: "grid",
             gridTemplateColumns: "1fr",
             gap: "32px",
-            animation: "pixelFade 0.6s steps(1) 0.3s both",
           }}
         >
           <div
@@ -373,12 +429,11 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
                   {pixelArt.flat().map((colorKey, i) => (
                     <div
                       key={i}
-                      className="retro-pixel-fade"
+                      className="retro-pixel-cell"
                       style={{
                         width: "18px",
                         height: "18px",
                         background: pixelColors[colorKey],
-                        animation: `pixelFade 0.1s steps(1) ${0.5 + i * 0.02}s both`,
                       }}
                     />
                   ))}
@@ -412,7 +467,7 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
             {/* RIGHT — Stats & Skills */}
             <div>
               <h2
-                className="retro-pixel-fade"
+                className="retro-stats-title"
                 style={{
                   fontFamily: fontHeading,
                   color: "#00ff41",
@@ -422,7 +477,6 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
                   marginBottom: "20px",
                   borderBottom: "2px solid #16213e",
                   paddingBottom: "8px",
-                  animation: "pixelFade 0.4s steps(1) 0.6s both",
                 }}
               >
                 {t.statsTitle}
@@ -471,7 +525,6 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
                           height: "100%",
                           background: `linear-gradient(90deg, ${stat.color}, ${stat.color}cc)`,
                           width: 0,
-                          animation: `statBar${i} 1s ease-out ${0.8 + i * 0.2}s forwards`,
                           boxShadow: `0 0 8px ${stat.color}40`,
                         }}
                       />
@@ -504,7 +557,7 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
           {t.achievements.map((ach, i) => (
             <div
               key={i}
-              className={`retro-achievement retro-glow cursor-pointer`}
+              className="retro-achievement retro-glow cursor-pointer"
               style={{
                 border: "2px solid #16213e",
                 background: "rgba(22, 33, 62, 0.6)",
@@ -514,7 +567,7 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
                 alignItems: "center",
                 gap: "8px",
                 textAlign: "center",
-                animation: `achievementPop${i} 0.6s ease-out ${1.5 + i * 0.15}s both, glowPulse 2s ease-in-out ${i * 0.5}s infinite`,
+                boxShadow: "0 0 8px rgba(0, 255, 65, 0.3)",
                 transition: "border-color 0.3s, transform 0.2s",
               }}
               onMouseEnter={(e) => {
@@ -545,11 +598,10 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
 
         {/* ===== BOTTOM — INSERT COIN + CTAs ===== */}
         <div
-          className="retro-pixel-fade"
+          className="retro-bottom-section"
           style={{
             marginTop: "32px",
             textAlign: "center",
-            animation: "pixelFade 0.6s steps(1) 2s both",
           }}
         >
           {/* Insert Coin Blink */}
@@ -561,7 +613,6 @@ export function Hero20({ language }: { language: "en" | "ar" }) {
               fontWeight: 700,
               letterSpacing: "4px",
               fontFamily: "monospace",
-              animation: "insertCoin 1.2s steps(1) infinite",
               marginBottom: "24px",
             }}
           >

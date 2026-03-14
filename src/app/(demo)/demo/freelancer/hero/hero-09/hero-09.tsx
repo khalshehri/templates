@@ -1,6 +1,12 @@
 "use client";
 
+import { useRef, useCallback, useState } from "react";
 import { ArrowRight, CheckCircle2, Clock, PlusCircle, Calendar } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { type Engine } from "@tsparticles/engine";
 
 const content = {
   en: {
@@ -82,9 +88,81 @@ export function Hero09({ language }: { language: "en" | "ar" }) {
   const isAr = language === "ar";
   const fontHeading = isAr ? "var(--font-changa)" : "var(--font-inter)";
   const fontBody = isAr ? "var(--font-tajawal)" : "var(--font-inter)";
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [particlesReady, setParticlesReady] = useState(false);
+
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+    setParticlesReady(true);
+  }, []);
+
+  useGSAP(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const xDir = isAr ? 20 : -20;
+
+    // Columns slide up
+    gsap.from(".hero09-col", {
+      y: 40,
+      opacity: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      stagger: 0.2,
+    });
+
+    // Cards slide in
+    gsap.from(".hero09-card", {
+      x: xDir,
+      opacity: 0,
+      duration: 0.4,
+      ease: "power2.out",
+      stagger: 0.1,
+      delay: 0.3,
+    });
+
+    // Badge dot pulse
+    gsap.to(".hero09-badge-dot", {
+      opacity: 0.7,
+      duration: 1,
+      ease: "sine.inOut",
+      yoyo: true,
+      repeat: -1,
+    });
+
+    // Slot pulse (dashed border cards)
+    gsap.to(".hero09-slot-inner", {
+      borderColor: "rgba(139, 92, 246, 0.7)",
+      duration: 1,
+      ease: "sine.inOut",
+      yoyo: true,
+      repeat: -1,
+    });
+
+    // Progress bars
+    const progressBars = containerRef.current?.querySelectorAll(".hero09-progress");
+    progressBars?.forEach((bar, i) => {
+      const target = (bar as HTMLElement).dataset.targetWidth || "0%";
+      gsap.fromTo(bar, { width: "0%" }, {
+        width: target,
+        duration: 1.5,
+        ease: "power2.out",
+        delay: 0.8 + i * 0.2,
+      });
+    });
+
+    // Glow border on available column
+    gsap.to(".hero09-glow", {
+      boxShadow: "0 0 30px rgba(139, 92, 246, 0.3), inset 0 0 30px rgba(139, 92, 246, 0.1)",
+      duration: 1.5,
+      ease: "sine.inOut",
+      yoyo: true,
+      repeat: -1,
+    });
+  }, { scope: containerRef });
 
   return (
     <section
+      ref={containerRef}
       className="min-h-screen relative overflow-hidden"
       style={{
         background: "#0f0b1e",
@@ -92,42 +170,51 @@ export function Hero09({ language }: { language: "en" | "ar" }) {
         direction: isAr ? "rtl" : "ltr",
       }}
     >
-      <style>{`
-        @keyframes columnSlideUp {
-          from { transform: translateY(40px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes cardSlideIn {
-          from { transform: translateX(${isAr ? "20px" : "-20px"}); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes slotPulse {
-          0%, 100% { border-color: rgba(139, 92, 246, 0.3); }
-          50% { border-color: rgba(139, 92, 246, 0.7); }
-        }
-        @keyframes progressFill {
-          from { width: 0%; }
-          to { width: var(--target-width); }
-        }
-        @keyframes glowBorder {
-          0%, 100% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.15), inset 0 0 15px rgba(139, 92, 246, 0.05); }
-          50% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.3), inset 0 0 30px rgba(139, 92, 246, 0.1); }
-        }
-        @keyframes badgePulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.7; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .hero09-col, .hero09-card, .hero09-slot, .hero09-progress, .hero09-glow, .hero09-badge-dot {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-          }
-          .hero09-progress {
-            width: var(--target-width) !important;
-          }
-        }
-      `}</style>
+      {/* Particles Background */}
+      <Particles
+        id="hero09-particles"
+        init={particlesInit}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+        options={{
+          fullScreen: { enable: false },
+          fpsLimit: 60,
+          particles: {
+            number: { value: 40, density: { enable: true } },
+            color: { value: ["#22c55e", "#84cc16", "#a3e635"] },
+            shape: { type: "circle" },
+            opacity: {
+              value: { min: 0.2, max: 0.5 },
+              animation: { enable: true, speed: 0.8, sync: false },
+            },
+            size: {
+              value: { min: 2, max: 5 },
+              animation: { enable: true, speed: 1.5, sync: false },
+            },
+            move: {
+              enable: true,
+              speed: 0.6,
+              direction: "none",
+              outModes: { default: "out" },
+              path: {
+                enable: true,
+                options: {
+                  waveLength: { min: 3, max: 7 },
+                  waveHeight: { min: 1, max: 3 },
+                },
+              },
+            },
+          },
+          detectRetina: true,
+        }}
+      />
 
       {/* Subtle grid background */}
       <div
@@ -155,7 +242,6 @@ export function Hero09({ language }: { language: "en" | "ar" }) {
                 borderRadius: "50%",
                 background: "#22c55e",
                 display: "inline-block",
-                animation: "badgePulse 2s ease-in-out infinite",
               }}
             />
             <span className="text-sm font-medium" style={{ color: "#c4b5fd", fontFamily: fontBody }}>
@@ -205,7 +291,6 @@ export function Hero09({ language }: { language: "en" | "ar" }) {
               style={{
                 background: "rgba(15, 11, 30, 0.6)",
                 border: "1px solid rgba(34, 197, 94, 0.1)",
-                animation: "columnSlideUp 0.6s ease-out 0.1s both",
               }}
             >
               {/* Column Header */}
@@ -234,7 +319,6 @@ export function Hero09({ language }: { language: "en" | "ar" }) {
                       background: "#221c38",
                       [isAr ? "borderRight" : "borderLeft"]: "3px solid rgba(34, 197, 94, 0.5)",
                       opacity: 0.6,
-                      animation: `cardSlideIn 0.4s ease-out ${0.3 + i * 0.1}s both`,
                     } as React.CSSProperties}
                     onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.85"; e.currentTarget.style.transform = "translateY(-1px)"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.6"; e.currentTarget.style.transform = "translateY(0)"; }}
@@ -261,7 +345,6 @@ export function Hero09({ language }: { language: "en" | "ar" }) {
               style={{
                 background: "rgba(15, 11, 30, 0.6)",
                 border: "1px solid rgba(245, 158, 11, 0.1)",
-                animation: "columnSlideUp 0.6s ease-out 0.3s both",
               }}
             >
               {/* Column Header */}
@@ -289,7 +372,6 @@ export function Hero09({ language }: { language: "en" | "ar" }) {
                     style={{
                       background: "#221c38",
                       [isAr ? "borderRight" : "borderLeft"]: "3px solid rgba(245, 158, 11, 0.5)",
-                      animation: `cardSlideIn 0.4s ease-out ${0.5 + i * 0.1}s both`,
                     } as React.CSSProperties}
                     onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
@@ -309,11 +391,11 @@ export function Hero09({ language }: { language: "en" | "ar" }) {
                     <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: "rgba(245, 158, 11, 0.1)" }}>
                       <div
                         className="hero09-progress h-full rounded-full"
+                        data-target-width={`${card.percent}%`}
                         style={{
-                          "--target-width": `${card.percent}%`,
                           background: "linear-gradient(90deg, #f59e0b, #fbbf24)",
-                          animation: `progressFill 1.5s ease-out ${0.8 + i * 0.2}s both`,
-                        } as React.CSSProperties}
+                          width: "0%",
+                        }}
                       />
                     </div>
                   </div>
@@ -327,7 +409,7 @@ export function Hero09({ language }: { language: "en" | "ar" }) {
               style={{
                 background: "rgba(15, 11, 30, 0.6)",
                 border: "1px solid rgba(139, 92, 246, 0.3)",
-                animation: "columnSlideUp 0.6s ease-out 0.5s both, glowBorder 3s ease-in-out infinite",
+                boxShadow: "0 0 15px rgba(139, 92, 246, 0.15), inset 0 0 15px rgba(139, 92, 246, 0.05)",
               }}
             >
               {/* Column Header */}
@@ -354,17 +436,15 @@ export function Hero09({ language }: { language: "en" | "ar" }) {
                     className="hero09-card hero09-slot rounded-lg p-3 cursor-pointer transition-all duration-200"
                     style={{
                       background: "transparent",
-                      animation: `cardSlideIn 0.4s ease-out ${0.7 + i * 0.1}s both`,
                     }}
                     onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.background = "rgba(139, 92, 246, 0.05)"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.background = "transparent"; }}
                   >
                     <div
-                      className="rounded-lg p-3"
+                      className="hero09-slot-inner rounded-lg p-3"
                       style={{
                         border: "2px dashed rgba(139, 92, 246, 0.3)",
                         [isAr ? "borderRight" : "borderLeft"]: "3px solid rgba(139, 92, 246, 0.6)",
-                        animation: "slotPulse 2s ease-in-out infinite",
                       }}
                     >
                       <div className="flex items-center gap-2 mb-1.5">

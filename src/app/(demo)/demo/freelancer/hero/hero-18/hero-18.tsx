@@ -1,6 +1,12 @@
 "use client";
 
+import { useRef, useCallback, useState } from "react";
 import { ArrowRight, Globe, MapPin } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { type Engine } from "@tsparticles/engine";
 
 const content = {
   en: {
@@ -25,32 +31,32 @@ const content = {
       { city: "Dubai", color: "#f59e0b" },
       { city: "Tokyo", color: "#3b82f6" },
       { city: "Sydney", color: "#3b82f6" },
-      { city: "São Paulo", color: "#3b82f6" },
+      { city: "S\u00e3o Paulo", color: "#3b82f6" },
     ],
   },
   ar: {
-    badge: "أعمل عالمياً",
-    headingLine1: "عملاء في",
-    headingLine2: "8 دول",
-    sub: "المسافة ليست عائقاً. أتعاون مع عملاء عبر القارات والمناطق الزمنية بتواصل سلس وتسليم في الموعد دائماً.",
-    location: "مقيم في دبي، الإمارات",
-    cta1: "اعمل معي",
-    cta2: "عرض العملاء",
+    badge: "\u0623\u0639\u0645\u0644 \u0639\u0627\u0644\u0645\u064a\u0627\u064b",
+    headingLine1: "\u0639\u0645\u0644\u0627\u0621 \u0641\u064a",
+    headingLine2: "8 \u062f\u0648\u0644",
+    sub: "\u0627\u0644\u0645\u0633\u0627\u0641\u0629 \u0644\u064a\u0633\u062a \u0639\u0627\u0626\u0642\u0627\u064b. \u0623\u062a\u0639\u0627\u0648\u0646 \u0645\u0639 \u0639\u0645\u0644\u0627\u0621 \u0639\u0628\u0631 \u0627\u0644\u0642\u0627\u0631\u0627\u062a \u0648\u0627\u0644\u0645\u0646\u0627\u0637\u0642 \u0627\u0644\u0632\u0645\u0646\u064a\u0629 \u0628\u062a\u0648\u0627\u0635\u0644 \u0633\u0644\u0633 \u0648\u062a\u0633\u0644\u064a\u0645 \u0641\u064a \u0627\u0644\u0645\u0648\u0639\u062f \u062f\u0627\u0626\u0645\u0627\u064b.",
+    location: "\u0645\u0642\u064a\u0645 \u0641\u064a \u062f\u0628\u064a\u060c \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062a",
+    cta1: "\u0627\u0639\u0645\u0644 \u0645\u0639\u064a",
+    cta2: "\u0639\u0631\u0636 \u0627\u0644\u0639\u0645\u0644\u0627\u0621",
     stats: [
-      { value: "8", label: "دول" },
-      { value: "3", label: "قارات" },
-      { value: "+200", label: "مشروع" },
-      { value: "0", label: "مشاكل توقيت" },
+      { value: "8", label: "\u062f\u0648\u0644" },
+      { value: "3", label: "\u0642\u0627\u0631\u0627\u062a" },
+      { value: "+200", label: "\u0645\u0634\u0631\u0648\u0639" },
+      { value: "0", label: "\u0645\u0634\u0627\u0643\u0644 \u062a\u0648\u0642\u064a\u062a" },
     ],
     clients: [
-      { city: "نيويورك", color: "#3b82f6" },
-      { city: "سان فرانسيسكو", color: "#3b82f6" },
-      { city: "لندن", color: "#3b82f6" },
-      { city: "برلين", color: "#3b82f6" },
-      { city: "دبي", color: "#f59e0b" },
-      { city: "طوكيو", color: "#3b82f6" },
-      { city: "سيدني", color: "#3b82f6" },
-      { city: "ساو باولو", color: "#3b82f6" },
+      { city: "\u0646\u064a\u0648\u064a\u0648\u0631\u0643", color: "#3b82f6" },
+      { city: "\u0633\u0627\u0646 \u0641\u0631\u0627\u0646\u0633\u064a\u0633\u0643\u0648", color: "#3b82f6" },
+      { city: "\u0644\u0646\u062f\u0646", color: "#3b82f6" },
+      { city: "\u0628\u0631\u0644\u064a\u0646", color: "#3b82f6" },
+      { city: "\u062f\u0628\u064a", color: "#f59e0b" },
+      { city: "\u0637\u0648\u0643\u064a\u0648", color: "#3b82f6" },
+      { city: "\u0633\u064a\u062f\u0646\u064a", color: "#3b82f6" },
+      { city: "\u0633\u0627\u0648 \u0628\u0627\u0648\u0644\u0648", color: "#3b82f6" },
     ],
   },
 };
@@ -64,7 +70,7 @@ const pins = [
   { id: "dubai", x: 540, y: 195, label: "Dubai", isHome: true },
   { id: "tokyo", x: 700, y: 155, label: "Tokyo" },
   { id: "sydney", x: 720, y: 340, label: "Sydney" },
-  { id: "sao-paulo", x: 280, y: 320, label: "São Paulo" },
+  { id: "sao-paulo", x: 280, y: 320, label: "S\u00e3o Paulo" },
 ];
 
 const homePin = pins.find((p) => p.isHome)!;
@@ -72,84 +78,131 @@ const homePin = pins.find((p) => p.isHome)!;
 export function Hero18({ language }: { language: "en" | "ar" }) {
   const t = content[language];
   const isAr = language === "ar";
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [particlesReady, setParticlesReady] = useState(false);
+
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+    setParticlesReady(true);
+  }, []);
+
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      // Content fade-in with stagger
+      gsap.from(".hero18-content-1", { y: 20, opacity: 0, duration: 0.6, ease: "power2.out", delay: 0.1 });
+      gsap.from(".hero18-content-2", { y: 20, opacity: 0, duration: 0.6, ease: "power2.out", delay: 0.25 });
+      gsap.from(".hero18-content-3", { y: 20, opacity: 0, duration: 0.6, ease: "power2.out", delay: 0.4 });
+      gsap.from(".hero18-content-4", { y: 20, opacity: 0, duration: 0.6, ease: "power2.out", delay: 0.55 });
+      gsap.from(".hero18-content-5", { y: 20, opacity: 0, duration: 0.6, ease: "power2.out", delay: 0.7 });
+      gsap.from(".hero18-content-6", { y: 20, opacity: 0, duration: 0.6, ease: "power2.out", delay: 0.85 });
+
+      // Map floating animation
+      gsap.to(".hero18-map", {
+        y: -5,
+        duration: 4,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
+
+      // Pin pulse animation
+      gsap.fromTo(
+        ".hero18-pin",
+        { scale: 1, opacity: 0.7, transformOrigin: "center" },
+        {
+          scale: 1.6,
+          opacity: 1,
+          duration: 1.25,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          stagger: 0.3,
+        }
+      );
+
+      // Home pin pulse
+      gsap.fromTo(
+        ".hero18-home-pin",
+        { scale: 1, opacity: 1, transformOrigin: "center" },
+        {
+          scale: 1.3,
+          opacity: 0.9,
+          duration: 1.5,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+        }
+      );
+
+      // Home ring expanding
+      gsap.fromTo(
+        ".hero18-home-ring",
+        { attr: { r: 5 }, opacity: 0.6 },
+        {
+          attr: { r: 22 },
+          opacity: 0,
+          duration: 3,
+          ease: "power1.out",
+          repeat: -1,
+        }
+      );
+
+      // Connection lines drawing in
+      gsap.fromTo(
+        ".hero18-line",
+        { strokeDashoffset: 1000 },
+        {
+          strokeDashoffset: 0,
+          duration: 1.5,
+          ease: "power2.out",
+          stagger: 0.2,
+          delay: 0.2,
+        }
+      );
+    },
+    { scope: containerRef }
+  );
 
   return (
     <section
+      ref={containerRef}
       className="min-h-screen relative overflow-hidden"
       style={{ background: "#0a0f1a" }}
       dir={isAr ? "rtl" : "ltr"}
     >
-      <style>{`
-        @keyframes pinPulse {
-          0%, 100% { transform: scale(1); opacity: 0.7; }
-          50% { transform: scale(1.6); opacity: 1; }
-        }
-        @keyframes homePulse {
-          0%, 100% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.3); opacity: 0.9; }
-        }
-        @keyframes homeRing {
-          0% { r: 5; opacity: 0.6; }
-          100% { r: 22; opacity: 0; }
-        }
-        @keyframes mapFloat {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-5px); }
-        }
-        @keyframes lineAppear {
-          from { stroke-dashoffset: 1000; }
-          to { stroke-dashoffset: 0; }
-        }
-        @keyframes contentFade {
-          from { transform: translateY(20px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-        .hero18-map { animation: mapFloat 8s ease-in-out infinite; }
-        .hero18-pin { animation: pinPulse 2.5s ease-in-out infinite; transform-origin: center; }
-        .hero18-pin-0 { animation-delay: 0s; }
-        .hero18-pin-1 { animation-delay: 0.3s; }
-        .hero18-pin-2 { animation-delay: 0.6s; }
-        .hero18-pin-3 { animation-delay: 0.9s; }
-        .hero18-pin-4 { animation-delay: 1.2s; }
-        .hero18-pin-5 { animation-delay: 1.5s; }
-        .hero18-pin-6 { animation-delay: 1.8s; }
-        .hero18-pin-7 { animation-delay: 2.1s; }
-        .hero18-home-pin { animation: homePulse 3s ease-in-out infinite; transform-origin: center; }
-        .hero18-home-ring { animation: homeRing 3s ease-out infinite; }
-        .hero18-line {
-          stroke-dasharray: 1000;
-          animation: lineAppear 1.5s ease-out forwards;
-        }
-        .hero18-line-0 { animation-delay: 0.2s; stroke-dashoffset: 1000; }
-        .hero18-line-1 { animation-delay: 0.4s; stroke-dashoffset: 1000; }
-        .hero18-line-2 { animation-delay: 0.6s; stroke-dashoffset: 1000; }
-        .hero18-line-3 { animation-delay: 0.8s; stroke-dashoffset: 1000; }
-        .hero18-line-4 { animation-delay: 1.0s; stroke-dashoffset: 1000; }
-        .hero18-line-5 { animation-delay: 1.2s; stroke-dashoffset: 1000; }
-        .hero18-line-6 { animation-delay: 1.4s; stroke-dashoffset: 1000; }
-        .hero18-content-1 { animation: contentFade 0.6s ease-out 0.1s both; }
-        .hero18-content-2 { animation: contentFade 0.6s ease-out 0.25s both; }
-        .hero18-content-3 { animation: contentFade 0.6s ease-out 0.4s both; }
-        .hero18-content-4 { animation: contentFade 0.6s ease-out 0.55s both; }
-        .hero18-content-5 { animation: contentFade 0.6s ease-out 0.7s both; }
-        .hero18-content-6 { animation: contentFade 0.6s ease-out 0.85s both; }
-        @media (prefers-reduced-motion: reduce) {
-          .hero18-map,
-          .hero18-pin,
-          .hero18-home-pin,
-          .hero18-home-ring,
-          .hero18-line,
-          .hero18-content-1,
-          .hero18-content-2,
-          .hero18-content-3,
-          .hero18-content-4,
-          .hero18-content-5,
-          .hero18-content-6 {
-            animation: none !important;
-          }
-          .hero18-line { stroke-dashoffset: 0 !important; }
-        }
-      `}</style>
+      {/* Particles background */}
+      <Particles
+        id="hero18-particles"
+        className="absolute inset-0 z-0"
+        init={particlesInit}
+        options={{
+          fullScreen: { enable: false },
+          fpsLimit: 60,
+          particles: {
+            number: { value: 50, density: { enable: true } },
+            color: {
+              value: ["#3b82f6", "#2dd4bf", "#60a5fa"],
+            },
+            shape: { type: "circle" },
+            opacity: {
+              value: { min: 0.1, max: 0.35 },
+              animation: { enable: true, speed: 0.3, sync: false },
+            },
+            size: {
+              value: { min: 1, max: 2.5 },
+            },
+            move: {
+              enable: true,
+              speed: 0.3,
+              direction: "none",
+              outModes: { default: "out" },
+            },
+          },
+          detectRetina: true,
+        }}
+      />
 
       {/* Background gradient overlay */}
       <div
@@ -440,7 +493,8 @@ export function Hero18({ language }: { language: "en" | "ar" }) {
                       stroke="rgba(59,130,246,0.08)"
                       strokeWidth="1"
                       strokeDasharray="6 4"
-                      className={`hero18-line hero18-line-${i}`}
+                      className={`hero18-line`}
+                      style={{ strokeDasharray: 1000, strokeDashoffset: 1000 }}
                     />
                   ))}
 
@@ -462,7 +516,7 @@ export function Hero18({ language }: { language: "en" | "ar" }) {
                         cy={pin.y}
                         r="4"
                         fill="#3b82f6"
-                        className={`hero18-pin hero18-pin-${i}`}
+                        className="hero18-pin"
                       />
                     </g>
                   ))}

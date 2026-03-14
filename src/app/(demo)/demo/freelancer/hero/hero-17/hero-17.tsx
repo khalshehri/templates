@@ -1,6 +1,12 @@
 "use client";
 
+import { useRef, useCallback, useState } from "react";
 import { ArrowRight, Check, Star, Zap, Crown } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { type Engine } from "@tsparticles/engine";
 
 const content = {
   en: {
@@ -147,119 +153,105 @@ export function Hero17({ language }: { language: "en" | "ar" }) {
   const isAr = language === "ar";
   const fontHeading = isAr ? "var(--font-changa)" : "var(--font-inter)";
   const fontBody = isAr ? "var(--font-tajawal)" : "var(--font-inter)";
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [particlesReady, setParticlesReady] = useState(false);
+
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+    setParticlesReady(true);
+  }, []);
+
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      // Content fade in
+      gsap.from(".hero17-content-fade", {
+        y: 20,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power2.out",
+        stagger: 0.7,
+      });
+
+      // Cards slide up
+      gsap.from(".hero17-card", {
+        y: 40,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power2.out",
+        stagger: 0.2,
+        delay: 0.2,
+      });
+
+      // Popular badge pop
+      const badgeTl = gsap.timeline({ delay: 0.8 });
+      badgeTl
+        .from(".hero17-badge-pop", { scale: 0, duration: 0.2, ease: "power2.out" })
+        .to(".hero17-badge-pop", { scale: 1.15, duration: 0.1, ease: "power2.out" })
+        .to(".hero17-badge-pop", { scale: 0.95, duration: 0.1, ease: "power2.inOut" })
+        .to(".hero17-badge-pop", { scale: 1, duration: 0.1, ease: "power2.out" });
+
+      // Check marks appear
+      gsap.from(".hero17-check", {
+        scale: 0,
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.out",
+        stagger: 0.1,
+        delay: 0.6,
+      });
+
+      // Border glow animation for highlighted card
+      gsap.to(".hero17-border-glow", {
+        backgroundPosition: "100% 50%",
+        duration: 3,
+        ease: "none",
+        repeat: -1,
+        yoyo: true,
+      });
+    },
+    { scope: containerRef }
+  );
 
   return (
     <section
+      ref={containerRef}
       className="min-h-screen relative overflow-hidden"
       dir={isAr ? "rtl" : "ltr"}
       style={{ background: "#09090b", fontFamily: fontBody }}
     >
-      <style>{`
-        @keyframes cardSlideUp {
-          from {
-            transform: translateY(40px);
-            opacity: 0;
-          }
-          to {
-            transform: translateY(0);
-            opacity: 1;
-          }
-        }
-
-        @keyframes popularBadge {
-          0% {
-            transform: scale(0);
-          }
-          60% {
-            transform: scale(1.15);
-          }
-          80% {
-            transform: scale(0.95);
-          }
-          100% {
-            transform: scale(1);
-          }
-        }
-
-        @keyframes checkAppear {
-          from {
-            transform: scale(0);
-            opacity: 0;
-          }
-          to {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-
-        @keyframes borderGlow {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-
-        @keyframes contentFade {
-          from {
-            transform: translateY(20px);
-            opacity: 0;
-          }
-          to {
-            transform: translateY(0);
-            opacity: 1;
-          }
-        }
-
-        .hero17-card {
-          animation: cardSlideUp 0.7s ease-out both;
-        }
-        .hero17-card-0 { animation-delay: 0.2s; }
-        .hero17-card-1 { animation-delay: 0.4s; }
-        .hero17-card-2 { animation-delay: 0.6s; }
-
-        .hero17-badge-pop {
-          animation: popularBadge 0.5s ease-out 0.8s both;
-        }
-
-        .hero17-check {
-          animation: checkAppear 0.3s ease-out both;
-        }
-        .hero17-check-0 { animation-delay: 0.6s; }
-        .hero17-check-1 { animation-delay: 0.7s; }
-        .hero17-check-2 { animation-delay: 0.8s; }
-        .hero17-check-3 { animation-delay: 0.9s; }
-        .hero17-check-4 { animation-delay: 1.0s; }
-        .hero17-check-5 { animation-delay: 1.1s; }
-        .hero17-check-6 { animation-delay: 1.2s; }
-        .hero17-check-7 { animation-delay: 1.3s; }
-
-        .hero17-border-glow {
-          background: linear-gradient(270deg, #8b5cf6, #06b6d4, #8b5cf6, #06b6d4);
-          background-size: 300% 300%;
-          animation: borderGlow 3s ease infinite;
-        }
-
-        .hero17-content-fade {
-          animation: contentFade 0.7s ease-out 0.1s both;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .hero17-card,
-          .hero17-badge-pop,
-          .hero17-check,
-          .hero17-border-glow,
-          .hero17-content-fade {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-          }
-        }
-      `}</style>
+      {/* Particles background */}
+      <Particles
+        id="hero17-particles"
+        className="absolute inset-0 z-0"
+        init={particlesInit}
+        options={{
+          fullScreen: { enable: false },
+          fpsLimit: 60,
+          particles: {
+            number: { value: 40, density: { enable: true } },
+            color: {
+              value: ["#d4a017", "#10b981", "#8b5cf6"],
+            },
+            shape: { type: "circle" },
+            opacity: {
+              value: { min: 0.15, max: 0.4 },
+              animation: { enable: true, speed: 0.5, sync: false },
+            },
+            size: {
+              value: { min: 1, max: 3 },
+            },
+            move: {
+              enable: true,
+              speed: 0.4,
+              direction: "none",
+              outModes: { default: "out" },
+            },
+          },
+          detectRetina: true,
+        }}
+      />
 
       {/* Subtle background grid */}
       <div
@@ -332,13 +324,20 @@ export function Hero17({ language }: { language: "en" | "ar" }) {
             return (
               <div
                 key={planIndex}
-                className={`hero17-card hero17-card-${planIndex} relative ${
+                className={`hero17-card relative ${
                   plan.highlighted ? "lg:-mt-4 lg:mb-[-16px]" : ""
                 }`}
               >
                 {/* Gradient border wrapper for highlighted card */}
                 {plan.highlighted ? (
-                  <div className="hero17-border-glow rounded-2xl p-[2px]">
+                  <div
+                    className="hero17-border-glow rounded-2xl p-[2px]"
+                    style={{
+                      background:
+                        "linear-gradient(270deg, #8b5cf6, #06b6d4, #8b5cf6, #06b6d4)",
+                      backgroundSize: "300% 300%",
+                    }}
+                  >
                     <div
                       className="rounded-2xl p-8 relative overflow-hidden"
                       style={{ background: "#18181b" }}
@@ -401,7 +400,7 @@ export function Hero17({ language }: { language: "en" | "ar" }) {
                           {plan.features.map((feature, fi) => (
                             <div
                               key={fi}
-                              className={`flex items-start gap-3 hero17-check hero17-check-${fi}`}
+                              className="flex items-start gap-3 hero17-check"
                             >
                               <Check
                                 className="w-4 h-4 mt-0.5 shrink-0"
@@ -483,7 +482,7 @@ export function Hero17({ language }: { language: "en" | "ar" }) {
                       {plan.features.map((feature, fi) => (
                         <div
                           key={fi}
-                          className={`flex items-start gap-3 hero17-check hero17-check-${fi}`}
+                          className="flex items-start gap-3 hero17-check"
                         >
                           <Check
                             className="w-4 h-4 mt-0.5 shrink-0"
@@ -520,7 +519,7 @@ export function Hero17({ language }: { language: "en" | "ar" }) {
         </div>
 
         {/* Bottom Section */}
-        <div className="text-center mt-16 hero17-content-fade" style={{ animationDelay: "0.8s" }}>
+        <div className="text-center mt-16 hero17-content-fade">
           <p
             className="text-gray-300 text-lg mb-3"
             style={{ fontFamily: fontBody }}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useCallback, useState } from "react";
 import {
   ArrowRight,
   DollarSign,
@@ -9,6 +10,11 @@ import {
   BarChart3,
   Bell,
 } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { type Engine } from "@tsparticles/engine";
 
 const content = {
   en: {
@@ -192,9 +198,148 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
   const isAr = language === "ar";
   const fontHeading = isAr ? "var(--font-changa)" : "var(--font-inter)";
   const fontBody = isAr ? "var(--font-tajawal)" : "var(--font-inter)";
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const [particlesReady, setParticlesReady] = useState(false);
+
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+    setParticlesReady(true);
+  }, []);
+
+  useGSAP(
+    () => {
+      if (
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        // Set final states immediately
+        gsap.set(".hero12-card", { opacity: 1, y: 0 });
+        gsap.set(".hero12-sparkline", { strokeDashoffset: 0 });
+        gsap.set(".hero12-bar", { scaleY: 1 });
+        gsap.set(".hero12-ring", { strokeDashoffset: ringOffset });
+        gsap.set(".hero12-chart-line", { strokeDashoffset: 0 });
+        gsap.set(".hero12-chart-area", { opacity: 0.2 });
+        gsap.set(".hero12-dot-pulse", { opacity: 1 });
+        gsap.set(".hero12-progress-bar", {
+          width: (index: number, target: HTMLElement) =>
+            target.style.getPropertyValue("--target-width"),
+        });
+        return;
+      }
+
+      // Cards fade in with stagger
+      gsap.from(".hero12-card", {
+        y: 20,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        stagger: 0.1,
+      });
+
+      // Sparkline draw
+      const sparklineEl = containerRef.current?.querySelector(
+        ".hero12-sparkline"
+      ) as SVGPathElement | null;
+      if (sparklineEl) {
+        gsap.fromTo(
+          sparklineEl,
+          { strokeDashoffset: sparkline.totalLength },
+          {
+            strokeDashoffset: 0,
+            duration: 1.5,
+            ease: "power2.out",
+            delay: 0.8,
+          }
+        );
+      }
+
+      // Bar grow
+      gsap.from(".hero12-bar", {
+        scaleY: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        stagger: 0.1,
+        delay: 0.9,
+      });
+
+      // Ring progress
+      const ringEl = containerRef.current?.querySelector(
+        ".hero12-ring"
+      ) as SVGCircleElement | null;
+      if (ringEl) {
+        gsap.fromTo(
+          ringEl,
+          { strokeDashoffset: ringCircumference },
+          {
+            strokeDashoffset: ringOffset,
+            duration: 1.5,
+            ease: "power2.out",
+            delay: 1,
+          }
+        );
+      }
+
+      // Chart line draw
+      const chartLineEl = containerRef.current?.querySelector(
+        ".hero12-chart-line"
+      ) as SVGPathElement | null;
+      if (chartLineEl) {
+        gsap.fromTo(
+          chartLineEl,
+          { strokeDashoffset: areaChart.totalLength },
+          {
+            strokeDashoffset: 0,
+            duration: 2,
+            ease: "power2.out",
+            delay: 0.8,
+          }
+        );
+      }
+
+      // Chart area fade
+      gsap.fromTo(
+        ".hero12-chart-area",
+        { opacity: 0 },
+        { opacity: 0.2, duration: 1, ease: "power2.out", delay: 2 }
+      );
+
+      // Dot pulse
+      gsap.to(".hero12-dot-pulse", {
+        opacity: 0.5,
+        duration: 1,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut",
+      });
+
+      // Progress bar fill
+      const progressBars = containerRef.current?.querySelectorAll(
+        ".hero12-progress-bar"
+      );
+      if (progressBars) {
+        progressBars.forEach((bar) => {
+          const target = (bar as HTMLElement).style.getPropertyValue(
+            "--target-width"
+          );
+          gsap.fromTo(
+            bar,
+            { width: "0%" },
+            {
+              width: target,
+              duration: 1,
+              ease: "power2.out",
+              delay: 1,
+            }
+          );
+        });
+      }
+    },
+    { scope: containerRef, dependencies: [language] }
+  );
 
   return (
     <section
+      ref={containerRef}
       className="min-h-screen relative overflow-hidden"
       dir={isAr ? "rtl" : "ltr"}
       style={{
@@ -202,108 +347,45 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
         fontFamily: fontBody,
       }}
     >
-      <style>{`
-        @keyframes cardFadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes sparklineDraw {
-          from { stroke-dashoffset: ${sparkline.totalLength}; }
-          to { stroke-dashoffset: 0; }
-        }
-        @keyframes barGrow {
-          from { transform: scaleY(0); }
-          to { transform: scaleY(1); }
-        }
-        @keyframes ringProgress {
-          from { stroke-dashoffset: ${ringCircumference}; }
-          to { stroke-dashoffset: ${ringOffset}; }
-        }
-        @keyframes chartDraw {
-          from { stroke-dashoffset: ${areaChart.totalLength}; }
-          to { stroke-dashoffset: 0; }
-        }
-        @keyframes areaFade {
-          from { opacity: 0; }
-          to { opacity: 0.2; }
-        }
-        @keyframes dotPulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
-        }
-        @keyframes progressFill {
-          from { width: 0%; }
-          to { width: var(--target-width); }
-        }
-
-        .hero12-card { animation: cardFadeIn 0.6s ease-out both; }
-        .hero12-card-0 { animation-delay: 0.1s; }
-        .hero12-card-1 { animation-delay: 0.2s; }
-        .hero12-card-2 { animation-delay: 0.3s; }
-        .hero12-card-3 { animation-delay: 0.4s; }
-        .hero12-card-4 { animation-delay: 0.5s; }
-        .hero12-card-5 { animation-delay: 0.6s; }
-
-        .hero12-sparkline {
-          stroke-dasharray: ${sparkline.totalLength};
-          stroke-dashoffset: ${sparkline.totalLength};
-          animation: sparklineDraw 1.5s ease-out 0.8s both;
-        }
-        .hero12-bar {
-          transform-origin: bottom;
-          animation: barGrow 0.8s ease-out both;
-        }
-        .hero12-bar-0 { animation-delay: 0.9s; }
-        .hero12-bar-1 { animation-delay: 1.0s; }
-        .hero12-bar-2 { animation-delay: 1.1s; }
-        .hero12-bar-3 { animation-delay: 1.2s; }
-
-        .hero12-ring {
-          stroke-dasharray: ${ringCircumference};
-          stroke-dashoffset: ${ringCircumference};
-          animation: ringProgress 1.5s ease-out 1s both;
-        }
-        .hero12-chart-line {
-          stroke-dasharray: ${areaChart.totalLength};
-          stroke-dashoffset: ${areaChart.totalLength};
-          animation: chartDraw 2s ease-out 0.8s both;
-        }
-        .hero12-chart-area {
-          opacity: 0;
-          animation: areaFade 1s ease-out 2s both;
-        }
-        .hero12-dot-pulse {
-          animation: dotPulse 2s ease-in-out infinite;
-        }
-        .hero12-progress-bar {
-          animation: progressFill 1s ease-out 1s both;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .hero12-card,
-          .hero12-sparkline,
-          .hero12-bar,
-          .hero12-ring,
-          .hero12-chart-line,
-          .hero12-chart-area,
-          .hero12-dot-pulse,
-          .hero12-progress-bar {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-            stroke-dashoffset: 0 !important;
-          }
-          .hero12-chart-area {
-            opacity: 0.2 !important;
-          }
-          .hero12-ring {
-            stroke-dashoffset: ${ringOffset} !important;
-          }
-          .hero12-progress-bar {
-            width: var(--target-width) !important;
-          }
-        }
-      `}</style>
+      {/* tsParticles — Blue/purple data visualization dots with connecting lines */}
+      <Particles
+        init={particlesInit}
+        options={{
+          fullScreen: { enable: false },
+          particles: {
+            number: { value: 50, density: { enable: true, width: 1200, height: 800 } },
+            color: { value: ["#3b82f6", "#8b5cf6", "#6366f1", "#22d3ee"] },
+            shape: { type: "circle" },
+            opacity: {
+              value: { min: 0.15, max: 0.5 },
+              animation: { enable: true, speed: 0.8, sync: false },
+            },
+            size: {
+              value: { min: 1, max: 4 },
+            },
+            links: {
+              enable: true,
+              distance: 120,
+              color: "#6366f1",
+              opacity: 0.12,
+              width: 1,
+            },
+            move: {
+              enable: true,
+              speed: { min: 0.2, max: 0.6 },
+              direction: "none",
+              outModes: { default: "out" },
+            },
+          },
+          detectRetina: true,
+        }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+      />
 
       {/* Subtle grid overlay */}
       <div
@@ -314,6 +396,7 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
             "linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
           pointerEvents: "none",
+          zIndex: 1,
         }}
       />
 
@@ -323,7 +406,7 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
       >
         {/* Top Bar */}
         <div
-          className="hero12-card hero12-card-0"
+          className="hero12-card"
           style={{
             background: "rgba(255,255,255,0.04)",
             border: "1px solid rgba(255,255,255,0.06)",
@@ -417,7 +500,7 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
           {t.metrics.map((metric, i) => (
             <div
               key={i}
-              className={`hero12-card hero12-card-${i}`}
+              className="hero12-card"
               style={{
                 background: "rgba(255,255,255,0.04)",
                 border: "1px solid rgba(255,255,255,0.06)",
@@ -488,6 +571,10 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className="hero12-sparkline"
+                    style={{
+                      strokeDasharray: sparkline.totalLength,
+                      strokeDashoffset: sparkline.totalLength,
+                    }}
                   />
                 </svg>
               )}
@@ -504,7 +591,7 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
                   {barHeights.map((h, bi) => (
                     <div
                       key={bi}
-                      className={`hero12-bar hero12-bar-${bi}`}
+                      className="hero12-bar"
                       style={{
                         flex: 1,
                         height: `${h}%`,
@@ -513,6 +600,7 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
                             ? "#3b82f6"
                             : "rgba(59,130,246,0.3)",
                         borderRadius: 3,
+                        transformOrigin: "bottom",
                       }}
                     />
                   ))}
@@ -562,6 +650,8 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
                       style={{
                         transformOrigin: "center",
                         transform: "rotate(-90deg)",
+                        strokeDasharray: ringCircumference,
+                        strokeDashoffset: ringCircumference,
                       }}
                     />
                     <text
@@ -594,7 +684,7 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
         >
           {/* Revenue Chart Card */}
           <div
-            className="hero12-card hero12-card-4"
+            className="hero12-card"
             style={{
               background: "rgba(255,255,255,0.04)",
               border: "1px solid rgba(255,255,255,0.06)",
@@ -673,6 +763,7 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
                   d={areaChart.areaPath}
                   fill="url(#hero12AreaGrad)"
                   className="hero12-chart-area"
+                  style={{ opacity: 0 }}
                 />
                 <path
                   d={areaChart.linePath}
@@ -683,6 +774,10 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
                   strokeLinejoin="round"
                   className="hero12-chart-line"
                   vectorEffect="non-scaling-stroke"
+                  style={{
+                    strokeDasharray: areaChart.totalLength,
+                    strokeDashoffset: areaChart.totalLength,
+                  }}
                 />
                 <defs>
                   <linearGradient
@@ -725,7 +820,7 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
 
           {/* Recent Projects Card */}
           <div
-            className="hero12-card hero12-card-5"
+            className="hero12-card"
             style={{
               background: "rgba(255,255,255,0.04)",
               border: "1px solid rgba(255,255,255,0.06)",
@@ -837,6 +932,7 @@ export function Hero12({ language }: { language: "en" | "ar" }) {
                             style={
                               {
                                 height: "100%",
+                                width: "0%",
                                 background:
                                   proj.progress >= 70 ? "#3b82f6" : "#f59e0b",
                                 borderRadius: 2,
