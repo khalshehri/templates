@@ -110,6 +110,11 @@ const TEMPLATES: Record<string, Record<string, { id: string; name: string }[]>> 
       { id: "hero-18", name: "World Map" },
       { id: "hero-19", name: "Split Bio" },
       { id: "hero-20", name: "Retro Arcade" },
+      { id: "hero-21", name: "DNA Helix" },
+      { id: "hero-22", name: "Origami Fold" },
+      { id: "hero-23", name: "Sound Wave" },
+      { id: "hero-24", name: "Blueprint Grid" },
+      { id: "hero-25", name: "Hologram Card" },
     ],
   },
 };
