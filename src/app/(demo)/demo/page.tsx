@@ -89,6 +89,18 @@ const TEMPLATES: Record<string, Record<string, { id: string; name: string }[]>> 
       { id: "hero-22", name: "Isometric City" },
       { id: "hero-23", name: "Particle Field" },
     ],
+    freelancer: [
+      { id: "hero-01", name: "Portrait Spotlight" },
+      { id: "hero-02", name: "Code Editor" },
+      { id: "hero-03", name: "Portfolio Showcase" },
+      { id: "hero-04", name: "Minimal Card" },
+      { id: "hero-05", name: "Skill Radar" },
+      { id: "hero-06", name: "Gradient Bio" },
+      { id: "hero-07", name: "Process Steps" },
+      { id: "hero-08", name: "Testimonial Wall" },
+      { id: "hero-09", name: "Availability Board" },
+      { id: "hero-10", name: "Handcraft Studio" },
+    ],
   },
 };
 
