@@ -67,6 +67,7 @@ const TEMPLATES: Record<string, Record<string, { id: string; name: string }[]>> 
     company: [
       { id: "hero-01", name: "Nexus (Dark)" },
       { id: "hero-02", name: "Nexus (Light)" },
+      { id: "hero-03", name: "Interactive Product Preview" },
     ],
   },
 };
