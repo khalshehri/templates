@@ -30,12 +30,12 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { name, industry, language } = await request.json();
 
     if (!name || !industry) {
@@ -50,6 +50,20 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: "Invalid industry" },
         { status: 400 }
+      );
+    }
+
+    // Verify user exists in DB (session may be stale after DB reset)
+    const user = db
+      .select()
+      .from(schema.users)
+      .where(eq(schema.users.id, session.user.id))
+      .get();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Session expired — please log out and log back in" },
+        { status: 401 }
       );
     }
 
@@ -77,7 +91,6 @@ export async function POST(request: Request) {
       direction: language === "ar" ? "rtl" : "ltr",
     };
 
-    // Insert site
     db.insert(schema.sites)
       .values({
         id: siteId,
@@ -93,7 +106,6 @@ export async function POST(request: Request) {
       })
       .run();
 
-    // Insert sections from template
     for (const section of template.sections) {
       db.insert(schema.sections)
         .values({
@@ -109,7 +121,8 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ site: { id: siteId, slug } });
-  } catch {
+  } catch (e) {
+    console.error("[POST /api/sites]", e);
     return NextResponse.json(
       { error: "Failed to create site" },
       { status: 500 }
