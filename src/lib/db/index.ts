@@ -3,12 +3,16 @@ import { drizzle } from "drizzle-orm/better-sqlite3";
 import * as schema from "./schema";
 import path from "path";
 import fs from "fs";
+import os from "os";
 
-const dbPath = path.join(process.cwd(), "data", "safahati.db");
+// Use /tmp on Vercel/serverless, local data directory locally
+const dbPath = process.env.VERCEL
+  ? path.join("/tmp", "safahati.db")
+  : path.join(process.cwd(), "data", "safahati.db");
 
-// Create data directory if it doesn't exist
+// Create directory if it doesn't exist (for local development)
 const dataDir = path.dirname(dbPath);
-if (!fs.existsSync(dataDir)) {
+if (!process.env.VERCEL && !fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
