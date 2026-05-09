@@ -63,13 +63,15 @@ export function NavbarTemplate03({ config, language }: BlockProps) {
                   {isAr ? link.labelAr : link.label}
                 </a>
               ))}
-              <a
-                href={c.ctaButton.url}
-                className="px-5 py-2 text-sm font-semibold text-white rounded-xl transition-all hover:opacity-90 hover:shadow-lg"
-                style={{ backgroundColor: "var(--theme-primary)" }}
-              >
-                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
-              </a>
+              {c.ctaButton && (
+                <a
+                  href={c.ctaButton?.url || "#"}
+                  className="px-5 py-2 text-sm font-semibold text-white rounded-xl transition-all hover:opacity-90 hover:shadow-lg"
+                  style={{ backgroundColor: "var(--theme-primary)" }}
+                >
+                  {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+                </a>
+              )}
             </div>
 
             {/* Mobile toggle */}
@@ -94,13 +96,15 @@ export function NavbarTemplate03({ config, language }: BlockProps) {
                     {isAr ? link.labelAr : link.label}
                   </a>
                 ))}
-                <a
-                  href={c.ctaButton.url}
-                  className="mt-2 px-5 py-2.5 text-sm font-semibold text-white rounded-xl text-center"
-                  style={{ backgroundColor: "var(--theme-primary)" }}
-                >
-                  {isAr ? c.ctaButton.textAr : c.ctaButton.text}
-                </a>
+                {c.ctaButton && (
+                  <a
+                    href={c.ctaButton?.url || "#"}
+                    className="mt-2 px-5 py-2.5 text-sm font-semibold text-white rounded-xl text-center"
+                    style={{ backgroundColor: "var(--theme-primary)" }}
+                  >
+                    {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+                  </a>
+                )}
               </div>
             </div>
           )}

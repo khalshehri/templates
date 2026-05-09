@@ -63,19 +63,21 @@ export function CtaTemplate05({ config, language }: BlockProps) {
                 }
               />
             </div>
-            <a
-              href={c.buttonUrl}
-              className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-white font-semibold hover:opacity-90 hover:shadow-lg transition-all duration-200 whitespace-nowrap ${
-                isAr ? "flex-row-reverse" : ""
-              }`}
-              style={{ backgroundColor: "var(--theme-primary)" }}
-            >
-              {isAr ? c.buttonTextAr : c.buttonText}
-              <ArrowRight
-                size={18}
-                className={isAr ? "rotate-180" : ""}
-              />
-            </a>
+            {c.buttonUrl && (
+              <a
+                href={c.buttonUrl || "#"}
+                className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-white font-semibold hover:opacity-90 hover:shadow-lg transition-all duration-200 whitespace-nowrap ${
+                  isAr ? "flex-row-reverse" : ""
+                }`}
+                style={{ backgroundColor: "var(--theme-primary)" }}
+              >
+                {isAr ? c.buttonTextAr : c.buttonText}
+                <ArrowRight
+                  size={18}
+                  className={isAr ? "rotate-180" : ""}
+                />
+              </a>
+            )}
           </div>
 
           {/* Secondary link */}

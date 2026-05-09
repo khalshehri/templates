@@ -41,18 +41,20 @@ export function CtaTemplate03({ config, language }: BlockProps) {
               </p>
 
               <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-                <a
-                  href={c.buttonUrl}
-                  className={`group inline-flex items-center gap-2.5 px-8 py-4 rounded-xl font-semibold text-sm transition-all hover:shadow-2xl hover:-translate-y-0.5 text-white ${
-                    isAr ? "flex-row-reverse" : ""
-                  }`}
-                  style={{
-                    backgroundImage: `linear-gradient(135deg, var(--theme-primary), var(--theme-secondary, var(--theme-primary)))`,
-                  }}
-                >
-                  {isAr ? c.buttonTextAr : c.buttonText}
-                  <ArrowRight size={16} className={`transition-transform group-hover:translate-x-0.5 ${isAr ? "rotate-180" : ""}`} />
-                </a>
+                {c.buttonUrl && (
+                  <a
+                    href={c.buttonUrl || "#"}
+                    className={`group inline-flex items-center gap-2.5 px-8 py-4 rounded-xl font-semibold text-sm transition-all hover:shadow-2xl hover:-translate-y-0.5 text-white ${
+                      isAr ? "flex-row-reverse" : ""
+                    }`}
+                    style={{
+                      backgroundImage: `linear-gradient(135deg, var(--theme-primary), var(--theme-secondary, var(--theme-primary)))`,
+                    }}
+                  >
+                    {isAr ? c.buttonTextAr : c.buttonText}
+                    <ArrowRight size={16} className={`transition-transform group-hover:translate-x-0.5 ${isAr ? "rotate-180" : ""}`} />
+                  </a>
+                )}
 
                 {c.secondaryButtonText && (
                   <a

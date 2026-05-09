@@ -52,13 +52,15 @@ export function NavbarTemplate05({ config, language }: BlockProps) {
             </a>
 
             {/* CTA — right (desktop only) */}
-            <a
-              href={c.ctaButton.url}
-              className="hidden sm:inline-flex items-center px-5 py-2 text-sm font-semibold text-white rounded-full transition-all hover:opacity-90"
-              style={{ backgroundColor: "var(--theme-primary)" }}
-            >
-              {isAr ? c.ctaButton.textAr : c.ctaButton.text}
-            </a>
+            {c.ctaButton && (
+              <a
+                href={c.ctaButton?.url || "#"}
+                className="hidden sm:inline-flex items-center px-5 py-2 text-sm font-semibold text-white rounded-full transition-all hover:opacity-90"
+                style={{ backgroundColor: "var(--theme-primary)" }}
+              >
+                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+              </a>
+            )}
             <div className="sm:hidden w-10" />
           </div>
         </div>
@@ -122,14 +124,16 @@ export function NavbarTemplate05({ config, language }: BlockProps) {
 
           {/* Drawer CTA */}
           <div className="px-6 py-6 border-t border-gray-100">
-            <a
-              href={c.ctaButton.url}
-              className="block w-full text-center px-5 py-3 text-sm font-semibold text-white rounded-xl transition-all hover:opacity-90"
-              style={{ backgroundColor: "var(--theme-primary)" }}
-              onClick={() => setDrawerOpen(false)}
-            >
-              {isAr ? c.ctaButton.textAr : c.ctaButton.text}
-            </a>
+            {c.ctaButton && (
+              <a
+                href={c.ctaButton?.url || "#"}
+                className="block w-full text-center px-5 py-3 text-sm font-semibold text-white rounded-xl transition-all hover:opacity-90"
+                style={{ backgroundColor: "var(--theme-primary)" }}
+                onClick={() => setDrawerOpen(false)}
+              >
+                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+              </a>
+            )}
           </div>
         </div>
       </div>

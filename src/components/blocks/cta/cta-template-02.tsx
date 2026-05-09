@@ -35,16 +35,18 @@ export function CtaTemplate02({ config, language }: BlockProps) {
             </p>
 
             <div className={`mt-8 flex flex-wrap gap-4 ${isAr ? "justify-end" : ""}`}>
-              <a
-                href={c.buttonUrl}
-                className={`inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-semibold hover:opacity-90 transition-all duration-200 ${
-                  isAr ? "flex-row-reverse" : ""
-                }`}
-                style={{ backgroundColor: "var(--theme-primary)" }}
-              >
-                {isAr ? c.buttonTextAr : c.buttonText}
-                <ArrowRight size={18} className={isAr ? "rotate-180" : ""} />
-              </a>
+              {c.buttonUrl && (
+                <a
+                  href={c.buttonUrl || "#"}
+                  className={`inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-semibold hover:opacity-90 transition-all duration-200 ${
+                    isAr ? "flex-row-reverse" : ""
+                  }`}
+                  style={{ backgroundColor: "var(--theme-primary)" }}
+                >
+                  {isAr ? c.buttonTextAr : c.buttonText}
+                  <ArrowRight size={18} className={isAr ? "rotate-180" : ""} />
+                </a>
+              )}
 
               {c.secondaryButtonText && (
                 <a

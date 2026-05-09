@@ -49,13 +49,15 @@ export function NavbarTemplate10({ config, language }: BlockProps) {
                 {isAr ? link.labelAr : link.label}
               </a>
             ))}
-            <a
-              href={c.ctaButton.url}
-              className="inline-flex items-center px-5 py-2.5 text-sm font-semibold rounded-full transition-all hover:opacity-90 bg-white"
-              style={{ color: "var(--theme-primary)" }}
-            >
-              {isAr ? c.ctaButton.textAr : c.ctaButton.text}
-            </a>
+            {c.ctaButton && (
+              <a
+                href={c.ctaButton?.url || "#"}
+                className="inline-flex items-center px-5 py-2.5 text-sm font-semibold rounded-full transition-all hover:opacity-90 bg-white"
+                style={{ color: "var(--theme-primary)" }}
+              >
+                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+              </a>
+            )}
           </div>
 
           {/* Mobile Toggle */}
@@ -82,13 +84,15 @@ export function NavbarTemplate10({ config, language }: BlockProps) {
                 {isAr ? link.labelAr : link.label}
               </a>
             ))}
-            <a
-              href={c.ctaButton.url}
-              className="block w-full text-center px-5 py-2.5 text-sm font-semibold rounded-full bg-white"
-              style={{ color: "var(--theme-primary)" }}
-            >
-              {isAr ? c.ctaButton.textAr : c.ctaButton.text}
-            </a>
+            {c.ctaButton && (
+              <a
+                href={c.ctaButton?.url || "#"}
+                className="block w-full text-center px-5 py-2.5 text-sm font-semibold rounded-full bg-white"
+                style={{ color: "var(--theme-primary)" }}
+              >
+                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+              </a>
+            )}
           </div>
         </div>
       )}

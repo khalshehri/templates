@@ -57,24 +57,26 @@ export function NavbarTemplate12({ config, language }: BlockProps) {
           </div>
 
           {/* CTA — outline style */}
-          <a
-            href={c.ctaButton.url}
-            className="hidden md:inline-flex items-center px-5 py-2 text-sm font-semibold rounded-lg border-2 transition-all hover:text-white shrink-0"
-            style={{
-              borderColor: "var(--theme-primary)",
-              color: "var(--theme-primary)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "var(--theme-primary)";
-              e.currentTarget.style.color = "#fff";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "transparent";
-              e.currentTarget.style.color = "var(--theme-primary)";
-            }}
-          >
-            {isAr ? c.ctaButton.textAr : c.ctaButton.text}
-          </a>
+          {c.ctaButton && (
+            <a
+              href={c.ctaButton?.url || "#"}
+              className="hidden md:inline-flex items-center px-5 py-2 text-sm font-semibold rounded-lg border-2 transition-all hover:text-white shrink-0"
+              style={{
+                borderColor: "var(--theme-primary)",
+                color: "var(--theme-primary)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "var(--theme-primary)";
+                e.currentTarget.style.color = "#fff";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+                e.currentTarget.style.color = "var(--theme-primary)";
+              }}
+            >
+              {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+            </a>
+          )}
 
           {/* Mobile Toggle */}
           <button
@@ -100,16 +102,18 @@ export function NavbarTemplate12({ config, language }: BlockProps) {
                 {isAr ? link.labelAr : link.label}
               </a>
             ))}
-            <a
-              href={c.ctaButton.url}
-              className="block w-full text-center px-5 py-2.5 text-sm font-semibold rounded-lg border-2"
-              style={{
-                borderColor: "var(--theme-primary)",
-                color: "var(--theme-primary)",
-              }}
-            >
-              {isAr ? c.ctaButton.textAr : c.ctaButton.text}
-            </a>
+            {c.ctaButton && (
+              <a
+                href={c.ctaButton?.url || "#"}
+                className="block w-full text-center px-5 py-2.5 text-sm font-semibold rounded-lg border-2"
+                style={{
+                  borderColor: "var(--theme-primary)",
+                  color: "var(--theme-primary)",
+                }}
+              >
+                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+              </a>
+            )}
           </div>
         </div>
       )}
