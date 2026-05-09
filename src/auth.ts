@@ -29,11 +29,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const email = credentials.email as string;
         const password = credentials.password as string;
 
-        const user = db
+        const users = await db
           .select()
           .from(schema.users)
-          .where(eq(schema.users.email, email))
-          .get();
+          .where(eq(schema.users.email, email));
+
+        const user = users?.[0];
 
         if (!user) return null;
 
