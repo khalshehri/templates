@@ -40,15 +40,40 @@ export async function ensureSchema() {
     const { sql } = initDb();
     console.log("[DB] Ensuring schema exists...");
 
-    // Check if tables exist and have correct schema
-    const tableCheck = await sql`
-      SELECT table_name FROM information_schema.tables
-      WHERE table_schema = 'public' AND table_name IN ('users', 'sites', 'sections')
+    // Check if users table has correct column types
+    const columnsCheck = await sql`
+      SELECT column_name, data_type FROM information_schema.columns
+      WHERE table_schema = 'public' AND table_name = 'users'
     `;
 
-    // If any tables exist, drop and recreate to ensure correct schema
-    if (Array.isArray(tableCheck) && tableCheck.length > 0) {
-      console.log("[DB] Recreating tables with correct schema...");
+    // If users table exists and has wrong data types, drop and recreate
+    let shouldRecreate = false;
+    if (
+      Array.isArray(columnsCheck) &&
+      columnsCheck.length > 0 &&
+      typeof columnsCheck[0] === "object"
+    ) {
+      const columns = columnsCheck as Array<{
+        column_name: string;
+        data_type: string;
+      }>;
+      const createdAtCol = columns.find(
+        (col) => col.column_name === "created_at"
+      );
+      // If created_at is INTEGER (wrong) instead of BIGINT, we need to recreate
+      if (createdAtCol && createdAtCol.data_type === "integer") {
+        console.log(
+          "[DB] Schema mismatch detected: created_at is INTEGER, should be BIGINT"
+        );
+        shouldRecreate = true;
+      }
+    }
+
+    // Only drop tables if there's a schema mismatch
+    if (shouldRecreate) {
+      console.log(
+        "[DB] Dropping tables due to schema mismatch (will recreate with correct schema)..."
+      );
       await sql`DROP TABLE IF EXISTS sections CASCADE`;
       await sql`DROP TABLE IF EXISTS sites CASCADE`;
       await sql`DROP TABLE IF EXISTS users CASCADE`;

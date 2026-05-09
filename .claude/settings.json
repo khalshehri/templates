@@ -30,7 +30,9 @@
       "Bash(node /tmp/test-db.mjs)",
       "Bash(node /tmp/test-db.js)",
       "Bash(psql 'postgresql://neondb_owner:npg_OSjItzK4Q6VZ@ep-holy-art-alihnwwq-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require' -c 'SELECT id, name, email FROM users LIMIT 5;')",
-      "Bash(psql 'postgresql://neondb_owner:npg_OSjItzK4Q6VZ@ep-holy-art-alihnwwq-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require' -c 'DELETE FROM users WHERE email LIKE '\\\\''test-%'\\\\'';')"
+      "Bash(psql 'postgresql://neondb_owner:npg_OSjItzK4Q6VZ@ep-holy-art-alihnwwq-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require' -c 'DELETE FROM users WHERE email LIKE '\\\\''test-%'\\\\'';')",
+      "Bash(psql 'postgresql://neondb_owner:npg_OSjItzK4Q6VZ@ep-holy-art-alihnwwq-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require' -c 'SELECT id, name, email FROM users;')",
+      "Bash(psql 'postgresql://neondb_owner:npg_OSjItzK4Q6VZ@ep-holy-art-alihnwwq-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require' -c 'SELECT id, name, email FROM users WHERE id = '\\\\''ad076852-5433-4c3a-9748-8129c08117df'\\\\'';')"
     ],
     "additionalDirectories": [
       "/Users/khalidalshehri/IdeaProjects/safahati/data",
