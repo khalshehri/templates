@@ -48,6 +48,7 @@ export default async function EditorPage({
       siteId={site.id}
       siteName={site.name}
       siteSlug={site.slug}
+      initialStatus={site.status as "draft" | "published"}
       initialTheme={parsedTheme}
       initialSections={parsedSections}
     />
