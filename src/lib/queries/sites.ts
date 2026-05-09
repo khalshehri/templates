@@ -16,9 +16,8 @@ export interface PublicSiteData {
   sections: SectionData[];
 }
 
-/** Fetch a published site by slug. Returns null if not found or not published. */
-export function getPublishedSiteBySlug(slug: string): PublicSiteData | null {
-  const site = db
+export async function getPublishedSiteBySlug(slug: string): Promise<PublicSiteData | null> {
+  const sites = await db
     .select()
     .from(schema.sites)
     .where(
@@ -26,47 +25,41 @@ export function getPublishedSiteBySlug(slug: string): PublicSiteData | null {
         eq(schema.sites.slug, slug),
         eq(schema.sites.status, "published")
       )
-    )
-    .get();
+    );
 
-  if (!site) return null;
-
-  return buildSiteData(site);
+  if (!sites || sites.length === 0) return null;
+  
+  return buildSiteData(sites[0]);
 }
 
-/** Fetch any site by slug (regardless of status). Used for owner preview. */
-export function getSiteBySlug(slug: string): PublicSiteData | null {
-  const site = db
+export async function getSiteBySlug(slug: string): Promise<PublicSiteData | null> {
+  const sites = await db
     .select()
     .from(schema.sites)
-    .where(eq(schema.sites.slug, slug))
-    .get();
+    .where(eq(schema.sites.slug, slug));
 
-  if (!site) return null;
-
-  return buildSiteData(site);
+  if (!sites || sites.length === 0) return null;
+  
+  return buildSiteData(sites[0]);
 }
 
-/** Check if a user owns a specific site. */
-export function isOwner(siteId: string, userId: string): boolean {
-  const site = db
+export async function isOwner(siteId: string, userId: string): Promise<boolean> {
+  const sites = await db
     .select({ id: schema.sites.id })
     .from(schema.sites)
     .where(
       and(eq(schema.sites.id, siteId), eq(schema.sites.userId, userId))
-    )
-    .get();
+    );
 
-  return !!site;
+  return sites && sites.length > 0;
 }
 
-function buildSiteData(site: typeof schema.sites.$inferSelect): PublicSiteData {
-  const sections = db
+async function buildSiteData(site: typeof schema.sites.$inferSelect): Promise<PublicSiteData> {
+  const sections = await db
     .select()
     .from(schema.sections)
     .where(eq(schema.sections.siteId, site.id))
-    .orderBy(schema.sections.sortOrder)
-    .all();
+    .orderBy(schema.sections.sortOrder);
 
   return {
     site: {

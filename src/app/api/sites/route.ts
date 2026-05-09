@@ -20,11 +20,10 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const sites = db
+  const sites = await db
     .select()
     .from(schema.sites)
-    .where(eq(schema.sites.userId, session.user.id))
-    .all();
+    .where(eq(schema.sites.userId, session.user.id));
 
   return NextResponse.json({ sites });
 }
@@ -58,13 +57,14 @@ export async function POST(request: Request) {
     if (!baseSlug) baseSlug = "site";
     let slug = baseSlug;
     let counter = 1;
-    while (
-      db
+
+    while (true) {
+      const existing = await db
         .select()
         .from(schema.sites)
-        .where(eq(schema.sites.slug, slug))
-        .get()
-    ) {
+        .where(eq(schema.sites.slug, slug));
+
+      if (!existing || existing.length === 0) break;
       slug = `${baseSlug}-${counter}`;
       counter++;
     }
@@ -77,7 +77,7 @@ export async function POST(request: Request) {
       direction: language === "ar" ? "rtl" : "ltr",
     };
 
-    db.insert(schema.sites)
+    await db.insert(schema.sites)
       .values({
         id: siteId,
         userId: session.user.id,
@@ -89,11 +89,10 @@ export async function POST(request: Request) {
         status: "draft",
         createdAt: now,
         updatedAt: now,
-      })
-      .run();
+      });
 
     for (const section of template.sections) {
-      db.insert(schema.sections)
+      await db.insert(schema.sections)
         .values({
           id: crypto.randomUUID(),
           siteId,
@@ -102,8 +101,7 @@ export async function POST(request: Request) {
           config: JSON.stringify(section.config),
           sortOrder: section.sortOrder,
           isVisible: section.isVisible,
-        })
-        .run();
+        });
     }
 
     return NextResponse.json({ site: { id: siteId, slug } });

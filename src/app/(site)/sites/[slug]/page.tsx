@@ -19,7 +19,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const data = getPublishedSiteBySlug(slug) ?? getSiteBySlug(slug);
+  const data = (await getPublishedSiteBySlug(slug)) ?? (await getSiteBySlug(slug));
 
   if (!data) {
     return { title: "Site Not Found" };
@@ -57,7 +57,7 @@ export default async function PublicSitePage({
   console.log(`[Site Renderer] Loading slug: ${slug}, preview: ${isPreview}`);
 
   // Try published site first
-  let data = getPublishedSiteBySlug(slug);
+  let data = await getPublishedSiteBySlug(slug);
   console.log(`[Site Renderer] Published site found:`, !!data);
 
   let showPreviewBanner = false;
@@ -66,12 +66,12 @@ export default async function PublicSitePage({
   if (!data && isPreview) {
     console.log(`[Site Renderer] Attempting preview access`);
     const session = await auth();
-    const fullData = getSiteBySlug(slug);
+    const fullData = await getSiteBySlug(slug);
     console.log(`[Site Renderer] Full data found:`, !!fullData);
     console.log(`[Site Renderer] Session user:`, session?.user?.id);
 
     if (fullData && session?.user?.id) {
-      const owns = isOwner(fullData.site.id, session.user.id);
+      const owns = await isOwner(fullData.site.id, session.user.id);
       console.log(`[Site Renderer] User owns site:`, owns);
 
       if (owns) {

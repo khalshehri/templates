@@ -23,13 +23,12 @@ export async function POST(request: Request) {
 
     try {
       // Check if email already exists
-      const existing = db
+      const existing = await db
         .select()
         .from(schema.users)
-        .where(eq(schema.users.email, email.toLowerCase()))
-        .get();
+        .where(eq(schema.users.email, email.toLowerCase()));
 
-      if (existing) {
+      if (existing && existing.length > 0) {
         return NextResponse.json(
           { error: "Email already registered" },
           { status: 409 }
@@ -43,15 +42,13 @@ export async function POST(request: Request) {
     const passwordHash = await bcrypt.hash(password, 12);
 
     try {
-      db.insert(schema.users)
-        .values({
-          id: crypto.randomUUID(),
-          name,
-          email: email.toLowerCase(),
-          passwordHash,
-          createdAt: Date.now(),
-        })
-        .run();
+      await db.insert(schema.users).values({
+        id: crypto.randomUUID(),
+        name,
+        email: email.toLowerCase(),
+        passwordHash,
+        createdAt: Date.now(),
+      });
     } catch (insertError) {
       console.error("[DB Insert Error]", insertError);
       throw insertError;

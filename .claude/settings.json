@@ -8,7 +8,10 @@
       "Bash(curl -s http://localhost:3000/dashboard)",
       "WebFetch(domain:templates-sand-psi.vercel.app)",
       "Bash(curl -s http://localhost:3000/register)",
-      "Bash(xargs sed *)"
+      "Bash(xargs sed *)",
+      "Bash(curl -s -X GET http://localhost:3000/api/sites -H 'Cookie: __Secure-auth-token=test')",
+      "Bash(sqlite3 \"/Users/khalidalshehri/IdeaProjects/safahati/data/safahati.db\" \".tables\")",
+      "Bash(sqlite3 \"/Users/khalidalshehri/IdeaProjects/safahati/data/safahati.db\" \"SELECT COUNT\\(*\\) as users FROM users; SELECT COUNT\\(*\\) as sites FROM sites;\")"
     ],
     "additionalDirectories": [
       "/Users/khalidalshehri/IdeaProjects/safahati/data",
