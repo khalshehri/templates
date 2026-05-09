@@ -84,14 +84,16 @@ export function FooterTemplate06({ config, language }: BlockProps) {
               </h3>
               <ul className="mt-4 space-y-3">
                 {col.links.map((link, j) => (
-                  <li key={j}>
-                    <a
-                      href={link.url}
-                      className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
-                    >
-                      {isAr ? link.labelAr : link.label}
-                    </a>
-                  </li>
+                  link && (
+                    <li key={j}>
+                      <a
+                        href={link.url || "#"}
+                        className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                      >
+                        {isAr ? link.labelAr : link.label}
+                      </a>
+                    </li>
+                  )
                 ))}
               </ul>
             </div>
@@ -110,14 +112,16 @@ export function FooterTemplate06({ config, language }: BlockProps) {
             </p>
             <div className={`flex items-center gap-4 ${isAr ? "flex-row-reverse" : ""}`}>
               {c.socials.map((social, i) => (
-                <a
-                  key={i}
-                  href={social.url}
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
-                  aria-label={social.platform}
-                >
-                  <SocialIcon platform={social.platform} />
-                </a>
+                social && (
+                  <a
+                    key={i}
+                    href={social.url || "#"}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                    aria-label={social.platform}
+                  >
+                    <SocialIcon platform={social.platform || ""} />
+                  </a>
+                )
               ))}
             </div>
           </div>

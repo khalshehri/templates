@@ -47,18 +47,20 @@ export function FooterTemplate05({ config, language }: BlockProps) {
             {/* Socials - Colorful Circles */}
             <div className={`flex items-center gap-3 mt-8 ${isAr ? "flex-row-reverse" : ""}`}>
               {c.socials.map((social, i) => (
-                <a
-                  key={i}
-                  href={social.url}
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold uppercase transition-transform hover:scale-110"
-                  style={{
-                    backgroundColor:
-                      platformColors[social.platform] || "var(--theme-primary)",
-                  }}
-                  aria-label={social.platform}
-                >
-                  {social.platform[0]}
-                </a>
+                social && (
+                  <a
+                    key={i}
+                    href={social.url || "#"}
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold uppercase transition-transform hover:scale-110"
+                    style={{
+                      backgroundColor:
+                        platformColors[social.platform] || "var(--theme-primary)",
+                    }}
+                    aria-label={social.platform}
+                  >
+                    {social.platform?.[0] || ""}
+                  </a>
+                )
               ))}
             </div>
           </div>
@@ -71,14 +73,16 @@ export function FooterTemplate05({ config, language }: BlockProps) {
               </h3>
               <ul className="mt-4 space-y-3">
                 {col.links.map((link, j) => (
-                  <li key={j}>
-                    <a
-                      href={link.url}
-                      className="text-sm text-gray-400 hover:text-white transition-colors"
-                    >
-                      {isAr ? link.labelAr : link.label}
-                    </a>
-                  </li>
+                  link && (
+                    <li key={j}>
+                      <a
+                        href={link.url || "#"}
+                        className="text-sm text-gray-400 hover:text-white transition-colors"
+                      >
+                        {isAr ? link.labelAr : link.label}
+                      </a>
+                    </li>
+                  )
                 ))}
               </ul>
             </div>

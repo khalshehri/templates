@@ -31,14 +31,16 @@ export function FooterTemplate01({ config, language }: BlockProps) {
             {/* Socials */}
             <div className="flex items-center gap-3 mt-6">
               {c.socials.map((social, i) => (
-                <a
-                  key={i}
-                  href={social.url}
-                  className="w-9 h-9 rounded-full bg-gray-800 hover:bg-gray-700 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
-                  aria-label={social.platform}
-                >
-                  <SocialIcon platform={social.platform} />
-                </a>
+                social && (
+                  <a
+                    key={i}
+                    href={social.url || "#"}
+                    className="w-9 h-9 rounded-full bg-gray-800 hover:bg-gray-700 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+                    aria-label={social.platform}
+                  >
+                    <SocialIcon platform={social.platform || ""} />
+                  </a>
+                )
               ))}
             </div>
           </div>
@@ -51,14 +53,16 @@ export function FooterTemplate01({ config, language }: BlockProps) {
               </h3>
               <ul className="mt-4 space-y-3">
                 {col.links.map((link, j) => (
-                  <li key={j}>
-                    <a
-                      href={link.url}
-                      className="text-sm text-gray-400 hover:text-white transition-colors"
-                    >
-                      {isAr ? link.labelAr : link.label}
-                    </a>
-                  </li>
+                  link && (
+                    <li key={j}>
+                      <a
+                        href={link.url || "#"}
+                        className="text-sm text-gray-400 hover:text-white transition-colors"
+                      >
+                        {isAr ? link.labelAr : link.label}
+                      </a>
+                    </li>
+                  )
                 ))}
               </ul>
             </div>

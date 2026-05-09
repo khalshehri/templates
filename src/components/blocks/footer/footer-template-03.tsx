@@ -93,13 +93,15 @@ export function FooterTemplate03({ config, language }: BlockProps) {
             {c.socials && c.socials.length > 0 && (
               <div className={`flex gap-3 mt-6 ${isAr ? "flex-row-reverse" : ""}`}>
                 {c.socials.map((social, i) => (
-                  <a
-                    key={i}
-                    href={social.url}
-                    className="w-9 h-9 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all"
-                  >
-                    <SocialIcon platform={social.platform} />
-                  </a>
+                  social && (
+                    <a
+                      key={i}
+                      href={social.url || "#"}
+                      className="w-9 h-9 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all"
+                    >
+                      <SocialIcon platform={social.platform || ""} />
+                    </a>
+                  )
                 ))}
               </div>
             )}
@@ -113,14 +115,16 @@ export function FooterTemplate03({ config, language }: BlockProps) {
               </h4>
               <ul className="space-y-2.5">
                 {col.links.map((link, li) => (
-                  <li key={li}>
-                    <a
-                      href={link.url}
-                      className="text-sm text-white/35 hover:text-white transition-colors"
-                    >
-                      {isAr ? link.labelAr : link.label}
-                    </a>
-                  </li>
+                  link && (
+                    <li key={li}>
+                      <a
+                        href={link.url || "#"}
+                        className="text-sm text-white/35 hover:text-white transition-colors"
+                      >
+                        {isAr ? link.labelAr : link.label}
+                      </a>
+                    </li>
+                  )
                 ))}
               </ul>
             </div>

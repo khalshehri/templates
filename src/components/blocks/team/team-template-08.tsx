@@ -75,13 +75,15 @@ export function TeamTemplate08({ config, language }: BlockProps) {
               {member.socials && member.socials.length > 0 && (
                 <div className={`absolute top-4 ${isAr ? "left-4" : "right-4"} flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}>
                   {member.socials.map((social, si) => (
+                    social && (
                     <a
                       key={si}
-                      href={social.url}
+                      href={social.url || "#"}
                       className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/40 transition-colors"
                     >
                       <SocialIcon platform={social.platform} />
                     </a>
+                    )
                   ))}
                 </div>
               )}

@@ -60,15 +60,17 @@ export function FooterTemplate11({ config, language }: BlockProps) {
         {/* Socials */}
         <div className="mt-8 flex items-center justify-center gap-4">
           {c.socials.map((social, i) => (
-            <a
-              key={i}
-              href={social.url}
-              className="w-10 h-10 rounded-full flex items-center justify-center text-white transition-transform hover:scale-110"
-              style={{ backgroundColor: "var(--theme-primary)" }}
-              aria-label={social.platform}
-            >
-              <SocialIcon platform={social.platform} />
-            </a>
+            social && (
+              <a
+                key={i}
+                href={social.url || "#"}
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white transition-transform hover:scale-110"
+                style={{ backgroundColor: "var(--theme-primary)" }}
+                aria-label={social.platform}
+              >
+                <SocialIcon platform={social.platform || ""} />
+              </a>
+            )
           ))}
         </div>
 
@@ -84,14 +86,16 @@ export function FooterTemplate11({ config, language }: BlockProps) {
                 </h3>
                 <ul className="mt-3 space-y-2">
                   {col.links.map((link, j) => (
-                    <li key={j}>
-                      <a
-                        href={link.url}
-                        className="text-xs text-gray-400 hover:text-gray-700 transition-colors"
-                      >
-                        {isAr ? link.labelAr : link.label}
-                      </a>
-                    </li>
+                    link && (
+                      <li key={j}>
+                        <a
+                          href={link.url || "#"}
+                          className="text-xs text-gray-400 hover:text-gray-700 transition-colors"
+                        >
+                          {isAr ? link.labelAr : link.label}
+                        </a>
+                      </li>
+                    )
                   ))}
                 </ul>
               </div>

@@ -73,9 +73,10 @@ export function TeamTemplate11({ config, language }: BlockProps) {
               {member.socials && member.socials.length > 0 && (
                 <div className="flex flex-wrap justify-center gap-2">
                   {member.socials.map((social, si) => (
+                    social && (
                     <a
                       key={si}
-                      href={social.url}
+                      href={social.url || "#"}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-xs font-medium transition-opacity hover:opacity-80 capitalize"
                       style={{
                         backgroundColor: platformColors[social.platform] || "var(--theme-primary)",
@@ -83,6 +84,7 @@ export function TeamTemplate11({ config, language }: BlockProps) {
                     >
                       {social.platform}
                     </a>
+                    )
                   ))}
                 </div>
               )}

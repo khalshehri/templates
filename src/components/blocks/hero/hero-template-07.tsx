@@ -145,13 +145,15 @@ export function HeroTemplate07({ config, language }: BlockProps) {
                 </span>
                 <div className="w-8 h-px bg-white/10" />
                 {c.socials.map((social, i) => (
-                  <a
-                    key={i}
-                    href={social.url}
-                    className="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 hover:bg-white/5 transition-all"
-                  >
-                    <SocialIcon platform={social.platform} />
-                  </a>
+                  social && (
+                    <a
+                      key={i}
+                      href={social.url || "#"}
+                      className="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 hover:bg-white/5 transition-all"
+                    >
+                      <SocialIcon platform={social.platform || ""} />
+                    </a>
+                  )
                 ))}
               </div>
             )}

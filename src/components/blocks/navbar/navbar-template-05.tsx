@@ -58,7 +58,7 @@ export function NavbarTemplate05({ config, language }: BlockProps) {
                 className="hidden sm:inline-flex items-center px-5 py-2 text-sm font-semibold text-white rounded-full transition-all hover:opacity-90"
                 style={{ backgroundColor: "var(--theme-primary)" }}
               >
-                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+                {isAr ? c.ctaButton?.textAr : c.ctaButton?.text}
               </a>
             )}
             <div className="sm:hidden w-10" />
@@ -111,14 +111,16 @@ export function NavbarTemplate05({ config, language }: BlockProps) {
           {/* Drawer links */}
           <div className="flex-1 overflow-y-auto px-6 py-6 space-y-1">
             {c.links.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                className="block px-3 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-                onClick={() => setDrawerOpen(false)}
-              >
-                {isAr ? link.labelAr : link.label}
-              </a>
+              link && (
+                <a
+                  key={i}
+                  href={link.url || "#"}
+                  className="block px-3 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+                  onClick={() => setDrawerOpen(false)}
+                >
+                  {isAr ? link.labelAr : link.label}
+                </a>
+              )
             ))}
           </div>
 
@@ -131,7 +133,7 @@ export function NavbarTemplate05({ config, language }: BlockProps) {
                 style={{ backgroundColor: "var(--theme-primary)" }}
                 onClick={() => setDrawerOpen(false)}
               >
-                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+                {isAr ? c.ctaButton?.textAr : c.ctaButton?.text}
               </a>
             )}
           </div>

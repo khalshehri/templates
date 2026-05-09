@@ -48,13 +48,15 @@ export function NavbarTemplate11({ config, language }: BlockProps) {
             {/* Desktop Links */}
             <div className="hidden md:flex items-center gap-8">
               {c.links.map((link, i) => (
-                <a
-                  key={i}
-                  href={link.url}
-                  className={`text-sm font-medium transition-colors hover:opacity-100 ${textMuted}`}
-                >
-                  {isAr ? link.labelAr : link.label}
-                </a>
+                link && (
+                  <a
+                    key={i}
+                    href={link.url || "#"}
+                    className={`text-sm font-medium transition-colors hover:opacity-100 ${textMuted}`}
+                  >
+                    {isAr ? link.labelAr : link.label}
+                  </a>
+                )
               ))}
               {c.ctaButton && (
                 <a
@@ -62,7 +64,7 @@ export function NavbarTemplate11({ config, language }: BlockProps) {
                   className="inline-flex items-center px-5 py-2.5 text-sm font-semibold text-white rounded-xl transition-all hover:opacity-90"
                   style={{ backgroundColor: "var(--theme-primary)" }}
                 >
-                  {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+                  {isAr ? c.ctaButton?.textAr : c.ctaButton?.text}
                 </a>
               )}
             </div>
@@ -87,14 +89,16 @@ export function NavbarTemplate11({ config, language }: BlockProps) {
             >
               <div className="space-y-3">
                 {c.links.map((link, i) => (
-                  <a
-                    key={i}
-                    href={link.url}
-                    className={`block text-sm font-medium py-1.5 ${textMuted}`}
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {isAr ? link.labelAr : link.label}
-                  </a>
+                  link && (
+                    <a
+                      key={i}
+                      href={link.url || "#"}
+                      className={`block text-sm font-medium py-1.5 ${textMuted}`}
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {isAr ? link.labelAr : link.label}
+                    </a>
+                  )
                 ))}
                 {c.ctaButton && (
                   <a
@@ -102,7 +106,7 @@ export function NavbarTemplate11({ config, language }: BlockProps) {
                     className="block w-full text-center px-5 py-2.5 text-sm font-semibold text-white rounded-xl mt-2"
                     style={{ backgroundColor: "var(--theme-primary)" }}
                   >
-                    {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+                    {isAr ? c.ctaButton?.textAr : c.ctaButton?.text}
                   </a>
                 )}
               </div>

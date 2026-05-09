@@ -45,25 +45,27 @@ export function NavbarTemplate04({ config, language }: BlockProps) {
           {/* Desktop Pill Links */}
           <div className="hidden md:flex items-center gap-2">
             {c.links.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                className="px-4 py-2 text-sm font-medium text-gray-600 rounded-full transition-all duration-200 hover:text-white"
-                style={{
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  ["--tw-hover-bg" as any]: "var(--theme-primary)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "var(--theme-primary)";
-                  e.currentTarget.style.color = "#fff";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                  e.currentTarget.style.color = "";
-                }}
-              >
-                {isAr ? link.labelAr : link.label}
-              </a>
+              link && (
+                <a
+                  key={i}
+                  href={link.url || "#"}
+                  className="px-4 py-2 text-sm font-medium text-gray-600 rounded-full transition-all duration-200 hover:text-white"
+                  style={{
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    ["--tw-hover-bg" as any]: "var(--theme-primary)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "var(--theme-primary)";
+                    e.currentTarget.style.color = "#fff";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "transparent";
+                    e.currentTarget.style.color = "";
+                  }}
+                >
+                  {isAr ? link.labelAr : link.label}
+                </a>
+              )
             ))}
           </div>
 
@@ -75,7 +77,7 @@ export function NavbarTemplate04({ config, language }: BlockProps) {
                 className="inline-flex items-center px-6 py-2.5 text-sm font-semibold text-white rounded-full transition-all hover:opacity-90 hover:shadow-lg"
                 style={{ backgroundColor: "var(--theme-primary)" }}
               >
-                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+                {isAr ? c.ctaButton?.textAr : c.ctaButton?.text}
               </a>
             )}
           </div>
@@ -95,14 +97,16 @@ export function NavbarTemplate04({ config, language }: BlockProps) {
         <div className="md:hidden bg-white border-t border-gray-100">
           <div className="px-4 py-4 space-y-2">
             {c.links.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                className="block px-4 py-2.5 text-sm font-medium text-gray-600 rounded-full hover:bg-gray-50 transition-colors"
-                onClick={() => setMobileOpen(false)}
-              >
-                {isAr ? link.labelAr : link.label}
-              </a>
+              link && (
+                <a
+                  key={i}
+                  href={link.url || "#"}
+                  className="block px-4 py-2.5 text-sm font-medium text-gray-600 rounded-full hover:bg-gray-50 transition-colors"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {isAr ? link.labelAr : link.label}
+                </a>
+              )
             ))}
             {c.ctaButton && (
               <a
@@ -110,7 +114,7 @@ export function NavbarTemplate04({ config, language }: BlockProps) {
                 className="block w-full text-center px-5 py-2.5 text-sm font-semibold text-white rounded-full mt-2"
                 style={{ backgroundColor: "var(--theme-primary)" }}
               >
-                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+                {isAr ? c.ctaButton?.textAr : c.ctaButton?.text}
               </a>
             )}
           </div>

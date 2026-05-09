@@ -49,7 +49,7 @@ export function NavbarTemplate06({ config, language }: BlockProps) {
                 className="hidden sm:inline-flex items-center px-5 py-2 text-sm font-semibold text-white rounded-lg transition-all hover:opacity-90"
                 style={{ backgroundColor: "var(--theme-primary)" }}
               >
-                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+                {isAr ? c.ctaButton?.textAr : c.ctaButton?.text}
               </a>
             )}
 
@@ -71,13 +71,15 @@ export function NavbarTemplate06({ config, language }: BlockProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="hidden md:flex items-center justify-center gap-10 h-11">
           {c.links.map((link, i) => (
-            <a
-              key={i}
-              href={link.url}
-              className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
-            >
-              {isAr ? link.labelAr : link.label}
-            </a>
+            link && (
+              <a
+                key={i}
+                href={link.url || "#"}
+                className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
+              >
+                {isAr ? link.labelAr : link.label}
+              </a>
+            )
           ))}
         </div>
       </div>
@@ -87,14 +89,16 @@ export function NavbarTemplate06({ config, language }: BlockProps) {
         <div className="md:hidden bg-white border-t border-gray-100">
           <div className="px-4 py-4 space-y-3">
             {c.links.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                className="block text-sm font-medium text-gray-600 hover:text-gray-900 py-2"
-                onClick={() => setMobileOpen(false)}
-              >
-                {isAr ? link.labelAr : link.label}
-              </a>
+              link && (
+                <a
+                  key={i}
+                  href={link.url || "#"}
+                  className="block text-sm font-medium text-gray-600 hover:text-gray-900 py-2"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {isAr ? link.labelAr : link.label}
+                </a>
+              )
             ))}
             {c.ctaButton && (
               <a
@@ -102,7 +106,7 @@ export function NavbarTemplate06({ config, language }: BlockProps) {
                 className="block w-full text-center px-5 py-2.5 text-sm font-semibold text-white rounded-lg sm:hidden"
                 style={{ backgroundColor: "var(--theme-primary)" }}
               >
-                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+                {isAr ? c.ctaButton?.textAr : c.ctaButton?.text}
               </a>
             )}
           </div>

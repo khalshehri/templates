@@ -30,24 +30,26 @@ export function FooterTemplate07({ config, language }: BlockProps) {
         {/* Large Social Icons Grid */}
         <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-6">
           {c.socials.map((social, i) => (
-            <a
-              key={i}
-              href={social.url}
-              className="group flex flex-col items-center gap-2"
-              aria-label={social.platform}
-            >
-              <div
-                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-white text-xl sm:text-2xl font-bold uppercase transition-transform group-hover:scale-110"
-                style={{ backgroundColor: "var(--theme-primary)" }}
+            social && (
+              <a
+                key={i}
+                href={social.url || "#"}
+                className="group flex flex-col items-center gap-2"
+                aria-label={social.platform}
               >
-                {social.platform[0]}
-              </div>
-              <span className="text-xs text-gray-500 group-hover:text-gray-900 transition-colors capitalize">
-                {isAr
-                  ? platformLabels[social.platform]?.ar || social.platform
-                  : platformLabels[social.platform]?.en || social.platform}
-              </span>
-            </a>
+                <div
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-white text-xl sm:text-2xl font-bold uppercase transition-transform group-hover:scale-110"
+                  style={{ backgroundColor: "var(--theme-primary)" }}
+                >
+                  {social.platform?.[0] || ""}
+                </div>
+                <span className="text-xs text-gray-500 group-hover:text-gray-900 transition-colors capitalize">
+                  {isAr
+                    ? platformLabels[social.platform]?.ar || social.platform
+                    : platformLabels[social.platform]?.en || social.platform}
+                </span>
+              </a>
+            )
           ))}
         </div>
       </div>
@@ -65,14 +67,16 @@ export function FooterTemplate07({ config, language }: BlockProps) {
                 </h3>
                 <ul className="mt-4 space-y-2.5">
                   {col.links.map((link, j) => (
-                    <li key={j}>
-                      <a
-                        href={link.url}
-                        className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
-                      >
-                        {isAr ? link.labelAr : link.label}
-                      </a>
-                    </li>
+                    link && (
+                      <li key={j}>
+                        <a
+                          href={link.url || "#"}
+                          className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                        >
+                          {isAr ? link.labelAr : link.label}
+                        </a>
+                      </li>
+                    )
                   ))}
                 </ul>
               </div>

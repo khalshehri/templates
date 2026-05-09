@@ -58,13 +58,15 @@ export function FooterTemplate02({ config, language }: BlockProps) {
           <div className="flex items-center gap-6">
             {c.columns.flatMap((col) =>
               col.links.slice(0, 2).map((link, j) => (
-                <a
-                  key={`${col.title}-${j}`}
-                  href={link.url}
-                  className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
-                >
-                  {isAr ? link.labelAr : link.label}
-                </a>
+                link && (
+                  <a
+                    key={`${col.title}-${j}`}
+                    href={link.url || "#"}
+                    className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                  >
+                    {isAr ? link.labelAr : link.label}
+                  </a>
+                )
               ))
             )}
           </div>

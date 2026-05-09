@@ -73,9 +73,10 @@ export function TeamTemplate06({ config, language }: BlockProps) {
               {member.socials && member.socials.length > 0 && (
                 <div className={`flex items-center gap-2 shrink-0 ${isAr ? "flex-row-reverse" : ""}`}>
                   {member.socials.map((social, si) => (
+                    social && (
                     <a
                       key={si}
-                      href={social.url}
+                      href={social.url || "#"}
                       className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200"
                       onMouseEnter={(e) => {
                         (e.currentTarget as HTMLElement).style.backgroundColor = "var(--theme-primary)";
@@ -86,6 +87,7 @@ export function TeamTemplate06({ config, language }: BlockProps) {
                     >
                       <SocialIcon platform={social.platform} />
                     </a>
+                    )
                   ))}
                 </div>
               )}

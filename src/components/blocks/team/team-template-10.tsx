@@ -84,9 +84,10 @@ export function TeamTemplate10({ config, language }: BlockProps) {
                 {member.socials && member.socials.length > 0 && (
                   <div className={`flex items-center gap-2 mt-4 ${isAr ? "justify-end" : ""}`}>
                     {member.socials.map((social, si) => (
+                      social && (
                       <a
                         key={si}
-                        href={social.url}
+                        href={social.url || "#"}
                         className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200"
                         onMouseEnter={(e) => {
                           (e.currentTarget as HTMLElement).style.backgroundColor = "var(--theme-primary)";
@@ -97,6 +98,7 @@ export function TeamTemplate10({ config, language }: BlockProps) {
                       >
                         <SocialIcon platform={social.platform} />
                       </a>
+                      )
                     ))}
                   </div>
                 )}

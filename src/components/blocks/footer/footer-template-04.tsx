@@ -59,27 +59,31 @@ export function FooterTemplate04({ config, language }: BlockProps) {
           {/* Flattened Links */}
           <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 flex-1">
             {allLinks.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                className="text-sm text-gray-600 hover:text-gray-900 transition-colors whitespace-nowrap"
-              >
-                {isAr ? link.labelAr : link.label}
-              </a>
+              link && (
+                <a
+                  key={i}
+                  href={link.url || "#"}
+                  className="text-sm text-gray-600 hover:text-gray-900 transition-colors whitespace-nowrap"
+                >
+                  {isAr ? link.labelAr : link.label}
+                </a>
+              )
             ))}
           </nav>
 
           {/* Socials */}
           <div className={`flex items-center gap-3 shrink-0 ${isAr ? "flex-row-reverse" : ""}`}>
             {c.socials.map((social, i) => (
-              <a
-                key={i}
-                href={social.url}
-                className="text-gray-400 hover:text-gray-700 transition-colors"
-                aria-label={social.platform}
-              >
-                <SocialIcon platform={social.platform} />
-              </a>
+              social && (
+                <a
+                  key={i}
+                  href={social.url || "#"}
+                  className="text-gray-400 hover:text-gray-700 transition-colors"
+                  aria-label={social.platform}
+                >
+                  <SocialIcon platform={social.platform || ""} />
+                </a>
+              )
             ))}
           </div>
         </div>

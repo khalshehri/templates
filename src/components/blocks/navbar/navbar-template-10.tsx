@@ -41,13 +41,15 @@ export function NavbarTemplate10({ config, language }: BlockProps) {
           {/* Desktop Links — white */}
           <div className="hidden md:flex items-center gap-8">
             {c.links.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                className="text-sm font-medium text-white/80 hover:text-white transition-colors"
-              >
-                {isAr ? link.labelAr : link.label}
-              </a>
+              link && (
+                <a
+                  key={i}
+                  href={link.url || "#"}
+                  className="text-sm font-medium text-white/80 hover:text-white transition-colors"
+                >
+                  {isAr ? link.labelAr : link.label}
+                </a>
+              )
             ))}
             {c.ctaButton && (
               <a
@@ -55,7 +57,7 @@ export function NavbarTemplate10({ config, language }: BlockProps) {
                 className="inline-flex items-center px-5 py-2.5 text-sm font-semibold rounded-full transition-all hover:opacity-90 bg-white"
                 style={{ color: "var(--theme-primary)" }}
               >
-                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+                {isAr ? c.ctaButton?.textAr : c.ctaButton?.text}
               </a>
             )}
           </div>
@@ -75,14 +77,16 @@ export function NavbarTemplate10({ config, language }: BlockProps) {
         <div className="md:hidden border-t border-white/20">
           <div className="px-4 py-4 space-y-3">
             {c.links.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                className="block text-sm font-medium text-white/80 hover:text-white py-2"
-                onClick={() => setMobileOpen(false)}
-              >
-                {isAr ? link.labelAr : link.label}
-              </a>
+              link && (
+                <a
+                  key={i}
+                  href={link.url || "#"}
+                  className="block text-sm font-medium text-white/80 hover:text-white py-2"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {isAr ? link.labelAr : link.label}
+                </a>
+              )
             ))}
             {c.ctaButton && (
               <a
@@ -90,7 +94,7 @@ export function NavbarTemplate10({ config, language }: BlockProps) {
                 className="block w-full text-center px-5 py-2.5 text-sm font-semibold rounded-full bg-white"
                 style={{ color: "var(--theme-primary)" }}
               >
-                {isAr ? c.ctaButton.textAr : c.ctaButton.text}
+                {isAr ? c.ctaButton?.textAr : c.ctaButton?.text}
               </a>
             )}
           </div>

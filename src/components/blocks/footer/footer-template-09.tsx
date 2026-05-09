@@ -62,27 +62,31 @@ export function FooterTemplate09({ config, language }: BlockProps) {
         {/* Flattened Links - Single Row Centered */}
         <nav className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
           {allLinks.map((link, i) => (
-            <a
-              key={i}
-              href={link.url}
-              className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              {isAr ? link.labelAr : link.label}
-            </a>
+            link && (
+              <a
+                key={i}
+                href={link.url || "#"}
+                className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                {isAr ? link.labelAr : link.label}
+              </a>
+            )
           ))}
         </nav>
 
         {/* Socials - Centered */}
         <div className="mt-8 flex items-center justify-center gap-4">
           {c.socials.map((social, i) => (
-            <a
-              key={i}
-              href={social.url}
-              className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors"
-              aria-label={social.platform}
-            >
-              <SocialIcon platform={social.platform} />
-            </a>
+            social && (
+              <a
+                key={i}
+                href={social.url || "#"}
+                className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors"
+                aria-label={social.platform}
+              >
+                <SocialIcon platform={social.platform || ""} />
+              </a>
+            )
           ))}
         </div>
 

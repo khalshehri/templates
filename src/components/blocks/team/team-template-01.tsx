@@ -81,22 +81,24 @@ export function TeamTemplate01({ config, language }: BlockProps) {
               {member.socials && member.socials.length > 0 && (
                 <div className="flex items-center justify-center gap-3 mt-4">
                   {member.socials.map((social, si) => (
-                    <a
-                      key={si}
-                      href={social.url}
-                      className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:text-white transition-all duration-200"
-                      style={{
-                        ["--hover-bg" as string]: "var(--theme-primary)",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.target as HTMLElement).style.backgroundColor = "var(--theme-primary)";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.target as HTMLElement).style.backgroundColor = "";
-                      }}
-                    >
-                      <SocialIcon platform={social.platform} />
-                    </a>
+                    social && (
+                      <a
+                        key={si}
+                        href={social.url || "#"}
+                        className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:text-white transition-all duration-200"
+                        style={{
+                          ["--hover-bg" as string]: "var(--theme-primary)",
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.target as HTMLElement).style.backgroundColor = "var(--theme-primary)";
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.target as HTMLElement).style.backgroundColor = "";
+                        }}
+                      >
+                        <SocialIcon platform={social.platform || ""} />
+                      </a>
+                    )
                   ))}
                 </div>
               )}
