@@ -48,7 +48,8 @@ export async function POST(request: Request) {
       .run();
 
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (error) {
+    console.error("[POST /api/auth/register]", error);
     return NextResponse.json(
       { error: "Registration failed" },
       { status: 500 }
