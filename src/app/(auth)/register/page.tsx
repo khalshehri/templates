@@ -35,26 +35,35 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
+      console.log("Starting registration...");
+      
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
 
+      console.log("Registration response:", res.status);
+      
       const data = await res.json();
+      console.log("Registration data:", data);
 
       if (!res.ok) {
-        setError(data.error || "Registration failed");
+        setError(data.error || data.details || "Registration failed");
         setLoading(false);
         return;
       }
 
+      console.log("Registration successful, attempting sign in...");
+      
       // Auto-login after registration
       const result = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
+
+      console.log("Sign in result:", result);
 
       if (result?.error) {
         setError("Account created but login failed. Please try signing in.");
@@ -64,8 +73,9 @@ export default function RegisterPage() {
 
       router.push("/dashboard");
       router.refresh();
-    } catch {
-      setError("Something went wrong. Please try again.");
+    } catch (err) {
+      console.error("Registration error:", err);
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
       setLoading(false);
     }
   };
