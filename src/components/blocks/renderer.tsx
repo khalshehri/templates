@@ -21,15 +21,39 @@ export function BlockRenderer({ section, language }: Props) {
     }
 
     const Component = template.component;
-    return (
-      <section
-        id={`section-${section.id}`}
-        data-block={section.blockType}
-        data-template={section.templateId}
-      >
-        <Component config={section.config} language={language} />
-      </section>
-    );
+
+    // Safety wrapper to catch component rendering errors
+    try {
+      return (
+        <section
+          id={`section-${section.id}`}
+          data-block={section.blockType}
+          data-template={section.templateId}
+        >
+          <Component config={section.config || {}} language={language} />
+        </section>
+      );
+    } catch (renderError) {
+      console.error(
+        `[BlockRenderer] Error rendering component for ${section.blockType}/${section.templateId}:`,
+        renderError
+      );
+      // Return a fallback error boundary instead of crashing
+      return (
+        <section
+          id={`section-${section.id}`}
+          className="bg-red-50 border-l-4 border-red-500 p-4 text-sm text-red-700"
+        >
+          <p>
+            <strong>Component Error:</strong> Failed to render{" "}
+            {section.blockType}/{section.templateId}
+          </p>
+          <p className="text-xs text-red-600 mt-1">
+            {renderError instanceof Error ? renderError.message : "Unknown error"}
+          </p>
+        </section>
+      );
+    }
   } catch (error) {
     console.error(
       `[BlockRenderer] Error rendering ${section.blockType}/${section.templateId}:`,

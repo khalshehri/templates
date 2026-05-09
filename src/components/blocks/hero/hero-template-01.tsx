@@ -55,27 +55,31 @@ export function HeroTemplate01({ config, language }: BlockProps) {
           </p>
 
           {/* CTAs */}
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href={c.ctaPrimary.url}
-              className="group inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold text-white rounded-full transition-all hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5"
-              style={{ backgroundColor: "var(--theme-primary)" }}
-            >
-              {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
-              <ArrowRight
-                size={16}
-                className="transition-transform group-hover:translate-x-0.5"
-              />
-            </a>
-            {c.ctaSecondary && (
-              <a
-                href={c.ctaSecondary.url}
-                className="inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold text-gray-700 rounded-full border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all"
-              >
-                {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
-              </a>
-            )}
-          </div>
+          {(c.ctaPrimary || c.ctaSecondary) && (
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              {c.ctaPrimary && (
+                <a
+                  href={c.ctaPrimary.url || "#"}
+                  className="group inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold text-white rounded-full transition-all hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5"
+                  style={{ backgroundColor: "var(--theme-primary)" }}
+                >
+                  {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
+                  <ArrowRight
+                    size={16}
+                    className="transition-transform group-hover:translate-x-0.5"
+                  />
+                </a>
+              )}
+              {c.ctaSecondary && (
+                <a
+                  href={c.ctaSecondary.url || "#"}
+                  className="inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold text-gray-700 rounded-full border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all"
+                >
+                  {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
+                </a>
+              )}
+            </div>
+          )}
 
           {/* Stats */}
           {c.stats && c.stats.length > 0 && (
