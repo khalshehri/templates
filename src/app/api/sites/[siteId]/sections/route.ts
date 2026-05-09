@@ -97,7 +97,7 @@ export async function PUT(
 
     // Update site's updatedAt
     db.update(schema.sites)
-      .set({ updatedAt: new Date() })
+      .set({ updatedAt: Date.now() })
       .where(eq(schema.sites.id, siteId))
       .run();
 

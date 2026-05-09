@@ -49,7 +49,7 @@ export async function POST(request: Request) {
           name,
           email: email.toLowerCase(),
           passwordHash,
-          createdAt: new Date(),
+          createdAt: Date.now(),
         })
         .run();
     } catch (insertError) {

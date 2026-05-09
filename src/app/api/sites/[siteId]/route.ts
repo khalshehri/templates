@@ -71,7 +71,7 @@ export async function PUT(
 
   try {
     const body = await request.json();
-    const updates: Record<string, unknown> = { updatedAt: new Date() };
+    const updates: Record<string, unknown> = { updatedAt: Date.now() };
 
     if (body.name) updates.name = body.name;
     if (body.language) updates.language = body.language;

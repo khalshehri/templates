@@ -84,7 +84,7 @@ export async function POST(request: Request) {
     }
 
     const siteId = crypto.randomUUID();
-    const now = new Date();
+    const now = Date.now();
 
     const themeWithDirection = {
       ...template.defaultTheme,
