@@ -37,7 +37,21 @@ export async function ensureSchema() {
     const { sql } = initDb();
     console.log("[DB] Ensuring schema exists...");
 
-    // Create users table
+    // Check if tables exist and have correct schema
+    const tableCheck = await sql`
+      SELECT table_name FROM information_schema.tables
+      WHERE table_schema = 'public' AND table_name IN ('users', 'sites', 'sections')
+    `;
+
+    // If any tables exist, drop and recreate to ensure correct schema
+    if (Array.isArray(tableCheck) && tableCheck.length > 0) {
+      console.log("[DB] Recreating tables with correct schema...");
+      await sql`DROP TABLE IF EXISTS sections CASCADE`;
+      await sql`DROP TABLE IF EXISTS sites CASCADE`;
+      await sql`DROP TABLE IF EXISTS users CASCADE`;
+    }
+
+    // Create users table with BIGINT for timestamps
     await sql`
       CREATE TABLE IF NOT EXISTS users (
         id TEXT PRIMARY KEY,
@@ -47,9 +61,9 @@ export async function ensureSchema() {
         created_at BIGINT NOT NULL
       )
     `;
-    console.log("[DB] ✓ users table");
+    console.log("[DB] ✓ users table (BIGINT timestamps)");
 
-    // Create sites table
+    // Create sites table with BIGINT for timestamps
     await sql`
       CREATE TABLE IF NOT EXISTS sites (
         id TEXT PRIMARY KEY,
@@ -65,7 +79,7 @@ export async function ensureSchema() {
         FOREIGN KEY (user_id) REFERENCES users(id)
       )
     `;
-    console.log("[DB] ✓ sites table");
+    console.log("[DB] ✓ sites table (BIGINT timestamps)");
 
     // Create sections table
     await sql`
