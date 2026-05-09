@@ -23,8 +23,8 @@ export function ServicesTemplate03({ config, language }: BlockProps) {
   const isAr = language === "ar";
 
   // Bento layout: first item is large, rest are small
-  const featured = c.items[0];
-  const rest = c.items.slice(1);
+  const featured = c.items?.[0];
+  const rest = c.items?.slice(1) ?? [];
 
   return (
     <div className="bg-gray-950 py-20 sm:py-28">
