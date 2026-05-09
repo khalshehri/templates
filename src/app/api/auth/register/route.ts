@@ -21,37 +21,47 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if email already exists
-    const existing = db
-      .select()
-      .from(schema.users)
-      .where(eq(schema.users.email, email.toLowerCase()))
-      .get();
+    try {
+      // Check if email already exists
+      const existing = db
+        .select()
+        .from(schema.users)
+        .where(eq(schema.users.email, email.toLowerCase()))
+        .get();
 
-    if (existing) {
-      return NextResponse.json(
-        { error: "Email already registered" },
-        { status: 409 }
-      );
+      if (existing) {
+        return NextResponse.json(
+          { error: "Email already registered" },
+          { status: 409 }
+        );
+      }
+    } catch (dbError) {
+      console.error("[DB Check Error]", dbError);
+      throw dbError;
     }
 
     const passwordHash = await bcrypt.hash(password, 12);
 
-    db.insert(schema.users)
-      .values({
-        id: crypto.randomUUID(),
-        name,
-        email: email.toLowerCase(),
-        passwordHash,
-        createdAt: new Date(),
-      })
-      .run();
+    try {
+      db.insert(schema.users)
+        .values({
+          id: crypto.randomUUID(),
+          name,
+          email: email.toLowerCase(),
+          passwordHash,
+          createdAt: new Date(),
+        })
+        .run();
+    } catch (insertError) {
+      console.error("[DB Insert Error]", insertError);
+      throw insertError;
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("[POST /api/auth/register]", error);
+    console.error("[POST /api/auth/register] Full error:", error instanceof Error ? error.message : String(error));
     return NextResponse.json(
-      { error: "Registration failed" },
+      { error: "Registration failed", details: error instanceof Error ? error.message : undefined },
       { status: 500 }
     );
   }
