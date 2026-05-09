@@ -17,27 +17,27 @@ export default async function EditorPage({
 
   const { siteId } = await params;
 
-  const site = db
+  const sites = await db
     .select()
     .from(schema.sites)
     .where(
       and(eq(schema.sites.id, siteId), eq(schema.sites.userId, session.user.id))
-    )
-    .get();
+    );
+
+  const site = sites?.[0];
 
   if (!site) {
     redirect("/dashboard");
   }
 
-  const sections = db
+  const sections = await db
     .select()
     .from(schema.sections)
     .where(eq(schema.sections.siteId, siteId))
-    .orderBy(schema.sections.sortOrder)
-    .all();
+    .orderBy(schema.sections.sortOrder);
 
   const parsedTheme = JSON.parse(site.theme);
-  const parsedSections: SectionData[] = sections.map((s: typeof schema.sections.$inferSelect) => ({
+  const parsedSections: SectionData[] = (sections || []).map((s: typeof schema.sections.$inferSelect) => ({
     ...s,
     config: JSON.parse(s.config),
     blockType: s.blockType as SectionData["blockType"],

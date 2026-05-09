@@ -15,27 +15,25 @@ export async function GET(
   const { siteId } = await params;
 
   // Verify ownership
-  const site = db
+  const sites = await db
     .select()
     .from(schema.sites)
     .where(
       and(eq(schema.sites.id, siteId), eq(schema.sites.userId, session.user.id))
-    )
-    .get();
+    );
 
-  if (!site) {
+  if (!sites || sites.length === 0) {
     return NextResponse.json({ error: "Site not found" }, { status: 404 });
   }
 
-  const sections = db
+  const sections = await db
     .select()
     .from(schema.sections)
     .where(eq(schema.sections.siteId, siteId))
-    .orderBy(schema.sections.sortOrder)
-    .all();
+    .orderBy(schema.sections.sortOrder);
 
   return NextResponse.json({
-    sections: sections.map((s: typeof schema.sections.$inferSelect) => ({
+    sections: (sections || []).map((s) => ({
       ...s,
       config: JSON.parse(s.config),
     })),
@@ -54,15 +52,14 @@ export async function PUT(
   const { siteId } = await params;
 
   // Verify ownership
-  const site = db
+  const sites = await db
     .select()
     .from(schema.sites)
     .where(
       and(eq(schema.sites.id, siteId), eq(schema.sites.userId, session.user.id))
-    )
-    .get();
+    );
 
-  if (!site) {
+  if (!sites || sites.length === 0) {
     return NextResponse.json({ error: "Site not found" }, { status: 404 });
   }
 
@@ -76,13 +73,13 @@ export async function PUT(
       );
     }
 
-    // Transaction: delete old, insert new
-    db.delete(schema.sections)
-      .where(eq(schema.sections.siteId, siteId))
-      .run();
+    // Delete old sections
+    await db.delete(schema.sections)
+      .where(eq(schema.sections.siteId, siteId));
 
+    // Insert new sections
     for (const section of sections) {
-      db.insert(schema.sections)
+      await db.insert(schema.sections)
         .values({
           id: section.id || crypto.randomUUID(),
           siteId,
@@ -91,18 +88,17 @@ export async function PUT(
           config: JSON.stringify(section.config),
           sortOrder: section.sortOrder,
           isVisible: section.isVisible ?? true,
-        })
-        .run();
+        });
     }
 
     // Update site's updatedAt
-    db.update(schema.sites)
+    await db.update(schema.sites)
       .set({ updatedAt: Date.now() })
-      .where(eq(schema.sites.id, siteId))
-      .run();
+      .where(eq(schema.sites.id, siteId));
 
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (e) {
+    console.error("[PUT sections]", e);
     return NextResponse.json(
       { error: "Failed to save sections" },
       { status: 500 }
