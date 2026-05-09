@@ -35,7 +35,7 @@ export async function GET(
     .all();
 
   return NextResponse.json({
-    sections: sections.map((s) => ({
+    sections: sections.map((s: typeof schema.sections.$inferSelect) => ({
       ...s,
       config: JSON.parse(s.config),
     })),

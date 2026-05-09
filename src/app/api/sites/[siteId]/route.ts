@@ -38,7 +38,7 @@ export async function GET(
       ...site,
       theme: JSON.parse(site.theme),
     },
-    sections: sections.map((s) => ({
+    sections: sections.map((s: typeof schema.sections.$inferSelect) => ({
       ...s,
       config: JSON.parse(s.config),
     })),

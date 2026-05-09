@@ -10,7 +10,9 @@
       "Bash(curl -s http://localhost:3000/register)"
     ],
     "additionalDirectories": [
-      "/Users/khalidalshehri/IdeaProjects/safahati/data"
+      "/Users/khalidalshehri/IdeaProjects/safahati/data",
+      "/Users/khalidalshehri/IdeaProjects/safahati/src/app/api/sites/[siteId]",
+      "/Users/khalidalshehri/IdeaProjects/safahati/src/app/api/sites/[siteId]/sections"
     ]
   }
 }
