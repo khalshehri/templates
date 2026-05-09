@@ -2,19 +2,30 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
 import * as schema from "./schema";
 
-if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL is required. Set it in your environment variables."
-  );
+let dbInstance: ReturnType<typeof drizzle> | null = null;
+let sqlClient: ReturnType<typeof neon> | null = null;
+
+function initDb() {
+  if (dbInstance) return { db: dbInstance, sql: sqlClient! };
+
+  if (!process.env.DATABASE_URL) {
+    throw new Error(
+      "DATABASE_URL is required. Set it in your environment variables."
+    );
+  }
+
+  console.log("[DB] Initializing Neon PostgreSQL...");
+  sqlClient = neon(process.env.DATABASE_URL);
+  dbInstance = drizzle(sqlClient, { schema });
+  return { db: dbInstance, sql: sqlClient };
 }
 
-console.log("[DB] Initializing Neon PostgreSQL...");
-
-// Create Neon client
-const sql = neon(process.env.DATABASE_URL);
-
-// Create Drizzle instance
-export const db = drizzle(sql, { schema });
+export const db = new Proxy({} as ReturnType<typeof drizzle>, {
+  get: (_, prop) => {
+    const { db: dbInst } = initDb();
+    return dbInst[prop as keyof typeof dbInst];
+  },
+}) as ReturnType<typeof drizzle>;
 
 // Initialize schema on first use
 let schemaInitialized = false;
@@ -23,6 +34,7 @@ export async function ensureSchema() {
   if (schemaInitialized) return;
 
   try {
+    const { sql } = initDb();
     console.log("[DB] Ensuring schema exists...");
 
     // Create users table
