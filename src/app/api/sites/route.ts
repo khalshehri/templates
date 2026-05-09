@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { db, schema } from "@/lib/db";
+import { db, schema, ensureSchema } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { getIndustryTemplate } from "@/config/industry-templates";
 
@@ -15,21 +15,31 @@ function slugify(text: string): string {
 }
 
 export async function GET() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  try {
+    await ensureSchema();
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const sites = await db
+      .select()
+      .from(schema.sites)
+      .where(eq(schema.sites.userId, session.user.id));
+
+    return NextResponse.json({ sites });
+  } catch (error) {
+    console.error("[GET /api/sites]", error);
+    return NextResponse.json(
+      { error: "Failed to fetch sites" },
+      { status: 500 }
+    );
   }
-
-  const sites = await db
-    .select()
-    .from(schema.sites)
-    .where(eq(schema.sites.userId, session.user.id));
-
-  return NextResponse.json({ sites });
 }
 
 export async function POST(request: Request) {
   try {
+    await ensureSchema();
     const session = await auth();
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

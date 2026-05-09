@@ -1,69 +1,79 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { db, schema } from "@/lib/db";
+import { db, schema, ensureSchema } from "@/lib/db";
 import { eq, and } from "drizzle-orm";
 
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ siteId: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  try {
+    await ensureSchema();
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-  const { siteId } = await params;
+    const { siteId } = await params;
 
-  // Verify ownership
-  const sites = await db
-    .select()
-    .from(schema.sites)
-    .where(
-      and(eq(schema.sites.id, siteId), eq(schema.sites.userId, session.user.id))
+    // Verify ownership
+    const sites = await db
+      .select()
+      .from(schema.sites)
+      .where(
+        and(eq(schema.sites.id, siteId), eq(schema.sites.userId, session.user.id))
+      );
+
+    if (!sites || sites.length === 0) {
+      return NextResponse.json({ error: "Site not found" }, { status: 404 });
+    }
+
+    const sections = await db
+      .select()
+      .from(schema.sections)
+      .where(eq(schema.sections.siteId, siteId))
+      .orderBy(schema.sections.sortOrder);
+
+    return NextResponse.json({
+      sections: (sections || []).map((s) => ({
+        ...s,
+        config: JSON.parse(s.config),
+      })),
+    });
+  } catch (e) {
+    console.error("[GET /api/sites/[siteId]/sections]", e);
+    return NextResponse.json(
+      { error: "Failed to fetch sections" },
+      { status: 500 }
     );
-
-  if (!sites || sites.length === 0) {
-    return NextResponse.json({ error: "Site not found" }, { status: 404 });
   }
-
-  const sections = await db
-    .select()
-    .from(schema.sections)
-    .where(eq(schema.sections.siteId, siteId))
-    .orderBy(schema.sections.sortOrder);
-
-  return NextResponse.json({
-    sections: (sections || []).map((s) => ({
-      ...s,
-      config: JSON.parse(s.config),
-    })),
-  });
 }
 
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ siteId: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const { siteId } = await params;
-
-  // Verify ownership
-  const sites = await db
-    .select()
-    .from(schema.sites)
-    .where(
-      and(eq(schema.sites.id, siteId), eq(schema.sites.userId, session.user.id))
-    );
-
-  if (!sites || sites.length === 0) {
-    return NextResponse.json({ error: "Site not found" }, { status: 404 });
-  }
-
   try {
+    await ensureSchema();
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { siteId } = await params;
+
+    // Verify ownership
+    const sites = await db
+      .select()
+      .from(schema.sites)
+      .where(
+        and(eq(schema.sites.id, siteId), eq(schema.sites.userId, session.user.id))
+      );
+
+    if (!sites || sites.length === 0) {
+      return NextResponse.json({ error: "Site not found" }, { status: 404 });
+    }
+
     const { sections } = await request.json();
 
     if (!Array.isArray(sections)) {
@@ -98,7 +108,7 @@ export async function PUT(
 
     return NextResponse.json({ success: true });
   } catch (e) {
-    console.error("[PUT sections]", e);
+    console.error("[PUT /api/sites/[siteId]/sections]", e);
     return NextResponse.json(
       { error: "Failed to save sections" },
       { status: 500 }

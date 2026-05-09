@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { db, schema } from "@/lib/db";
+import { db, schema, ensureSchema } from "@/lib/db";
 import { eq } from "drizzle-orm";
 
 export async function POST(request: Request) {
   try {
+    // Ensure database schema exists
+    await ensureSchema();
+
     const { name, email, password } = await request.json();
 
     if (!name || !email || !password) {

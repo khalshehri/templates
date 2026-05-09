@@ -16,10 +16,14 @@ const sql = neon(process.env.DATABASE_URL);
 // Create Drizzle instance
 export const db = drizzle(sql, { schema });
 
-// Initialize schema on startup
-async function initializeSchema() {
+// Initialize schema on first use
+let schemaInitialized = false;
+
+export async function ensureSchema() {
+  if (schemaInitialized) return;
+
   try {
-    console.log("[DB] Creating tables...");
+    console.log("[DB] Ensuring schema exists...");
 
     // Create users table
     await sql`
@@ -28,9 +32,10 @@ async function initializeSchema() {
         name TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE,
         password_hash TEXT NOT NULL,
-        created_at INTEGER NOT NULL
+        created_at BIGINT NOT NULL
       )
     `;
+    console.log("[DB] ✓ users table");
 
     // Create sites table
     await sql`
@@ -43,11 +48,12 @@ async function initializeSchema() {
         theme TEXT NOT NULL,
         language TEXT NOT NULL DEFAULT 'en',
         status TEXT NOT NULL DEFAULT 'draft',
-        created_at INTEGER NOT NULL,
-        updated_at INTEGER NOT NULL,
+        created_at BIGINT NOT NULL,
+        updated_at BIGINT NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users(id)
       )
     `;
+    console.log("[DB] ✓ sites table");
 
     // Create sections table
     await sql`
@@ -62,14 +68,14 @@ async function initializeSchema() {
         FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE CASCADE
       )
     `;
+    console.log("[DB] ✓ sections table");
 
+    schemaInitialized = true;
     console.log("[DB] Schema initialized successfully ✓");
   } catch (error) {
     console.error("[DB] Error initializing schema:", error);
+    throw error;
   }
 }
-
-// Run initialization
-initializeSchema();
 
 export { schema };

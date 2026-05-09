@@ -1,74 +1,84 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { db, schema } from "@/lib/db";
+import { db, schema, ensureSchema } from "@/lib/db";
 import { eq, and } from "drizzle-orm";
 
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ siteId: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  try {
+    await ensureSchema();
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-  const { siteId } = await params;
+    const { siteId } = await params;
 
-  const sites = await db
-    .select()
-    .from(schema.sites)
-    .where(
-      and(eq(schema.sites.id, siteId), eq(schema.sites.userId, session.user.id))
+    const sites = await db
+      .select()
+      .from(schema.sites)
+      .where(
+        and(eq(schema.sites.id, siteId), eq(schema.sites.userId, session.user.id))
+      );
+
+    const site = sites?.[0];
+
+    if (!site) {
+      return NextResponse.json({ error: "Site not found" }, { status: 404 });
+    }
+
+    const sections = await db
+      .select()
+      .from(schema.sections)
+      .where(eq(schema.sections.siteId, siteId))
+      .orderBy(schema.sections.sortOrder);
+
+    return NextResponse.json({
+      site: {
+        ...site,
+        theme: JSON.parse(site.theme),
+      },
+      sections: (sections || []).map((s) => ({
+        ...s,
+        config: JSON.parse(s.config),
+      })),
+    });
+  } catch (e) {
+    console.error("[GET /api/sites/[siteId]]", e);
+    return NextResponse.json(
+      { error: "Failed to fetch site" },
+      { status: 500 }
     );
-
-  const site = sites?.[0];
-
-  if (!site) {
-    return NextResponse.json({ error: "Site not found" }, { status: 404 });
   }
-
-  const sections = await db
-    .select()
-    .from(schema.sections)
-    .where(eq(schema.sections.siteId, siteId))
-    .orderBy(schema.sections.sortOrder);
-
-  return NextResponse.json({
-    site: {
-      ...site,
-      theme: JSON.parse(site.theme),
-    },
-    sections: (sections || []).map((s) => ({
-      ...s,
-      config: JSON.parse(s.config),
-    })),
-  });
 }
 
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ siteId: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const { siteId } = await params;
-
-  // Verify ownership
-  const sites = await db
-    .select()
-    .from(schema.sites)
-    .where(
-      and(eq(schema.sites.id, siteId), eq(schema.sites.userId, session.user.id))
-    );
-
-  if (!sites || sites.length === 0) {
-    return NextResponse.json({ error: "Site not found" }, { status: 404 });
-  }
-
   try {
+    await ensureSchema();
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { siteId } = await params;
+
+    // Verify ownership
+    const sites = await db
+      .select()
+      .from(schema.sites)
+      .where(
+        and(eq(schema.sites.id, siteId), eq(schema.sites.userId, session.user.id))
+      );
+
+    if (!sites || sites.length === 0) {
+      return NextResponse.json({ error: "Site not found" }, { status: 404 });
+    }
+
     const body = await request.json();
     const updates: Record<string, unknown> = { updatedAt: Date.now() };
 
@@ -95,26 +105,27 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ siteId: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const { siteId } = await params;
-
-  // Verify ownership
-  const sites = await db
-    .select()
-    .from(schema.sites)
-    .where(
-      and(eq(schema.sites.id, siteId), eq(schema.sites.userId, session.user.id))
-    );
-
-  if (!sites || sites.length === 0) {
-    return NextResponse.json({ error: "Site not found" }, { status: 404 });
-  }
-
   try {
+    await ensureSchema();
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { siteId } = await params;
+
+    // Verify ownership
+    const sites = await db
+      .select()
+      .from(schema.sites)
+      .where(
+        and(eq(schema.sites.id, siteId), eq(schema.sites.userId, session.user.id))
+      );
+
+    if (!sites || sites.length === 0) {
+      return NextResponse.json({ error: "Site not found" }, { status: 404 });
+    }
+
     await db.delete(schema.sites).where(eq(schema.sites.id, siteId));
     return NextResponse.json({ success: true });
   } catch (e) {
