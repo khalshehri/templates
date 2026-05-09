@@ -6,7 +6,9 @@ let dbInstance: ReturnType<typeof drizzle> | null = null;
 let sqlClient: ReturnType<typeof neon> | null = null;
 
 function initDb() {
-  if (dbInstance) return { db: dbInstance, sql: sqlClient! };
+  if (dbInstance && sqlClient) {
+    return { db: dbInstance, sql: sqlClient };
+  }
 
   if (!process.env.DATABASE_URL) {
     throw new Error(
@@ -20,11 +22,12 @@ function initDb() {
   return { db: dbInstance, sql: sqlClient };
 }
 
+// Lazy initialize with Proxy that properly delegates all operations
 export const db = new Proxy({} as ReturnType<typeof drizzle>, {
-  get: (_, prop) => {
-    const { db: dbInst } = initDb();
-    return dbInst[prop as keyof typeof dbInst];
-  },
+  get: (target, prop, receiver) => {
+    const { db: instance } = initDb();
+    return Reflect.get(instance, prop, instance);
+  }
 }) as ReturnType<typeof drizzle>;
 
 // Initialize schema on first use

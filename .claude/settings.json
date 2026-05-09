@@ -23,7 +23,9 @@
       "Bash(psql 'postgresql://neondb_owner:npg_OSjItzK4Q6VZ@ep-holy-art-alihnwwq-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require' -c 'DROP TABLE IF EXISTS users CASCADE;')",
       "Bash(psql 'postgresql://neondb_owner:npg_OSjItzK4Q6VZ@ep-holy-art-alihnwwq-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require')",
       "Bash(psql 'postgresql://neondb_owner:npg_OSjItzK4Q6VZ@ep-holy-art-alihnwwq-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require' -c '\\\\d sites')",
-      "Bash(psql 'postgresql://neondb_owner:npg_OSjItzK4Q6VZ@ep-holy-art-alihnwwq-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require' -c 'DELETE FROM users WHERE id = '\\\\''test-id-123'\\\\'';')"
+      "Bash(psql 'postgresql://neondb_owner:npg_OSjItzK4Q6VZ@ep-holy-art-alihnwwq-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require' -c 'DELETE FROM users WHERE id = '\\\\''test-id-123'\\\\'';')",
+      "Bash(psql 'postgresql://neondb_owner:npg_OSjItzK4Q6VZ@ep-holy-art-alihnwwq-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require' -c 'SELECT COUNT\\(*\\) as user_count FROM users;')",
+      "Bash(psql 'postgresql://neondb_owner:npg_OSjItzK4Q6VZ@ep-holy-art-alihnwwq-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require' -c 'DELETE FROM users WHERE id = '\\\\''test-direct'\\\\'';')"
     ],
     "additionalDirectories": [
       "/Users/khalidalshehri/IdeaProjects/safahati/data",
