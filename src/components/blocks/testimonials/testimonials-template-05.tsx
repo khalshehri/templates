@@ -10,7 +10,7 @@ export function TestimonialsTemplate05({ config, language }: BlockProps) {
   const isAr = language === "ar";
   const [activeIndex, setActiveIndex] = useState(0);
 
-  if (c.items.length === 0) return null;
+  if (!c.items?.length) return null;
   const item = c.items[activeIndex];
 
   return (

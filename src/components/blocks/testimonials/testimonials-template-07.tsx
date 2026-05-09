@@ -10,7 +10,7 @@ export function TestimonialsTemplate07({ config, language }: BlockProps) {
   const isAr = language === "ar";
   const [index, setIndex] = useState(0);
 
-  if (c.items.length === 0) return null;
+  if (!c.items?.length) return null;
   const item = c.items[index];
 
   const prev = () => setIndex((i) => (i === 0 ? c.items.length - 1 : i - 1));

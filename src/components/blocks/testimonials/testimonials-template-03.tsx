@@ -15,8 +15,8 @@ export function TestimonialsTemplate03({ config, language }: BlockProps) {
   const isAr = language === "ar";
   const [current, setCurrent] = useState(0);
 
+  if (!c.items?.length) return null;
   const item = c.items[current];
-  if (!item) return null;
 
   const prev = () => setCurrent((current - 1 + c.items.length) % c.items.length);
   const next = () => setCurrent((current + 1) % c.items.length);

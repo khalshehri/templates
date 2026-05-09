@@ -33,7 +33,7 @@ export function TestimonialsTemplate02({ config, language }: BlockProps) {
         {/* Large single + side stack */}
         <div className="grid lg:grid-cols-5 gap-8">
           {/* Featured testimonial */}
-          {c.items[0] && (
+          {c.items?.[0] && (
             <div
               className="lg:col-span-3 p-10 rounded-3xl text-white relative overflow-hidden"
               style={{ backgroundColor: "var(--theme-primary)" }}
@@ -46,22 +46,22 @@ export function TestimonialsTemplate02({ config, language }: BlockProps) {
                     <Star
                       key={si}
                       size={20}
-                      className={si < c.items[0].rating ? "fill-yellow-300 text-yellow-300" : "text-white/30"}
+                      className={si < c.items?.[0]?.rating ? "fill-yellow-300 text-yellow-300" : "text-white/30"}
                     />
                   ))}
                 </div>
 
                 <p className="text-xl leading-relaxed opacity-95 mb-8">
-                  &ldquo;{isAr ? c.items[0].textAr : c.items[0].text}&rdquo;
+                  &ldquo;{isAr ? c.items?.[0]?.textAr : c.items?.[0]?.text}&rdquo;
                 </p>
 
                 <div className={`flex items-center gap-4 ${isAr ? "flex-row-reverse" : ""}`}>
                   <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center text-xl font-bold">
-                    {(isAr ? c.items[0].nameAr : c.items[0].name).charAt(0)}
+                    {(isAr ? c.items?.[0]?.nameAr : c.items?.[0]?.name)?.charAt(0)}
                   </div>
                   <div className={isAr ? "text-right" : ""}>
-                    <p className="font-semibold text-lg">{isAr ? c.items[0].nameAr : c.items[0].name}</p>
-                    <p className="text-white/70">{isAr ? c.items[0].roleAr : c.items[0].role}</p>
+                    <p className="font-semibold text-lg">{isAr ? c.items?.[0]?.nameAr : c.items?.[0]?.name}</p>
+                    <p className="text-white/70">{isAr ? c.items?.[0]?.roleAr : c.items?.[0]?.role}</p>
                   </div>
                 </div>
               </div>
@@ -70,7 +70,7 @@ export function TestimonialsTemplate02({ config, language }: BlockProps) {
 
           {/* Side stack */}
           <div className="lg:col-span-2 space-y-4">
-            {c.items.slice(1).map((item, i) => (
+            {c.items?.slice(1)?.map((item, i) => (
               <div
                 key={i}
                 className="p-6 rounded-2xl border border-gray-100 bg-white hover:shadow-md transition-shadow duration-300"
