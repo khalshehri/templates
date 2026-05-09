@@ -37,7 +37,7 @@ export default async function EditorPage({
     .all();
 
   const parsedTheme = JSON.parse(site.theme);
-  const parsedSections: SectionData[] = sections.map((s) => ({
+  const parsedSections: SectionData[] = sections.map((s: typeof schema.sections.$inferSelect) => ({
     ...s,
     config: JSON.parse(s.config),
     blockType: s.blockType as SectionData["blockType"],
@@ -48,7 +48,6 @@ export default async function EditorPage({
       siteId={site.id}
       siteName={site.name}
       siteSlug={site.slug}
-      initialStatus={site.status as "draft" | "published"}
       initialTheme={parsedTheme}
       initialSections={parsedSections}
     />
