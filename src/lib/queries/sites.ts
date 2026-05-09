@@ -78,7 +78,7 @@ function buildSiteData(site: typeof schema.sites.$inferSelect): PublicSiteData {
       language: site.language as "en" | "ar",
       status: site.status as "draft" | "published",
     },
-    sections: sections.map((s) => ({
+    sections: sections.map((s: typeof schema.sections.$inferSelect) => ({
       ...s,
       config: JSON.parse(s.config),
       blockType: s.blockType as SectionData["blockType"],
