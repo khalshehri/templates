@@ -8,12 +8,68 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
+console.log("[DB] Initializing Neon PostgreSQL...");
+
 // Create Neon client
 const sql = neon(process.env.DATABASE_URL);
 
 // Create Drizzle instance
 export const db = drizzle(sql, { schema });
 
-console.log("[DB] Connected to Neon PostgreSQL");
+// Initialize schema on startup
+async function initializeSchema() {
+  try {
+    console.log("[DB] Creating tables...");
+
+    // Create users table
+    await sql`
+      CREATE TABLE IF NOT EXISTS users (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE,
+        password_hash TEXT NOT NULL,
+        created_at INTEGER NOT NULL
+      )
+    `;
+
+    // Create sites table
+    await sql`
+      CREATE TABLE IF NOT EXISTS sites (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        name TEXT NOT NULL,
+        slug TEXT NOT NULL UNIQUE,
+        industry TEXT NOT NULL,
+        theme TEXT NOT NULL,
+        language TEXT NOT NULL DEFAULT 'en',
+        status TEXT NOT NULL DEFAULT 'draft',
+        created_at INTEGER NOT NULL,
+        updated_at INTEGER NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      )
+    `;
+
+    // Create sections table
+    await sql`
+      CREATE TABLE IF NOT EXISTS sections (
+        id TEXT PRIMARY KEY,
+        site_id TEXT NOT NULL,
+        block_type TEXT NOT NULL,
+        template_id TEXT NOT NULL,
+        config TEXT NOT NULL,
+        sort_order INTEGER NOT NULL,
+        is_visible BOOLEAN NOT NULL DEFAULT true,
+        FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE CASCADE
+      )
+    `;
+
+    console.log("[DB] Schema initialized successfully ✓");
+  } catch (error) {
+    console.error("[DB] Error initializing schema:", error);
+  }
+}
+
+// Run initialization
+initializeSchema();
 
 export { schema };
