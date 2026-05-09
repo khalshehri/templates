@@ -143,29 +143,33 @@ export function HeroTemplate15({ config, language }: BlockProps) {
           </p>
 
           {/* CTAs */}
-          <div
-            className="kinetic-fade mt-10 flex flex-wrap items-center justify-center gap-4"
-            style={{ animationDelay: `${0.1 + words.length * 0.15 + 0.4}s` }}
-          >
-            <a
-              href={c.ctaPrimary.url}
-              className={`inline-flex items-center gap-2 px-8 py-4 rounded-2xl text-white font-semibold transition-all hover:opacity-90 hover:shadow-lg ${
-                isAr ? "flex-row-reverse" : ""
-              }`}
-              style={{ backgroundColor: "var(--theme-primary)" }}
+          {(c.ctaPrimary || c.ctaSecondary) && (
+            <div
+              className="kinetic-fade mt-10 flex flex-wrap items-center justify-center gap-4"
+              style={{ animationDelay: `${0.1 + words.length * 0.15 + 0.4}s` }}
             >
-              {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
-              <ArrowRight size={18} className={isAr ? "rotate-180" : ""} />
-            </a>
-            {c.ctaSecondary && (
-              <a
-                href={c.ctaSecondary.url}
-                className="text-gray-500 font-medium hover:text-gray-900 underline underline-offset-4 decoration-gray-300 hover:decoration-gray-900 transition-all"
-              >
-                {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
-              </a>
-            )}
-          </div>
+              {c.ctaPrimary && (
+                <a
+                  href={c.ctaPrimary.url || "#"}
+                  className={`inline-flex items-center gap-2 px-8 py-4 rounded-2xl text-white font-semibold transition-all hover:opacity-90 hover:shadow-lg ${
+                    isAr ? "flex-row-reverse" : ""
+                  }`}
+                  style={{ backgroundColor: "var(--theme-primary)" }}
+                >
+                  {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
+                  <ArrowRight size={18} className={isAr ? "rotate-180" : ""} />
+                </a>
+              )}
+              {c.ctaSecondary && (
+                <a
+                  href={c.ctaSecondary.url || "#"}
+                  className="text-gray-500 font-medium hover:text-gray-900 underline underline-offset-4 decoration-gray-300 hover:decoration-gray-900 transition-all"
+                >
+                  {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
+                </a>
+              )}
+            </div>
+          )}
 
           {/* Stats with expanding line */}
           {c.stats && c.stats.length > 0 && (

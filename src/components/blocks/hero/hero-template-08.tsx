@@ -101,42 +101,46 @@ export function HeroTemplate08({ config, language }: BlockProps) {
           </p>
 
           {/* CTAs */}
-          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href={c.ctaPrimary.url}
-              className={`group relative inline-flex items-center gap-2.5 px-8 py-4 text-sm font-semibold text-white rounded-full transition-all hover:-translate-y-0.5 overflow-hidden ${
-                isAr ? "flex-row-reverse" : ""
-              }`}
-            >
-              {/* Button gradient bg */}
-              <span
-                className="absolute inset-0 rounded-full"
-                style={{
-                  background: `linear-gradient(135deg, var(--theme-primary), var(--theme-secondary, var(--theme-primary)))`,
-                }}
-              />
-              {/* Button glow */}
-              <span
-                className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity blur-xl"
-                style={{
-                  background: `linear-gradient(135deg, var(--theme-primary), var(--theme-secondary, var(--theme-primary)))`,
-                }}
-              />
-              <span className="relative">{isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}</span>
-              <ArrowRight
-                size={16}
-                className={`relative transition-transform group-hover:translate-x-0.5 ${isAr ? "rotate-180" : ""}`}
-              />
-            </a>
-            {c.ctaSecondary && (
-              <a
-                href={c.ctaSecondary.url}
-                className="inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold text-white/60 rounded-full border border-white/10 hover:bg-white/5 hover:text-white/80 transition-all"
-              >
-                {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
-              </a>
-            )}
-          </div>
+          {(c.ctaPrimary || c.ctaSecondary) && (
+            <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+              {c.ctaPrimary && (
+                <a
+                  href={c.ctaPrimary.url || "#"}
+                  className={`group relative inline-flex items-center gap-2.5 px-8 py-4 text-sm font-semibold text-white rounded-full transition-all hover:-translate-y-0.5 overflow-hidden ${
+                    isAr ? "flex-row-reverse" : ""
+                  }`}
+                >
+                  {/* Button gradient bg */}
+                  <span
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background: `linear-gradient(135deg, var(--theme-primary), var(--theme-secondary, var(--theme-primary)))`,
+                    }}
+                  />
+                  {/* Button glow */}
+                  <span
+                    className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity blur-xl"
+                    style={{
+                      background: `linear-gradient(135deg, var(--theme-primary), var(--theme-secondary, var(--theme-primary)))`,
+                    }}
+                  />
+                  <span className="relative">{isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}</span>
+                  <ArrowRight
+                    size={16}
+                    className={`relative transition-transform group-hover:translate-x-0.5 ${isAr ? "rotate-180" : ""}`}
+                  />
+                </a>
+              )}
+              {c.ctaSecondary && (
+                <a
+                  href={c.ctaSecondary.url || "#"}
+                  className="inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold text-white/60 rounded-full border border-white/10 hover:bg-white/5 hover:text-white/80 transition-all"
+                >
+                  {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
+                </a>
+              )}
+            </div>
+          )}
 
           {/* Stats row */}
           {c.stats && c.stats.length > 0 && (

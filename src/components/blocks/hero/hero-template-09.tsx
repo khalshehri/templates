@@ -96,36 +96,40 @@ export function HeroTemplate09({ config, language }: BlockProps) {
           </p>
 
           {/* CTAs */}
-          <div className={`mt-10 flex items-center gap-5 ${isAr ? "flex-row-reverse" : ""}`}>
-            <a
-              href={c.ctaPrimary.url}
-              className={`group inline-flex items-center gap-2.5 px-7 py-3.5 text-sm font-semibold text-white rounded-full transition-all hover:shadow-xl hover:-translate-y-0.5 ${
-                isAr ? "flex-row-reverse" : ""
-              }`}
-              style={{ backgroundColor: "var(--theme-primary)" }}
-            >
-              {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
-              <ArrowRight
-                size={16}
-                className={`transition-transform group-hover:translate-x-0.5 ${isAr ? "rotate-180" : ""}`}
-              />
-            </a>
-            {c.ctaSecondary && (
-              <a
-                href={c.ctaSecondary.url}
-                className={`group inline-flex items-center gap-2.5 text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors ${
-                  isAr ? "flex-row-reverse" : ""
-                }`}
-              >
-                <span
-                  className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-gray-200 group-hover:border-gray-400 transition-colors"
+          {(c.ctaPrimary || c.ctaSecondary) && (
+            <div className={`mt-10 flex items-center gap-5 ${isAr ? "flex-row-reverse" : ""}`}>
+              {c.ctaPrimary && (
+                <a
+                  href={c.ctaPrimary.url || "#"}
+                  className={`group inline-flex items-center gap-2.5 px-7 py-3.5 text-sm font-semibold text-white rounded-full transition-all hover:shadow-xl hover:-translate-y-0.5 ${
+                    isAr ? "flex-row-reverse" : ""
+                  }`}
+                  style={{ backgroundColor: "var(--theme-primary)" }}
                 >
-                  <Play size={14} className="text-gray-500" />
-                </span>
-                {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
-              </a>
-            )}
-          </div>
+                  {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
+                  <ArrowRight
+                    size={16}
+                    className={`transition-transform group-hover:translate-x-0.5 ${isAr ? "rotate-180" : ""}`}
+                  />
+                </a>
+              )}
+              {c.ctaSecondary && (
+                <a
+                  href={c.ctaSecondary.url || "#"}
+                  className={`group inline-flex items-center gap-2.5 text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors ${
+                    isAr ? "flex-row-reverse" : ""
+                  }`}
+                >
+                  <span
+                    className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-gray-200 group-hover:border-gray-400 transition-colors"
+                  >
+                    <Play size={14} className="text-gray-500" />
+                  </span>
+                  {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
+                </a>
+              )}
+            </div>
+          )}
 
           {/* Stats */}
           {c.stats && c.stats.length > 0 && (

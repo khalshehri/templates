@@ -35,32 +35,36 @@ export function HeroTemplate02({ config, language }: BlockProps) {
               {isAr ? c.subheadingAr : c.subheading}
             </p>
 
-            <div className="mt-8 flex flex-col sm:flex-row items-start gap-4">
-              <a
-                href={c.ctaPrimary.url}
-                className="group inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold text-white rounded-full transition-all hover:shadow-xl hover:-translate-y-0.5"
-                style={{ backgroundColor: "var(--theme-primary)" }}
-              >
-                {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
-                <ArrowRight
-                  size={16}
-                  className="transition-transform group-hover:translate-x-0.5"
-                />
-              </a>
-              {c.ctaSecondary && (
-                <a
-                  href={c.ctaSecondary.url}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  <Play
-                    size={16}
-                    className="fill-current"
-                    style={{ color: "var(--theme-primary)" }}
-                  />
-                  {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
+            {(c.ctaPrimary || c.ctaSecondary) && (
+              <div className="mt-8 flex flex-col sm:flex-row items-start gap-4">
+                {c.ctaPrimary && (
+                  <a
+                    href={c.ctaPrimary.url || "#"}
+                    className="group inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold text-white rounded-full transition-all hover:shadow-xl hover:-translate-y-0.5"
+                    style={{ backgroundColor: "var(--theme-primary)" }}
+                  >
+                    {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
+                    <ArrowRight
+                      size={16}
+                      className="transition-transform group-hover:translate-x-0.5"
+                    />
+                  </a>
+                )}
+                {c.ctaSecondary && (
+                  <a
+                    href={c.ctaSecondary.url || "#"}
+                    className="inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    <Play
+                      size={16}
+                      className="fill-current"
+                      style={{ color: "var(--theme-primary)" }}
+                    />
+                    {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
                 </a>
               )}
             </div>
+            )}
 
             {c.stats && c.stats.length > 0 && (
               <div className="mt-12 flex items-center gap-8 pt-8 border-t border-gray-100">

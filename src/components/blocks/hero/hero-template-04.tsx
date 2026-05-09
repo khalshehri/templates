@@ -77,29 +77,33 @@ export function HeroTemplate04({ config, language }: BlockProps) {
         </p>
 
         {/* CTAs */}
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href={c.ctaPrimary.url}
-            className={`group inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold text-white rounded-none border-2 transition-all hover:shadow-2xl ${
-              isAr ? "flex-row-reverse" : ""
-            }`}
-            style={{
-              borderColor: "var(--theme-primary)",
-              backgroundColor: "var(--theme-primary)",
-            }}
-          >
-            {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
-            <ArrowRight size={16} className={`transition-transform group-hover:translate-x-1 ${isAr ? "rotate-180" : ""}`} />
-          </a>
-          {c.ctaSecondary && (
-            <a
-              href={c.ctaSecondary.url}
-              className="inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold text-white rounded-none border-2 border-white/30 hover:border-white/60 transition-all"
-            >
-              {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
-            </a>
-          )}
-        </div>
+        {(c.ctaPrimary || c.ctaSecondary) && (
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            {c.ctaPrimary && (
+              <a
+                href={c.ctaPrimary.url || "#"}
+                className={`group inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold text-white rounded-none border-2 transition-all hover:shadow-2xl ${
+                  isAr ? "flex-row-reverse" : ""
+                }`}
+                style={{
+                  borderColor: "var(--theme-primary)",
+                  backgroundColor: "var(--theme-primary)",
+                }}
+              >
+                {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
+                <ArrowRight size={16} className={`transition-transform group-hover:translate-x-1 ${isAr ? "rotate-180" : ""}`} />
+              </a>
+            )}
+            {c.ctaSecondary && (
+              <a
+                href={c.ctaSecondary.url || "#"}
+                className="inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold text-white rounded-none border-2 border-white/30 hover:border-white/60 transition-all"
+              >
+                {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
+              </a>
+            )}
+          </div>
+        )}
 
         {/* Stats - minimal row */}
         {c.stats && c.stats.length > 0 && (

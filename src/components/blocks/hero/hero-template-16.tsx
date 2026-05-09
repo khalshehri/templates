@@ -136,33 +136,37 @@ export function HeroTemplate16({ config, language }: BlockProps) {
           </p>
 
           {/* CTAs */}
-          <div
-            className="neon-fade mt-10 flex flex-wrap items-center justify-center gap-4"
-            style={{ animationDelay: "0.45s" }}
-          >
-            <a
-              href={c.ctaPrimary.url}
-              className={`inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-semibold transition-all hover:shadow-[0_0_40px_var(--theme-primary)] ${
-                isAr ? "flex-row-reverse" : ""
-              }`}
-              style={{
-                backgroundColor: "var(--theme-primary)",
-                boxShadow: "0 0 20px color-mix(in srgb, var(--theme-primary) 40%, transparent)",
-              }}
+          {(c.ctaPrimary || c.ctaSecondary) && (
+            <div
+              className="neon-fade mt-10 flex flex-wrap items-center justify-center gap-4"
+              style={{ animationDelay: "0.45s" }}
             >
-              {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
-              <ArrowRight size={16} className={isAr ? "rotate-180" : ""} />
-            </a>
-            {c.ctaSecondary && (
-              <a
-                href={c.ctaSecondary.url}
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border text-white/60 font-medium transition-all hover:text-white hover:border-white/40"
-                style={{ borderColor: "rgba(255,255,255,0.15)" }}
-              >
-                {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
-              </a>
-            )}
-          </div>
+              {c.ctaPrimary && (
+                <a
+                  href={c.ctaPrimary.url || "#"}
+                  className={`inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-semibold transition-all hover:shadow-[0_0_40px_var(--theme-primary)] ${
+                    isAr ? "flex-row-reverse" : ""
+                  }`}
+                  style={{
+                    backgroundColor: "var(--theme-primary)",
+                    boxShadow: "0 0 20px color-mix(in srgb, var(--theme-primary) 40%, transparent)",
+                  }}
+                >
+                  {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
+                  <ArrowRight size={16} className={isAr ? "rotate-180" : ""} />
+                </a>
+              )}
+              {c.ctaSecondary && (
+                <a
+                  href={c.ctaSecondary.url || "#"}
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border text-white/60 font-medium transition-all hover:text-white hover:border-white/40"
+                  style={{ borderColor: "rgba(255,255,255,0.15)" }}
+                >
+                  {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
+                </a>
+              )}
+            </div>
+          )}
 
           {/* Stats */}
           {c.stats && c.stats.length > 0 && (

@@ -80,34 +80,38 @@ export function HeroTemplate12({ config, language }: BlockProps) {
           </p>
 
           {/* CTAs */}
-          <div className={`mt-12 flex items-center gap-8 ${isAr ? "flex-row-reverse" : ""}`}>
-            <a
-              href={c.ctaPrimary.url}
-              className={`group inline-flex items-center gap-3 text-sm font-semibold transition-colors ${
-                isAr ? "flex-row-reverse" : ""
-              }`}
-              style={{ color: "var(--theme-primary)" }}
-            >
-              <span
-                className="flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all group-hover:scale-110"
-                style={{ borderColor: "var(--theme-primary)" }}
-              >
-                <ArrowUpRight
-                  size={18}
-                  className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
-              </span>
-              {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
-            </a>
-            {c.ctaSecondary && (
-              <a
-                href={c.ctaSecondary.url}
-                className="text-sm font-medium text-gray-400 hover:text-gray-600 underline underline-offset-4 decoration-gray-200 hover:decoration-gray-400 transition-colors"
-              >
-                {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
-              </a>
-            )}
-          </div>
+          {(c.ctaPrimary || c.ctaSecondary) && (
+            <div className={`mt-12 flex items-center gap-8 ${isAr ? "flex-row-reverse" : ""}`}>
+              {c.ctaPrimary && (
+                <a
+                  href={c.ctaPrimary.url || "#"}
+                  className={`group inline-flex items-center gap-3 text-sm font-semibold transition-colors ${
+                    isAr ? "flex-row-reverse" : ""
+                  }`}
+                  style={{ color: "var(--theme-primary)" }}
+                >
+                  <span
+                    className="flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all group-hover:scale-110"
+                    style={{ borderColor: "var(--theme-primary)" }}
+                  >
+                    <ArrowUpRight
+                      size={18}
+                      className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    />
+                  </span>
+                  {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
+                </a>
+              )}
+              {c.ctaSecondary && (
+                <a
+                  href={c.ctaSecondary.url || "#"}
+                  className="text-sm font-medium text-gray-400 hover:text-gray-600 underline underline-offset-4 decoration-gray-200 hover:decoration-gray-400 transition-colors"
+                >
+                  {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
+                </a>
+              )}
+            </div>
+          )}
 
           {/* Stats — minimal inline */}
           {c.stats && c.stats.length > 0 && (

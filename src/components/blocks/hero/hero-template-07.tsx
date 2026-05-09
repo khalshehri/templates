@@ -109,29 +109,33 @@ export function HeroTemplate07({ config, language }: BlockProps) {
             </p>
 
             {/* CTAs */}
-            <div className={`mt-10 flex flex-wrap gap-4 ${isAr ? "flex-row-reverse" : ""}`}>
-              <a
-                href={c.ctaPrimary.url}
-                className={`group inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold text-white rounded-xl transition-all hover:shadow-xl hover:-translate-y-0.5 ${
-                  isAr ? "flex-row-reverse" : ""
-                }`}
-                style={{ backgroundColor: "var(--theme-primary)" }}
-              >
-                {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
-                <ArrowRight size={16} className={`transition-transform group-hover:translate-x-0.5 ${isAr ? "rotate-180" : ""}`} />
-              </a>
-              {c.ctaSecondary && (
-                <a
-                  href={c.ctaSecondary.url}
-                  className={`inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold text-white/70 rounded-xl border border-white/15 hover:bg-white/5 transition-all ${
-                    isAr ? "flex-row-reverse" : ""
-                  }`}
-                >
-                  <Download size={16} />
-                  {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
-                </a>
-              )}
-            </div>
+            {(c.ctaPrimary || c.ctaSecondary) && (
+              <div className={`mt-10 flex flex-wrap gap-4 ${isAr ? "flex-row-reverse" : ""}`}>
+                {c.ctaPrimary && (
+                  <a
+                    href={c.ctaPrimary.url || "#"}
+                    className={`group inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold text-white rounded-xl transition-all hover:shadow-xl hover:-translate-y-0.5 ${
+                      isAr ? "flex-row-reverse" : ""
+                    }`}
+                    style={{ backgroundColor: "var(--theme-primary)" }}
+                  >
+                    {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
+                    <ArrowRight size={16} className={`transition-transform group-hover:translate-x-0.5 ${isAr ? "rotate-180" : ""}`} />
+                  </a>
+                )}
+                {c.ctaSecondary && (
+                  <a
+                    href={c.ctaSecondary.url || "#"}
+                    className={`inline-flex items-center gap-2 px-7 py-3.5 text-sm font-semibold text-white/70 rounded-xl border border-white/15 hover:bg-white/5 transition-all ${
+                      isAr ? "flex-row-reverse" : ""
+                    }`}
+                  >
+                    <Download size={16} />
+                    {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
+                  </a>
+                )}
+              </div>
+            )}
 
             {/* Social links */}
             {c.socials && c.socials.length > 0 && (

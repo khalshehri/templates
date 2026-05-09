@@ -161,29 +161,33 @@ export function HeroTemplate13({ config, language }: BlockProps) {
             </div>
 
             {/* Card 5 — CTA Buttons */}
-            <div
-              className="bento-card bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 flex flex-col justify-center gap-3"
-              style={{ animationDelay: "0.32s" }}
-            >
-              <a
-                href={c.ctaPrimary.url}
-                className={`inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-white font-semibold text-sm hover:opacity-90 hover:shadow-lg transition-all ${
-                  isAr ? "flex-row-reverse" : ""
-                }`}
-                style={{ backgroundColor: "var(--theme-primary)" }}
+            {(c.ctaPrimary || c.ctaSecondary) && (
+              <div
+                className="bento-card bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 flex flex-col justify-center gap-3"
+                style={{ animationDelay: "0.32s" }}
               >
-                {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
-                <ArrowRight size={16} className={isAr ? "rotate-180" : ""} />
-              </a>
-              {c.ctaSecondary && (
-                <a
-                  href={c.ctaSecondary.url}
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-gray-200 text-gray-600 font-medium text-sm hover:bg-gray-50 transition-all"
-                >
-                  {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
-                </a>
-              )}
-            </div>
+                {c.ctaPrimary && (
+                  <a
+                    href={c.ctaPrimary.url || "#"}
+                    className={`inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-white font-semibold text-sm hover:opacity-90 hover:shadow-lg transition-all ${
+                      isAr ? "flex-row-reverse" : ""
+                    }`}
+                    style={{ backgroundColor: "var(--theme-primary)" }}
+                  >
+                    {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
+                    <ArrowRight size={16} className={isAr ? "rotate-180" : ""} />
+                  </a>
+                )}
+                {c.ctaSecondary && (
+                  <a
+                    href={c.ctaSecondary.url || "#"}
+                    className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-gray-200 text-gray-600 font-medium text-sm hover:bg-gray-50 transition-all"
+                  >
+                    {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>

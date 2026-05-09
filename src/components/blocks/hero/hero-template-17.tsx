@@ -141,35 +141,39 @@ export function HeroTemplate17({ config, language }: BlockProps) {
           </p>
 
           {/* CTAs */}
-          <div
-            className="spotlight-fade mt-10 flex flex-wrap items-center justify-center gap-4"
-            style={{ animationDelay: "0.8s" }}
-          >
-            <a
-              href={c.ctaPrimary.url}
-              className={`group inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-white font-semibold transition-all duration-300 hover:shadow-[0_0_40px_color-mix(in_srgb,var(--theme-primary)_50%,transparent)] ${
-                isAr ? "flex-row-reverse" : ""
-              }`}
-              style={{
-                backgroundColor: "var(--theme-primary)",
-                boxShadow: "0 0 20px color-mix(in srgb, var(--theme-primary) 25%, transparent)",
-              }}
+          {(c.ctaPrimary || c.ctaSecondary) && (
+            <div
+              className="spotlight-fade mt-10 flex flex-wrap items-center justify-center gap-4"
+              style={{ animationDelay: "0.8s" }}
             >
-              {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
-              <ArrowRight
-                size={16}
-                className={`transition-transform group-hover:translate-x-0.5 ${isAr ? "rotate-180 group-hover:-translate-x-0.5" : ""}`}
-              />
-            </a>
-            {c.ctaSecondary && (
-              <a
-                href={c.ctaSecondary.url}
-                className="inline-flex items-center gap-2 px-8 py-4 text-white/40 font-medium text-sm hover:text-white/70 transition-colors underline underline-offset-4 decoration-white/10 hover:decoration-white/30"
-              >
-                {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
-              </a>
-            )}
-          </div>
+              {c.ctaPrimary && (
+                <a
+                  href={c.ctaPrimary.url || "#"}
+                  className={`group inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-white font-semibold transition-all duration-300 hover:shadow-[0_0_40px_color-mix(in_srgb,var(--theme-primary)_50%,transparent)] ${
+                    isAr ? "flex-row-reverse" : ""
+                  }`}
+                  style={{
+                    backgroundColor: "var(--theme-primary)",
+                    boxShadow: "0 0 20px color-mix(in srgb, var(--theme-primary) 25%, transparent)",
+                  }}
+                >
+                  {isAr ? c.ctaPrimary.textAr : c.ctaPrimary.text}
+                  <ArrowRight
+                    size={16}
+                    className={`transition-transform group-hover:translate-x-0.5 ${isAr ? "rotate-180 group-hover:-translate-x-0.5" : ""}`}
+                  />
+                </a>
+              )}
+              {c.ctaSecondary && (
+                <a
+                  href={c.ctaSecondary.url || "#"}
+                  className="inline-flex items-center gap-2 px-8 py-4 text-white/40 font-medium text-sm hover:text-white/70 transition-colors underline underline-offset-4 decoration-white/10 hover:decoration-white/30"
+                >
+                  {isAr ? c.ctaSecondary.textAr : c.ctaSecondary.text}
+                </a>
+              )}
+            </div>
+          )}
 
           {/* Stats */}
           {c.stats && c.stats.length > 0 && (
