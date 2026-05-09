@@ -1,14 +1,14 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, boolean } from "drizzle-orm/pg-core";
 
-export const users = sqliteTable("users", {
+export const users = pgTable("users", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
-  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
+  createdAt: integer("created_at").notNull(),
 });
 
-export const sites = sqliteTable("sites", {
+export const sites = pgTable("sites", {
   id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
@@ -18,14 +18,14 @@ export const sites = sqliteTable("sites", {
   industry: text("industry").notNull(),
   theme: text("theme").notNull(), // JSON string of SiteTheme
   language: text("language").notNull().default("en"),
-  status: text("status", { enum: ["draft", "published"] })
+  status: text("status")
     .notNull()
     .default("draft"),
-  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull(),
+  createdAt: integer("created_at").notNull(),
+  updatedAt: integer("updated_at").notNull(),
 });
 
-export const sections = sqliteTable("sections", {
+export const sections = pgTable("sections", {
   id: text("id").primaryKey(),
   siteId: text("site_id")
     .notNull()
@@ -34,5 +34,5 @@ export const sections = sqliteTable("sections", {
   templateId: text("template_id").notNull(),
   config: text("config").notNull(), // JSON string
   sortOrder: integer("sort_order").notNull(),
-  isVisible: integer("is_visible", { mode: "boolean" }).notNull().default(true),
+  isVisible: boolean("is_visible").notNull().default(true),
 });

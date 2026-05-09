@@ -6,7 +6,8 @@
       "Bash(gh run *)",
       "Bash(curl -s http://localhost:3000/login)",
       "Bash(curl -s http://localhost:3000/dashboard)",
-      "WebFetch(domain:templates-sand-psi.vercel.app)"
+      "WebFetch(domain:templates-sand-psi.vercel.app)",
+      "Bash(curl -s http://localhost:3000/register)"
     ],
     "additionalDirectories": [
       "/Users/khalidalshehri/IdeaProjects/safahati/data"
