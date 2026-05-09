@@ -55,26 +55,53 @@ export async function isOwner(siteId: string, userId: string): Promise<boolean> 
 }
 
 async function buildSiteData(site: typeof schema.sites.$inferSelect): Promise<PublicSiteData> {
-  const sections = await db
-    .select()
-    .from(schema.sections)
-    .where(eq(schema.sections.siteId, site.id))
-    .orderBy(schema.sections.sortOrder);
+  try {
+    const sections = await db
+      .select()
+      .from(schema.sections)
+      .where(eq(schema.sections.siteId, site.id))
+      .orderBy(schema.sections.sortOrder);
 
-  return {
-    site: {
-      id: site.id,
-      name: site.name,
-      slug: site.slug,
-      industry: site.industry,
-      theme: JSON.parse(site.theme),
-      language: site.language as "en" | "ar",
-      status: site.status as "draft" | "published",
-    },
-    sections: sections.map((s: typeof schema.sections.$inferSelect) => ({
-      ...s,
-      config: JSON.parse(s.config),
-      blockType: s.blockType as SectionData["blockType"],
-    })),
-  };
+    const parsedTheme = (() => {
+      try {
+        return JSON.parse(site.theme);
+      } catch (e) {
+        console.warn("[buildSiteData] Failed to parse theme for site", site.id, e);
+        return {};
+      }
+    })();
+
+    return {
+      site: {
+        id: site.id,
+        name: site.name,
+        slug: site.slug,
+        industry: site.industry,
+        theme: parsedTheme as SiteTheme,
+        language: site.language as "en" | "ar",
+        status: site.status as "draft" | "published",
+      },
+      sections: (sections || [])
+        .filter((s): s is typeof schema.sections.$inferSelect => s !== null && s !== undefined)
+        .map((s) => {
+          try {
+            return {
+              ...s,
+              config: JSON.parse(s.config),
+              blockType: s.blockType as SectionData["blockType"],
+            };
+          } catch (e) {
+            console.warn("[buildSiteData] Failed to parse config for section", s.id, e);
+            return {
+              ...s,
+              config: {},
+              blockType: s.blockType as SectionData["blockType"],
+            };
+          }
+        }),
+    };
+  } catch (error) {
+    console.error("[buildSiteData] Error building site data for", site.id, error);
+    throw error;
+  }
 }
