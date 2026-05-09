@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -X POST http://localhost:3000/api/auth/register -H 'Content-Type: application/json' -d '{ *)",
+      "Bash(curl -s -X POST http://localhost:3000/api/auth/callback/credentials -H 'Content-Type: application/json' -d '{ *)",
+      "Bash(gh run *)"
+    ],
+    "additionalDirectories": [
+      "/Users/khalidalshehri/IdeaProjects/safahati/data"
+    ]
+  }
+}
