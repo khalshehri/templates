@@ -54,26 +54,35 @@ export default async function PublicSitePage({
   const { preview } = await searchParams;
   const isPreview = preview === "true";
 
+  console.log(`[Site Renderer] Loading slug: ${slug}, preview: ${isPreview}`);
+
   // Try published site first
   let data = getPublishedSiteBySlug(slug);
+  console.log(`[Site Renderer] Published site found:`, !!data);
+
   let showPreviewBanner = false;
 
   // If not published but preview mode requested, check ownership
   if (!data && isPreview) {
+    console.log(`[Site Renderer] Attempting preview access`);
     const session = await auth();
     const fullData = getSiteBySlug(slug);
+    console.log(`[Site Renderer] Full data found:`, !!fullData);
+    console.log(`[Site Renderer] Session user:`, session?.user?.id);
 
-    if (
-      fullData &&
-      session?.user?.id &&
-      isOwner(fullData.site.id, session.user.id)
-    ) {
-      data = fullData;
-      showPreviewBanner = true;
+    if (fullData && session?.user?.id) {
+      const owns = isOwner(fullData.site.id, session.user.id);
+      console.log(`[Site Renderer] User owns site:`, owns);
+
+      if (owns) {
+        data = fullData;
+        showPreviewBanner = true;
+      }
     }
   }
 
   if (!data) {
+    console.log(`[Site Renderer] No data found, returning 404`);
     notFound();
   }
 
