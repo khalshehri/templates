@@ -53,20 +53,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Verify user exists in DB (session may be stale after DB reset)
-    const user = db
-      .select()
-      .from(schema.users)
-      .where(eq(schema.users.id, session.user.id))
-      .get();
-
-    if (!user) {
-      return NextResponse.json(
-        { error: "Session expired — please log out and log back in" },
-        { status: 401 }
-      );
-    }
-
     // Generate unique slug
     let baseSlug = slugify(name);
     if (!baseSlug) baseSlug = "site";
